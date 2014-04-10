@@ -1,0 +1,19 @@
+name="deadbeef-infobar"
+version="1.4"
+revision="1"
+category="multimedia"
+description="DeaDBeeF Infobar Plugin"
+source="https://bitbucket.org/dsimbiriatin/$name/downloads/$name-1.4.tar.gz"
+homepage="https://bitbucket.org/dsimbiriatin/deadbeef-infobar"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="deadbeef"
+makedepends=""
+
+compile() {
+ cd $name-$version
+ make gtk3
+}
+
+package() {
+  install -Dm644 gtk3/ddb_infobar_gtk3.so $destdir/usr/lib/deadbeef/ddb_infobar_gtk3.so
+}

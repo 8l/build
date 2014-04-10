@@ -1,0 +1,19 @@
+name="linux-firmware"
+version="20131013.7d0c7a8"
+_realver="1308.2"
+revision="1"
+category="development"
+description="Firmware files for Linux"
+source="http://sourceforge.net/projects/alphaos/files/sources/firmware-${_realver}.tar.xz"
+homepage="http://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
+maintainer="simargl <archpupATgmail.com>"
+depends=""
+makedepends=""
+
+compile() {
+  mkdir -p $destdir/usr/lib/firmware
+}
+
+package() {
+  mv $build/firmware/* $destdir/usr/lib/firmware
+}

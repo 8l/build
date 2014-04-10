@@ -1,0 +1,49 @@
+diff -urN kickshaw_0.5/source/kickshaw.c kickshaw_0.5.new/source/kickshaw.c
+--- kickshaw_0.5/source/kickshaw.c	2013-02-05 01:31:08.000000000 +0100
++++ kickshaw_0.5.new/source/kickshaw.c	2013-08-08 18:59:59.286622978 +0200
+@@ -206,6 +206,20 @@
+ 
+ // ### Creates GUI and signals, also loads settings and standard menu file, if they exist. ###
+ 
++GdkPixbuf *create_pixbuf(const gchar * filename)
++{
++   GdkPixbuf *pixbuf;
++   GError *error = NULL;
++   pixbuf = gdk_pixbuf_new_from_file(filename, &error);
++   if(!pixbuf) {
++      fprintf(stderr, "%s\n", error->message);
++      g_error_free(error);
++   }
++
++   return pixbuf;
++}
++
++
+ static void general_initialisiation (void)
+ {
+   GtkWidget *main_grid;
+@@ -267,6 +281,7 @@
+   gtk_window_set_title (GTK_WINDOW (window), "Kickshaw");
+   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
+   g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
++  gtk_window_set_icon(GTK_WINDOW(window), create_pixbuf("/usr/share/icons/hicolor/96x96/apps/menu-editor.png"));
+ 
+     // ### Create a new vbox that will contain all elements. ###
+ 
+@@ -422,7 +437,7 @@
+   gtk_menu_shell_append (GTK_MENU_SHELL (menubar), mb_options);
+ 
+   // Default settings
+-  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mb_view_and_options[NOTIFY_ABOUT_EXECUTE_OPT_CONVERSIONS]), TRUE);
++  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mb_view_and_options[NOTIFY_ABOUT_EXECUTE_OPT_CONVERSIONS]), FALSE);
+ 
+   // Help
+   mb_help = gtk_menu_item_new_with_mnemonic ("_Help");
+@@ -1425,6 +1440,7 @@
+   gtk_about_dialog_set_program_name (GTK_ABOUT_DIALOG (dialog), "Kickshaw");
+   gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), "0.5 RC");
+   gtk_about_dialog_set_copyright (GTK_ABOUT_DIALOG (dialog), "(c) 2010-2013 Marcus Schaetzle");
++  gtk_about_dialog_set_logo (GTK_ABOUT_DIALOG (dialog), gdk_pixbuf_new_from_file(  "/usr/share/icons/hicolor/96x96/apps/menu-editor.png", NULL ) );
+   gtk_about_dialog_set_license (GTK_ABOUT_DIALOG (dialog), "\
+ Copyright (c) 2010-2013        Marcus Schaetzle\n\n\
+ \

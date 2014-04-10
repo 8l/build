@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Emendo
+Comment=Text editor with syntax highlighting
+Exec=emendo %F
+Icon=emendo
+Terminal=false
+Categories=GTK;Development;
+MimeType=text/plain;
+StartupNotify=true

@@ -1,0 +1,29 @@
+<schemalist>
+  <schema id="org.alphaos.taeni.preferences" path="/org/alphaos/taeni/preferences/">
+    <key name="width" type="i">
+      <default>752</default>
+      <summary>Width</summary>
+      <description>Main window width</description>
+    </key>
+    <key name="height" type="i">
+      <default>460</default>
+      <summary>Heigth</summary>
+      <description>Main window heigth</description>
+    </key>
+    <key name="bgcolor" type="s">
+      <default>'#1A1A1A'</default>
+      <summary>Background</summary>
+      <description>Terminal background color</description>
+    </key>
+    <key name="fgcolor" type="s">
+      <default>'#F0F0F0'</default>
+      <summary>Foreground</summary>
+      <description>Terminal foreground color</description>
+    </key>
+    <key name="font" type="s">
+      <default>'Monospace 13'</default>
+      <summary>Font</summary>
+      <description>Terminal font</description>
+    </key>
+  </schema>
+</schemalist>

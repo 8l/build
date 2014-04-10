@@ -1,0 +1,32 @@
+name="linux-api-headers"
+version="3.10.6"
+_realver="3.12"
+revision="1"
+category="system"
+description="The linux kernel and modules"
+source="http://www.kernel.org/pub/linux/kernel/v3.x/linux-${_realver}.tar.xz \
+http://sourceforge.net/projects/alphaos/files/sources/aufs-standalone-${_realver:0:4}.tar.xz"
+homepage="http://www.kernel.org"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="coreutils"
+makedepends=""
+
+compile() {
+  cd linux-${_realver}
+  echo "Adding Aufs to the kernel sources"
+  patch -p1 < $build/aufs-standalone/aufs3-kbuild.patch
+  patch -p1 < $build/aufs-standalone/aufs3-base.patch
+  patch -p1 < $build/aufs-standalone/aufs3-mmap.patch
+  patch -p1 < $build/aufs-standalone/aufs3-standalone.patch
+  cp -va $build/aufs-standalone/Documentation .
+  cp -va $build/aufs-standalone/fs .
+  cp -va $build/aufs-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
+  echo "header-y += aufs_type.h" >> include/uapi/linux/Kbuild
+}
+
+package() {
+  make headers_check
+  make INSTALL_HDR_PATH=$destdir/usr headers_install
+  find $destdir \( -name .install -o -name ..install.cmd \) -delete
+  rm -r $destdir/usr/include/drm
+}

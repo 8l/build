@@ -1,0 +1,82 @@
+#!/usr/bin/bash
+# 
+# Mounting support script used in SpaceFM
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+mount_function() {
+  DRIVE=$(echo $DRIVE_FULL | sed 's/\/dev\///')
+  FSTYPE="$(fstype $DRIVE_FULL)"
+  
+  if [[ $FSTYPE == "ntfs" ]]; then
+    MOUNTCMD="ntfs-3g" && ICON="drive-removable-media"
+  elif [[ $FSTYPE == "udf" || $FSTYPE == "iso9660" ]]; then  
+    MOUNTCMD="mount" && ICON="drive-optical"
+  else
+    MOUNTCMD="mount" && ICON="drive-removable-media"
+  fi
+  
+  if [ ! -d /mnt/$DRIVE ]; then 
+    mkdir /mnt/$DRIVE
+  fi
+  
+  $MOUNTCMD /dev/$DRIVE /mnt/$DRIVE
+  
+  if [ $? = 0 ]; then
+    notify-send -i $ICON "SpaceFM" "Mounted $DRIVE_FULL filesystem: $FSTYPE"
+  else
+    notify-send -i dialog-error-symbolic "SpaceFM" "Mounting $DRIVE_FULL failed"
+  fi
+}
+
+umount_function() {
+  FSTYPE="$(fstype $DRIVE_FULL)"
+  
+  if [[ $FSTYPE == "ntfs" ]]; then
+    ICON="drive-harddisk"
+  elif [[ $FSTYPE == "udf" ]]; then  
+    ICON="media-optical"
+  elif [[ $FSTYPE == "vfat" ]]; then  
+    ICON="media-removable"
+  elif [[ $FSTYPE == "iso9660" ]]; then  
+    ICON="media-optical" 
+  else
+    ICON="drive-harddisk"
+  fi
+  
+  umount $DRIVE_FULL
+  
+  if [ $? = 0 ]; then
+    notify-send -i $ICON "SpaceFM" "Ejected $DRIVE_FULL"
+  else
+    notify-send -i dialog-error-symbolic "SpaceFM" "Problem ejecting $DRIVE_FULL. Device is currently in use."
+  fi
+}
+
+case "$1" in
+
+  mount)
+    DRIVE_FULL="$2"
+    mount_function ;;
+
+  umount)
+    DRIVE_FULL="$2"
+    umount_function ;; 
+    
+  *)
+    echo "spmount
+options: mount umount" ;;
+esac

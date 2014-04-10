@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Voyager
+Comment=Image Viewer in Vala and Gtk+3
+Exec=voyager
+Icon=voyager
+Terminal=false
+Categories=Application;Graphics;
+MimeType=image/bmp;image/jpeg;image/jpg;image/png;image/tiff;image/x-xpixmap;image/x-bmp;image/x-pcx;image/x-tga;image/x-portable-pixmap;image/x-portable-bitmap;image/x-targa;image/x-portable-greymap;application/pcx;image/svg+xml;image/svg-xml;image/vnd.microsoft.icon;
+StartupNotify=true

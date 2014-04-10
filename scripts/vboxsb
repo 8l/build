@@ -1,0 +1,160 @@
+#!/usr/bin/bash
+#
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+VBOX_DIR="/mnt/home/data/backup/vbox"
+VBOX_VERSION="4.3.4"
+VBOX_RUN="VirtualBox-4.3.4-91027-Linux_amd64.run"
+VBOX_MIRROR="http://download.virtualbox.org/virtualbox"
+KERNEL_VER="$(uname -r)"
+
+if [ ! -f $VBOX_DIR/$VBOX_RUN ]; then
+  echo " > Downloading $VBOX_RUN..."
+  wget $VBOX_MIRROR/$VBOX_VERSION/$VBOX_RUN -P $VBOX_DIR
+fi
+
+cd $VBOX_DIR
+sh $VBOX_RUN
+
+if [ ! -f /usr/lib/modules/$KERNEL_VER/misc/vboxdrv.ko ]; then
+  echo " > ERROR: Building VirtualBox $VBOX_VERSION failed..."
+  exit 1
+fi
+
+# MAKE DIRECTORIES
+mkdir -p install/opt
+mkdir -p install/usr/lib/modules/$KERNEL_VER/kernel
+mkdir -p install/usr/bin
+mkdir -p install/usr/share/applications
+for i in 16x16 24x24 32x32 48x48 64x64 72x72 96x96 128x128 256x256; do
+  mkdir -p install/usr/share/icons/hicolor/${i}/apps
+  mkdir -p install/usr/share/icons/hicolor/${i}/mimetypes
+done
+mkdir -p install/usr/share/mime/packages
+mkdir -p install/usr/share/pixmaps
+mkdir -p install/etc
+
+# MOVE FILES
+
+mv /opt/VirtualBox install/opt
+mv /usr/lib/modules/$KERNEL_VER/misc install/usr/lib/modules/$KERNEL_VER/kernel/
+mv /usr/bin/VBoxAutostart install/usr/bin
+mv /usr/bin/VBoxBalloonCtrl install/usr/bin
+mv /usr/bin/VBoxHeadless install/usr/bin
+mv /usr/bin/VBoxManage install/usr/bin
+mv /usr/bin/VBoxSDL install/usr/bin
+mv /usr/bin/VBoxVRDP install/usr/bin
+mv /usr/bin/VirtualBox install/usr/bin
+mv /usr/bin/rdesktop-vrdp install/usr/bin
+mv /usr/bin/vboxheadless install/usr/bin
+mv /usr/bin/vboxmanage install/usr/bin
+mv /usr/bin/vboxsdl install/usr/bin
+mv /usr/bin/vboxwebsrv install/usr/bin
+mv /usr/bin/virtualbox install/usr/bin
+mv /usr/share/applications/virtualbox.desktop install/usr/share/applications
+mv /usr/share/icons/hicolor/96x96/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/96x96/mimetypes/
+mv /usr/share/icons/hicolor/96x96/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/96x96/mimetypes/
+mv /usr/share/icons/hicolor/96x96/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/96x96/mimetypes/
+mv /usr/share/icons/hicolor/96x96/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/96x96/mimetypes/
+mv /usr/share/icons/hicolor/96x96/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/96x96/mimetypes/
+mv /usr/share/icons/hicolor/96x96/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/96x96/mimetypes/
+mv /usr/share/icons/hicolor/96x96/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/96x96/mimetypes/
+mv /usr/share/icons/hicolor/96x96/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/96x96/mimetypes/
+mv /usr/share/icons/hicolor/72x72/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/72x72/mimetypes/
+mv /usr/share/icons/hicolor/72x72/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/72x72/mimetypes/
+mv /usr/share/icons/hicolor/72x72/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/72x72/mimetypes/
+mv /usr/share/icons/hicolor/72x72/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/72x72/mimetypes/
+mv /usr/share/icons/hicolor/72x72/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/72x72/mimetypes/
+mv /usr/share/icons/hicolor/72x72/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/72x72/mimetypes/
+mv /usr/share/icons/hicolor/72x72/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/72x72/mimetypes/
+mv /usr/share/icons/hicolor/72x72/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/72x72/mimetypes/
+mv /usr/share/icons/hicolor/64x64/apps/virtualbox.png install/usr/share/icons/hicolor/64x64/apps/
+mv /usr/share/icons/hicolor/64x64/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/64x64/mimetypes/
+mv /usr/share/icons/hicolor/64x64/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/64x64/mimetypes/
+mv /usr/share/icons/hicolor/64x64/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/64x64/mimetypes/
+mv /usr/share/icons/hicolor/64x64/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/64x64/mimetypes/
+mv /usr/share/icons/hicolor/64x64/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/64x64/mimetypes/
+mv /usr/share/icons/hicolor/64x64/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/64x64/mimetypes/
+mv /usr/share/icons/hicolor/64x64/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/64x64/mimetypes/
+mv /usr/share/icons/hicolor/64x64/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/64x64/mimetypes/
+mv /usr/share/icons/hicolor/48x48/apps/virtualbox.png install/usr/share/icons/hicolor/48x48/apps/
+mv /usr/share/icons/hicolor/48x48/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/48x48/mimetypes/
+mv /usr/share/icons/hicolor/48x48/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/48x48/mimetypes/
+mv /usr/share/icons/hicolor/48x48/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/48x48/mimetypes/
+mv /usr/share/icons/hicolor/48x48/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/48x48/mimetypes/
+mv /usr/share/icons/hicolor/48x48/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/48x48/mimetypes/
+mv /usr/share/icons/hicolor/48x48/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/48x48/mimetypes/
+mv /usr/share/icons/hicolor/48x48/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/48x48/mimetypes/
+mv /usr/share/icons/hicolor/48x48/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/48x48/mimetypes/
+mv /usr/share/icons/hicolor/32x32/apps/virtualbox.png install/usr/share/icons/hicolor/32x32/apps/
+mv /usr/share/icons/hicolor/32x32/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/32x32/mimetypes/
+mv /usr/share/icons/hicolor/32x32/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/32x32/mimetypes/
+mv /usr/share/icons/hicolor/32x32/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/32x32/mimetypes/
+mv /usr/share/icons/hicolor/32x32/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/32x32/mimetypes/
+mv /usr/share/icons/hicolor/32x32/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/32x32/mimetypes/
+mv /usr/share/icons/hicolor/32x32/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/32x32/mimetypes/
+mv /usr/share/icons/hicolor/32x32/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/32x32/mimetypes/
+mv /usr/share/icons/hicolor/32x32/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/32x32/mimetypes/
+mv /usr/share/icons/hicolor/256x256/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/256x256/mimetypes/
+mv /usr/share/icons/hicolor/256x256/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/256x256/mimetypes/
+mv /usr/share/icons/hicolor/256x256/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/256x256/mimetypes/
+mv /usr/share/icons/hicolor/256x256/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/256x256/mimetypes/
+mv /usr/share/icons/hicolor/256x256/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/256x256/mimetypes/
+mv /usr/share/icons/hicolor/256x256/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/256x256/mimetypes/
+mv /usr/share/icons/hicolor/256x256/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/256x256/mimetypes/
+mv /usr/share/icons/hicolor/256x256/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/256x256/mimetypes/
+mv /usr/share/icons/hicolor/24x24/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/24x24/mimetypes/
+mv /usr/share/icons/hicolor/24x24/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/24x24/mimetypes/
+mv /usr/share/icons/hicolor/24x24/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/24x24/mimetypes/
+mv /usr/share/icons/hicolor/24x24/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/24x24/mimetypes/
+mv /usr/share/icons/hicolor/24x24/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/24x24/mimetypes/
+mv /usr/share/icons/hicolor/24x24/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/24x24/mimetypes/
+mv /usr/share/icons/hicolor/24x24/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/24x24/mimetypes/
+mv /usr/share/icons/hicolor/24x24/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/24x24/mimetypes/
+mv /usr/share/icons/hicolor/16x16/apps/virtualbox.png install/usr/share/icons/hicolor/16x16/apps/
+mv /usr/share/icons/hicolor/16x16/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/16x16/mimetypes/
+mv /usr/share/icons/hicolor/16x16/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/16x16/mimetypes/
+mv /usr/share/icons/hicolor/16x16/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/16x16/mimetypes/
+mv /usr/share/icons/hicolor/16x16/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/16x16/mimetypes/
+mv /usr/share/icons/hicolor/16x16/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/16x16/mimetypes/
+mv /usr/share/icons/hicolor/16x16/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/16x16/mimetypes/
+mv /usr/share/icons/hicolor/16x16/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/16x16/mimetypes/
+mv /usr/share/icons/hicolor/16x16/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/16x16/mimetypes/
+mv /usr/share/icons/hicolor/128x128/apps/virtualbox.png install/usr/share/icons/hicolor/128x128/apps/
+mv /usr/share/icons/hicolor/128x128/mimetypes/virtualbox-vmdk.png install/usr/share/icons/hicolor/128x128/mimetypes/
+mv /usr/share/icons/hicolor/128x128/mimetypes/virtualbox-vhd.png install/usr/share/icons/hicolor/128x128/mimetypes/
+mv /usr/share/icons/hicolor/128x128/mimetypes/virtualbox-vdi.png install/usr/share/icons/hicolor/128x128/mimetypes/
+mv /usr/share/icons/hicolor/128x128/mimetypes/virtualbox-vbox.png install/usr/share/icons/hicolor/128x128/mimetypes/
+mv /usr/share/icons/hicolor/128x128/mimetypes/virtualbox-vbox-extpack.png install/usr/share/icons/hicolor/128x128/mimetypes/
+mv /usr/share/icons/hicolor/128x128/mimetypes/virtualbox-ovf.png install/usr/share/icons/hicolor/128x128/mimetypes/
+mv /usr/share/icons/hicolor/128x128/mimetypes/virtualbox-ova.png install/usr/share/icons/hicolor/128x128/mimetypes/
+mv /usr/share/icons/hicolor/128x128/mimetypes/virtualbox-hdd.png install/usr/share/icons/hicolor/128x128/mimetypes/
+mv /usr/share/mime/packages/virtualbox.xml install/usr/share/mime/packages/
+mv /usr/share/pixmaps/VBox.png install/usr/share/pixmaps/
+mv /usr/share/pixmaps/virtualbox.png install/usr/share/pixmaps/
+mv /etc/vbox install/etc/
+mv install/opt/VirtualBox/VBox.sh install/opt/VirtualBox/VBox.sh.tmp 
+sed -e'/^#       because the user might not want to run a VM but only change VM params!/a modprobe vboxdrv' install/opt/VirtualBox/VBox.sh.tmp > install/opt/VirtualBox/VBox.sh
+chmod 755 install/opt/VirtualBox/VBox.sh
+
+# COMPRESS MODULE
+
+mksquashfs install VirtualBox-${VBOX_VERSION}-${KERNEL_VER}.sb -comp gzip -b 524288
+rm -rf install
+mv VirtualBox-${VBOX_VERSION}-${KERNEL_VER}.sb /mnt/home/alphaos/modules
+
+exit 0

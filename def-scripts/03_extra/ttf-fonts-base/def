@@ -1,0 +1,21 @@
+name="ttf-fonts-base"
+version="1"
+revision="1"
+category="system"
+description="Arial,Consolas,Droid_Sans,Fresca,Gudea,Oxygen"
+source="http://sourceforge.net/projects/alphaos/files/sources/base-fonts.tar.xz"
+homepage="http://corefonts.sourceforge.net"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="fontconfig"
+makedepends=""
+provides="ttf-font"
+
+compile() {
+  mkdir -p $destdir/usr/share/fonts/TTF
+}
+
+package() {
+  cp -a fonts/* $destdir/usr/share/fonts/TTF
+  rm $destdir/usr/share/fonts/TTF/Arial/{arialbd.ttf,arialbi.ttf,ariali.ttf}
+  rm $destdir/usr/share/fonts/TTF/Times/{timesbd.ttf,timesbi.ttf,timesi.ttf}
+}

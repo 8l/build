@@ -1,0 +1,22 @@
+name="aufs-util"
+version="3.11"
+revision="1"
+category="development"
+description="Another Unionfs Implementation that supports NFS branches"
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-$version.tar.xz"
+homepage="http://aufs.sourceforge.net/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends=""
+makedepends="linux"
+
+compile() {
+  cd $name-$version
+  sed -e "/LDFLAGS += -static -s/d" -e "/CFLAGS/s:-O::g" -i Makefile
+  sed -i 's|${DESTDIR}/sbin|${DESTDIR}/usr/bin|g' Makefile
+  sed -i 's|return -1|return 0|g' ver.c
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+}

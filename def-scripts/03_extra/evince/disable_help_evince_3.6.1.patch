@@ -1,0 +1,32 @@
+--- Makefile.am	2012-08-14 17:05:18.000000000 +0200
++++ Makefile.am.new	2013-02-21 12:27:16.463378465 +0100
+@@ -19,8 +19,7 @@
+ endif
+ 
+ SUBDIRS += \
+-	po \
+-	help
++	po
+ 
+ if ENABLE_TESTS
+ SUBDIRS += test
+--- Makefile.in	2012-10-15 11:12:44.000000000 +0200
++++ Makefile.in.new	2013-02-21 12:26:55.743377823 +0100
+@@ -111,7 +111,7 @@
+ ETAGS = etags
+ CTAGS = ctags
+ DIST_SUBDIRS = cut-n-paste data libdocument backend libview libmisc \
+-	properties shell po help test thumbnailer previewer
++	properties shell po test thumbnailer previewer
+ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+ distdir = $(PACKAGE)-$(VERSION)
+ top_distdir = $(distdir)
+@@ -397,7 +397,7 @@
+ # Set the minimum required Windows version to Windows 2000 (0x0500).
+ @PLATFORM_WIN32_TRUE@AM_CPPFLAGS = -D_WIN32_WINNT=0x0500
+ SUBDIRS = cut-n-paste data libdocument backend libview libmisc \
+-	properties $(am__append_1) po help $(am__append_2) \
++	properties $(am__append_1) po $(am__append_2) \
+ 	$(am__append_3) $(am__append_4)
+ NULL = 
+ pkgconfigdir = $(libdir)/pkgconfig

@@ -1,0 +1,55 @@
+name="desktop-settings"
+version="2013.12"
+revision="1"
+category="system"
+description="Settings, themes and background"
+source=""
+homepage="http://alphaos.tuxfamily.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends=""
+makedepends=""
+
+copy_desktop_settings() {
+  mkdir -p $TARGET/{.local/share/applications,.config/{deadbeef,openbox,tint2,volumeicon,gtk-3.0,spacefm,dconf}}
+  mkdir -p $destdir/usr/share/spacefm
+  cd $build/$name/settings
+  cp -ax .bashrc .start .Xdefaults .xinitrc .gtkrc-2.0 .gtkrc-2.0.mine .Xauthority .conkyrc .notify-osd $TARGET
+  cp -ax tint2rc $TARGET/.config/tint2
+  cp menu.xml rc.xml $TARGET/.config/openbox
+  cp user $TARGET/.config/dconf
+  cp volumeicon $TARGET/.config/volumeicon
+  cp user-dirs.dirs $TARGET/.config
+  cp mimeapps.list $TARGET/.local/share/applications
+  cp Trolltech.conf $TARGET/.config
+  cp settings.ini $TARGET/.config/gtk-3.0
+  cp session $TARGET/.config/spacefm
+  cp -a plugins $destdir/usr/share/spacefm
+  cp config $TARGET/.config/deadbeef/
+}
+
+copy_themes_and_background() {
+  install -d $destdir/usr/share/{applications,audio,backgrounds,conky,icons,mime,themes,tint2}
+  cp -af $build/$name/applications/* $destdir/usr/share/applications
+  cp -af $build/$name/audio/* $destdir/usr/share/audio
+  cp -af $build/$name/backgrounds/* $destdir/usr/share/backgrounds
+  cp -af $build/$name/conky/* $destdir/usr/share/conky
+  cp -af $build/$name/icons/* $destdir/usr/share/icons
+  cp -af $build/$name/mime/* $destdir/usr/share/mime
+  cp -af $build/$name/themes/* $destdir/usr/share/themes
+  cp -af $build/$name/tint2/* $destdir/usr/share/tint2
+}
+
+compile() {
+  mv $startdir/$name $build
+  cd $name
+  copy_themes_and_background
+  TARGET="$destdir/root"
+  copy_desktop_settings
+  TARGET="$destdir/home/alpha"
+  copy_desktop_settings
+}
+
+package() {
+  for i in $(find $destdir/home/alpha -type d); do chown alpha:alpha $i; done
+  for i in $(find $destdir/home/alpha -type f); do chown alpha:alpha $i; done
+}

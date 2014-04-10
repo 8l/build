@@ -1,0 +1,35 @@
+<schemalist>
+  <schema id="org.alphaos.gmp-video.preferences" path="/org/alphaos/gmp-video/preferences/">
+    <key name="drawing-area-width" type="i">
+      <default>550</default>
+      <summary>Drawing area width</summary>
+      <description>Drawing area width</description>
+    </key>
+    <key name="drawing-area-height" type="i">
+      <default>412</default>
+      <summary>Drawing area heigth</summary>
+      <description>Drawing area heigth</description>
+    </key>
+    <key name="video-mode" type="s">
+      <default>'xv'</default>
+      <summary>Video output mode</summary>
+      <description>Video output mode</description>
+    </key>
+    <key name="subtitle-color" type="s">
+      <default>'#FFFF00'</default>
+      <summary>Subtitle font color</summary>
+      <description>Subtitle font color</description>
+    </key>
+    <key name="subtitle-scale" type="d">
+      <default>2.0</default>
+      <summary>Subtitle font scale</summary>
+      <description>Subtitle font scale</description>
+    </key>
+    <key name="subtitle-fuzziness" type="s">
+      <default>'all'</default>
+      <summary>Adjust matching fuzziness when searching for subtitles</summary>
+      <description>Adjust matching fuzziness when searching for subtitles</description>
+    </key>    
+    
+  </schema>
+</schemalist>

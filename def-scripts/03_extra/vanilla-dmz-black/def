@@ -1,0 +1,18 @@
+name="vanilla-dmz-black"
+version="3.11.5"
+revision="1"
+category="system"
+description="X11 Mouse Theme"
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-$version.tar.xz"
+homepage="https://git.gnome.org/browse/gnome-themes-standard"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends=""
+makedepends=""
+
+compile() {
+  install -d $destdir/usr/share/icons
+}
+
+package() {
+  mv Vanilla-DMZ-Black $destdir/usr/share/icons
+}

@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-16 23:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: control-center.vala:51
+msgid "<b>Hardware</b>"
+msgstr ""
+
+#: control-center.vala:45
+msgid "<b>Personal</b>"
+msgstr ""
+
+#: control-center.vala:56
+msgid "<b>System</b>"
+msgstr ""
+
+#: control-center.vala:54
+msgid "A full-featured GTK based trayicon UI for ConnMan"
+msgstr ""
+
+#: control-center.vala:61
+msgid "About"
+msgstr ""
+
+#: control-center.vala:47
+msgid "Appearance"
+msgstr ""
+
+#: control-center.vala:25
+msgid "Central place for accessing system configuration tools"
+msgstr ""
+
+#: control-center.vala:52
+msgid "Change screen resolution and configure external monitors"
+msgstr ""
+
+#: control-center.vala:46
+msgid "Change your desktop wallpaper"
+msgstr ""
+
+#: control-center.vala:58
+msgid "Configure Grub4DOS bootup loader"
+msgstr ""
+
+#: control-center.vala:53
+msgid "Configure keyboard, mouse, and other input devices"
+msgstr ""
+
+#: control-center.vala:47
+msgid "Customize Look and Feel"
+msgstr ""
+
+#: control-center.vala:52
+msgid "Display"
+msgstr ""
+
+#: control-center.vala:58
+msgid "Grub4DOS"
+msgstr ""
+
+#: control-center.vala:53
+msgid "Input Devices"
+msgstr ""
+
+#: control-center.vala:49
+msgid "Kickshaw is a menu editor for Openbox"
+msgstr ""
+
+#: control-center.vala:57
+msgid "Manage running processes"
+msgstr ""
+
+#: control-center.vala:49
+msgid "Menu Editor"
+msgstr ""
+
+#: control-center.vala:54
+msgid "Network"
+msgstr ""
+
+#: control-center.vala:48
+msgid "Openbox"
+msgstr ""
+
+#: control-center.vala:59
+msgid "Savefile creator for alphaOS"
+msgstr ""
+
+#: control-center.vala:59
+msgid "Setup Savefile"
+msgstr ""
+
+#: control-center.vala:57
+msgid "Task Manager"
+msgstr ""
+
+#: control-center.vala:48
+msgid "Tweak settings for Openbox"
+msgstr ""
+
+#: control-center.vala:46
+msgid "Wallpaper"
+msgstr ""

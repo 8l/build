@@ -1,0 +1,64 @@
+<schemalist>
+  <schema id="org.alphaos.emendo.preferences" path="/org/alphaos/emendo/preferences/">
+    <key name="width" type="i">
+      <default>900</default>
+      <summary>Width</summary>
+      <description>Main window width</description>
+    </key>
+    <key name="height" type="i">
+      <default>600</default>
+      <summary>Heigth</summary>
+      <description>Main window heigth</description>
+    </key>
+    <key name="line-numbers" type="b">
+      <default>true</default>
+      <summary>line-numbers</summary>
+      <description>line-numbers</description>
+    </key>
+    <key name="highlight-current" type="b">
+      <default>true</default>
+      <summary>highlight-current</summary>
+      <description>highlight-current</description>
+    </key>
+    <key name="right-margin-show" type="b">
+      <default>true</default>
+      <summary>right-margin-show</summary>
+      <description>right-margin-show</description>
+    </key>    
+    <key name="right-margin-width" type="u">
+      <default>75</default>
+      <summary>right-margin-width</summary>
+      <description>right-margin-width</description>
+    </key>    
+    <key name="text-wrapping" type="s">
+      <default>'GTK_WRAP_NONE'</default>
+      <summary>text-wrapping</summary>
+      <description>text-wrapping</description>
+    </key>    
+    <key name="spaces-instead-of-tabs" type="b">
+      <default>true</default>
+      <summary>spaces-instead-of-tabs</summary>
+      <description>spaces-instead-of-tabs</description>
+    </key>    
+    <key name="indent-width" type="i">
+      <default>2</default>
+      <summary>indent-width</summary>
+      <description>indent-width</description>
+    </key>    
+    <key name="tab-width" type="u">
+      <default>4</default>
+      <summary>tab-width</summary>
+      <description>tab-width</description>
+    </key>     
+    <key name="font" type="s">
+      <default>'Monospace 13'</default>
+      <summary>font</summary>
+      <description>font</description>
+    </key>    
+    <key name="style" type="s">
+      <default>'kate'</default>
+      <summary>style</summary>
+      <description>style</description>
+    </key>
+  </schema>
+</schemalist>

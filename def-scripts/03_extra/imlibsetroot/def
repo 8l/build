@@ -1,0 +1,20 @@
+name="imlibsetroot"
+version="1.6"
+revision="1"
+category="graphics"
+description="A wallpaper setter with support for image scaling and xinerama."
+source=""
+homepage="http://robotmonkeys.net"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="xproto libx11 imlib2 libxinerama"
+makedepends=""
+
+compile() {
+  tar -xf $startdir/$name-$version.tar.xz -C $build
+  cd $name-$version
+  ./build
+}
+
+package() {
+  install -Dm755 imlibsetroot $destdir/usr/bin/imlibsetroot
+}

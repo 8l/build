@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu>
+
+<menu id="alphaos-screenshot" label="Screenshot">
+  <item label="Now">
+    <action name="Execute">
+      <command>scrot alphaos-%Y%m%d%H%M%S.png</command>
+    </action>
+  </item>
+  <item label="In 5 Seconds...">
+    <action name="Execute">
+      <command>scrot -d 5 alphaos-%Y%m%d%H%M%S.png</command>
+    </action>
+  </item>
+  <item label="In 10 Seconds...">
+    <action name="Execute">
+      <command>scrot -d 10 alphaos-%Y%m%d%H%M%S.png</command>
+    </action>
+  </item>
+  <item label="Selected Area...">
+    <action name="Execute">
+      <command>scrot -s alphaos-%Y%m%d%H%M%S.png</command>
+    </action>
+  </item>
+</menu>
+<menu id="alphaos-openbox" label="Openbox">
+  <menu id="alphaos-openbox-conky" label="Conky">
+    <item label="Edit .conkyrc">
+      <action name="Execute">
+        <command>emendo ~/.conkyrc</command>
+      </action>
+    </item>
+    <item label="Help">
+      <action name="Execute">
+        <command>emendo /usr/share/alphaos/doc/conky</command>
+      </action>
+    </item>
+    <separator label="themes"/>
+    <item label="Cubes">
+      <action name="Execute">
+        <command>desktop-ctrl conky theme cubes</command>
+      </action>
+    </item>    
+    <item label="Classic">
+      <action name="Execute">
+        <command>desktop-ctrl conky theme classic</command>
+      </action>
+    </item>
+    <item label="Gotham">
+      <action name="Execute">
+        <command>desktop-ctrl conky theme gotham</command>
+      </action>
+    </item>
+  </menu>
+  <menu id="alphaos-openbox-tint2" label="Tint2 panel">
+    <item label="Edit config file">
+      <action name="Execute">
+        <command>emendo ~/.config/tint2/tint2rc</command>
+      </action>
+    </item>
+    <item label="Restart tint2">
+      <action name="Execute">
+        <command>desktop-ctrl tint2 restart</command>
+      </action>
+    </item>
+    <separator label="themes"/>
+    <item label="Default">
+      <action name="Execute">
+        <command>desktop-ctrl tint2 theme default</command>
+      </action>
+    </item>
+    <item label="Gaia 10 Mod">
+      <action name="Execute">
+        <command>desktop-ctrl tint2 theme gaia10</command>
+      </action>
+    </item>
+    <item label="Left sidebar">
+      <action name="Execute">
+        <command>desktop-ctrl tint2 theme left</command>
+      </action>
+    </item>
+    <item label="Crunchbang">
+      <action name="Execute">
+        <command>desktop-ctrl tint2 theme crunchbang</command>
+      </action>
+    </item>
+  </menu>
+  <item label="GUI Config">
+    <action name="Execute">
+      <command>obconf</command>
+    </action>
+  </item>
+  <item label="Menu Editor">
+    <action name="Execute">
+      <command>kickshaw</command>
+    </action>
+  </item>  
+  <item label="Reconfigure">
+    <action name="Reconfigure"/>
+  </item>
+  <item label="Restart">
+    <action name="Restart"/>
+  </item>
+</menu>
+<menu id="alphaos-readme" label="Readme">
+  <item label="Installing alphaOS">
+    <action name="Execute">
+      <command>emendo /usr/share/alphaos/doc/installation</command>
+    </action>
+  </item>
+  <item label="System configuration">
+    <action name="Execute">
+      <command>emendo /usr/share/alphaos/doc/settings</command>
+    </action>
+  </item>
+  <item label="Pacman manual">
+    <action name="Execute">
+      <command>emendo /usr/share/alphaos/doc/pacman</command>
+    </action>
+  </item>
+  <item label="Kernel parameters">
+    <action name="Execute">
+      <command>emendo /usr/share/alphaos/doc/bootcodes</command>
+    </action>
+  </item>
+</menu>
+
+<menu id="root-menu" label="Openbox 3">
+  <separator label="alphaOS"/>
+  <menu id="desktop-app-menu" label="Applications" execute="openbox-menu-wrapper" icon="/usr/share/icons/Faenza-Mini-Blue/places/64/start-here-gnome.png"/>
+  <item label="Terminal" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/utilities-terminal.png">
+    <action name="Execute">
+      <command>taeni</command>
+    </action>
+  </item>
+  <item label="Text Editor" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/leafpad.png">
+    <action name="Execute">
+      <command>emendo</command>
+    </action>
+  </item>
+  <item label="File Manager" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/system-file-manager.png">
+    <action name="Execute">
+      <command>spacefm</command>
+    </action>
+  </item>
+  <item label="Web Browser" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/web-browser.png">
+    <action name="Execute">
+      <command>web-browser</command>
+    </action>
+  </item>
+  <separator/>
+  <menu id="alphaos-screenshot" icon="/usr/share/icons/Faenza-Mini-Blue/devices/64/camera-photo.png"/>
+  <menu id="alphaos-openbox" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/gnome-session.png"/>
+  <menu id="alphaos-readme" icon="/usr/share/icons/Faenza-Mini-Blue/mimetypes/64/text-plain.png"/>
+  <separator/>
+  <item label="Logout" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/gnome-session-reboot.png">
+    <action name="Execute">
+      <command>openbox --exit</command>
+    </action>
+  </item>
+  <item label="Reboot" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/gnome-shutdown.png">
+    <action name="Execute">
+      <command>wmreboot</command>
+    </action>
+  </item>
+  <item label="Shutdown" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/gnome-logout.png">
+    <action name="Execute">
+      <command>wmpoweroff</command>
+    </action>
+  </item>
+</menu>
+
+-</openbox_menu>

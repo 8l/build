@@ -1,0 +1,25 @@
+name="lxinput"
+version="0.3.2"
+revision="2"
+category="utilities"
+description="A small program to configure keyboard and mouse for LXDE."
+source="http://downloads.sourceforge.net/sourceforge/lxde/$name-$version.tar.gz"
+homepage="http://lxde.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3"
+makedepends="pkgconfig intltool"
+
+compile() {
+  cd $name-$version
+  sed -i 's|input-mouse|lxinput|g' data/lxinput.ui
+  sed -i 's|<property name="update_policy">discontinuous</property>||g' data/lxinput.ui
+  ./configure \
+    --prefix=/usr \
+    --enable-gtk3
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  rm -r $destdir/usr/share/applications/lxinput.desktop
+}

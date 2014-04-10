@@ -1,0 +1,183 @@
+#!/usr/bin/bash
+#
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+. /etc/rc.d/functions
+. /mnt/live/lib/.config
+
+VERSION="0.5.0"
+
+check_bundle_defined()
+{
+  if [ ! "$BUNDLE" ]; then
+    echo -e $BRed"==> "$BWhite"Please define bundle name."$Color_Off
+    exit 1
+  else
+    EXT="${BUNDLE##*.}"
+    if [ "$EXT" != "$BEXT" ]; then
+      echo -e $BRed"==> "$BWhite"Wrong file name '"$BUNDLE"' is not a bundle."$Color_Off
+      exit 1
+    fi
+  fi
+}
+
+get_bundle_load_positon()
+{
+  if [ ! $BUNDLE_POSITION ]; then
+    POSITION="1"
+  else
+    POSITION=$(echo $BUNDLE_POSITION | sed 's|^--||g')
+  fi
+}
+
+check_if_exists()
+{
+  if [ ! -f "$BUNDLE" ]; then
+    echo -e $BRed"==> "$BWhite"Bundle '"$BUNDLE"' does not exist"$Color_Off
+    exit 1
+  fi
+}
+
+check_if_deactivated()
+{
+  if [ -d /mnt/live/memory/bundles/"$BUNDLE" ]; then
+    echo -e $BRed"==> "$BWhite"Bundle '"$BUNDLE"' is already activated"$Color_Off
+    exit 1
+  fi
+}
+
+check_if_activated()
+{
+  if [ ! -d /mnt/live/memory/bundles/"$BUNDLE" ]; then
+    echo -e $BRed"==> "$BWhite"Bundle '"$BUNDLE"' is not currently activated"$Color_Off
+    exit 1
+  fi
+}
+
+check_if_system_bundle()
+{
+  for bundles in alpha* extra*; do
+    if [[ "$BUNDLE" =~ $bundles ]]; then
+      echo -e $BRed"==> "$BWhite"System bundle '"$BUNDLE"' cannot be deactivated!"$Color_Off
+      exit 1
+    fi
+  done
+}
+
+post_actions_check_if_needed()
+{
+  MODULES=$(ls /mnt/live/memory/bundles/"$BUNDLE"/lib/modules 2>/dev/null)
+  ICONS=$(ls /mnt/live/memory/bundles/"$BUNDLE"/usr/share/icons/hicolor 2>/dev/null)
+  DESKTOP=$(ls /mnt/live/memory/bundles/"$BUNDLE"/usr/share/applications 2>/dev/null)
+  GSETTINGS=$(ls /mnt/live/memory/bundles/"$BUNDLE"/usr/share/glib-2.0/schemas 2>/dev/null)
+  FONTS=$(ls /mnt/live/memory/bundles/"$BUNDLE"/usr/share/fonts/TTF 2>/dev/null)
+}
+
+post_actions_run_list()
+{
+  if [ "$MODULES" ]; then
+    echo -e $BBlue"  ->"$Color_Off" updating loadable kernel modules list"
+    depmod -a
+  fi
+  if [ "$ICONS" ]; then 
+    echo -e $BBlue"  ->"$Color_Off" rebuilding the gtk+ icon cache"
+    gtk-update-icon-cache /usr/share/icons/hicolor &>/dev/null 2>&1
+  fi
+  if [ "$DESKTOP" ]; then
+    echo -e $BBlue"  ->"$Color_Off" updating mimeinfo cache"
+    update-desktop-database &>/dev/null 2>&1
+    rm -r $HOME/.cache &>/dev/null 2>&1
+  fi
+  if [ "$GSETTINGS" ]; then
+    echo -e $BBlue"  ->"$Color_Off" gsettings xml schema files"
+    glib-compile-schemas /usr/share/glib-2.0/schemas &>/dev/null 2>&1
+  fi
+  if [ "$FONTS" ]; then
+    echo -e $BBlue"  ->"$Color_Off" updating font cache"
+    fc-cache -f -s > /dev/null
+    mkfontscale /usr/share/fonts/TTF
+    mkfontdir /usr/share/fonts/TTF
+  fi
+}
+
+bundle_show_help()
+{
+  echo "$0 $VERSION
+
+Usage: $0 [options]
+
+Options:
+  -a     Activate bundle <file name>
+  -d     Deactivate bundle <file name>"
+}
+
+bundle_activate()
+{
+  check_bundle_defined
+  check_if_exists
+  check_if_deactivated
+  get_bundle_load_positon
+  mkdir /mnt/live/memory/bundles/"$BUNDLE"
+  mount -o loop "$BUNDLE" /mnt/live/memory/bundles/"$BUNDLE"
+  mount -n -o remount,add:$POSITION:/mnt/live/memory/bundles/"$BUNDLE"=rr aufs /
+  if [ $? -eq 0 ]; then
+    echo -e $BGreen"==> "$BWhite"Bundle '"$BUNDLE"' activated"$Color_Off
+    post_actions_check_if_needed
+    post_actions_run_list
+    exit 0
+  else
+    echo -e $BRed"==> "$BWhite"Bundle '"$BUNDLE"' activate failed"$Color_Off
+    umount /mnt/live/memory/bundles/"$BUNDLE"
+    rmdir /mnt/live/memory/bundles/"$BUNDLE"
+    exit 1
+  fi
+}
+
+bundle_deactivate()
+{
+  check_bundle_defined
+  check_if_activated
+  check_if_system_bundle
+  post_actions_check_if_needed
+  mount -n -o remount,del:/mnt/live/memory/bundles/"$BUNDLE" aufs / 2>/dev/null
+  umount -d /mnt/live/memory/bundles/"$BUNDLE" 2>/dev/null
+  rmdir /mnt/live/memory/bundles/"$BUNDLE" 2>/dev/null
+  if [ $? -eq 0 ]; then
+    echo -e $BGreen"==> "$BWhite"Bundle '"$BUNDLE"' deactivated"$Color_Off
+    post_actions_run_list
+    exit 0
+  else
+    echo -e $BRed"==> "$BWhite"Bundle '"$BUNDLE"' deactivate failed"$Color_Off
+    exit 1
+  fi
+}
+
+case "$1" in
+  
+  -a)
+    BUNDLE="$2"
+    BUNDLE_POSITION="$3"
+    bundle_activate ;;
+  
+  -d)
+    BUNDLE="$2"
+    bundle_deactivate ;;
+
+   *)
+    bundle_show_help ;;
+
+esac

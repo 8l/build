@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-sb">
+         <comment>alphaos module</comment>
+         <glob pattern="*.sb"/>
+         <sub-class-of type="application/octet-stream"/>
+  </mime-type>
+</mime-info>

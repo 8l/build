@@ -1,0 +1,14 @@
+# SpaceFM Plugin File
+
+# THIS FILE IS NOT DESIGNED TO BE EDITED
+
+[Plugin]
+config_version-s=17
+cstm_566cdcd0-x=0
+cstm_566cdcd0-icon=x-spkg
+cstm_566cdcd0-label=Extract spkg package
+cstm_566cdcd0-line=spkg -e %n
+cstm_566cdcd0-task=1
+cstm_566cdcd0-task_err=1
+cstm_566cdcd0-keep=1
+

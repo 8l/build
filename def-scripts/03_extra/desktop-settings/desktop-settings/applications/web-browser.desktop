@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Encoding=UTF-8
+Exec=web-browser %u
+Icon=web-browser
+StartupNotify=false
+Terminal=false
+NoDisplay=true
+Name=Web Browser

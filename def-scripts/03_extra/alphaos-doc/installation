@@ -1,0 +1,46 @@
+A frugal install, as characterized by most Linux distros that use it, is
+a technique that copies the CDROM boot files as is, directly to a hard 
+drive. The distro can then boot from these files and operate as if it had 
+booted from the CDROM. 
+
+This lets the user bypass the sometimes lengthly and messy full install 
+procedure. Not all distributions are set up to do such a thing. But for 
+those that are, they need only a handful of files to be copied to the 
+hard drive, making for a very simple and fast install.
+
+A frugal install is similar to running a live cd or live usb, except that 
+it is running from a hard drive. Advantages of frugal:
+
+  - Space is saved (installation to hard drive typically is 4 times the 
+    size of the iso, whereas with frugal it is the size of the iso).
+
+  - Frugal from hard drive is faster than live usb and live cd.
+
+  - Great for testing (once set up). 
+
+Since alphaOS is based on Linux Live Kit, it can be installed in conjunction 
+with about any other operating system, without the need for an additional 
+disc or separate partition.
+
+How to make a frugal alphaOS installation? For this example I assume, that 
+you want to install alphaOS on partition sda6:
+
+  - First mount that partition and CD, i.e. click on their icons in SpaceFM file manager,
+
+  - Then, copy alphaos directory from CD to the root - top directory - of sda6 partition,
+
+  - Start bootloader setup dialog, Grub4DOS UI, from the Control center, 
+
+  - Select you disk, then in options tick search only in this device and press OK. 
+
+Created menu.lst will have these entries:
+
+title AlphaOS (sda6/alphaos)
+  uuid 6a729329-3106-4f49-9dbb-23b9f947bd9c
+  kernel /alphaos/boot/vmlinuz from=/alphaos
+  initrd /alphaos/boot/initrfs.img
+
+The same method can be applied for installation to a USB flash drive. But, in this 
+case frugal installation directory should be named differently, for example alphaos.usb,
+and you must use boot code from=/alphaos.usb. Also, bootcode usbmode should be used 
+always when alphaos is installed to USB drive to reduce number of device writes.

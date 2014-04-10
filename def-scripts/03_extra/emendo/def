@@ -1,0 +1,19 @@
+name="emendo"
+version="2.5.1"
+revision="1"
+category="office"
+description="Text editor with syntax highlighting"
+source=""
+homepage="http://alphaos.tuxfamily.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3 gtksourceview3"
+makedepends="vala"
+
+compile() {
+  mv $startdir/$name $build
+}
+
+package() {
+  cd $name
+  make DESTDIR=$destdir install
+}

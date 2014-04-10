@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-21 18:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: gmp-video.vala:134
+msgid "About"
+msgstr ""
+
+#: gmp-video.vala:239
+msgid "All Media Files"
+msgstr ""
+
+#: gmp-video.vala:177
+msgid "Aspect ratio"
+msgstr ""
+
+#: gmp-video.vala:432
+msgid "Close"
+msgstr ""
+
+#: gmp-video.vala:185
+msgid "Decrease size"
+msgstr ""
+
+#: gmp-video.vala:184
+msgid "Increase size"
+msgstr ""
+
+#: gmp-video.vala:25
+msgid "Mpv frontend in Vala and GTK3"
+msgstr ""
+
+#: gmp-video.vala:174
+msgid "Open"
+msgstr ""
+
+#: gmp-video.vala:235
+msgid "Open File..."
+msgstr ""
+
+#: gmp-video.vala:411 gmp-video.vala:417
+msgid "Open URL"
+msgstr ""
+
+#: gmp-video.vala:431
+msgid "Play"
+msgstr ""
+
+#: gmp-video.vala:175
+msgid "Play URL"
+msgstr ""
+
+#: gmp-video.vala:183
+msgid "Select file"
+msgstr ""
+
+#: gmp-video.vala:261
+msgid "Select subtitle..."
+msgstr ""
+
+#: gmp-video.vala:176
+msgid "Subtitle"
+msgstr ""

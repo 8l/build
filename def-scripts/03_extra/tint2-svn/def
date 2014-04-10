@@ -1,0 +1,31 @@
+name="tint2-svn"
+version="652"
+revision="2"
+category="development"
+description="A basic, good-looking task manager for WMs."
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-$version.tar.xz"
+homepage="http://code.google.com/p/tint2/source/list"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="libxcomposite libxdamage libxinerama libxrandr pango imlib2"
+makedepends="cmake"
+
+compile() {
+  cd $name
+  patch -Np0 -i $startdir/tint2-mouseover.patch
+  patch -Np1 -i $startdir/zombie-fix.patch
+  patch -Np1 -i $startdir/clock.patch
+  patch -Np1 -i $startdir/freespace.patch
+  patch -Np1 -i $startdir/launcher_apps_dir-v2.patch
+  patch -Np1 -i $startdir/src-task-align.patch
+  patch -Np1 -i $startdir/graph.patch
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DENABLE_TINT2CONF=0
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+}

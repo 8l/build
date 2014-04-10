@@ -1,0 +1,42 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-21 18:52+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: playtv.vala:101
+msgid "About"
+msgstr ""
+
+#: playtv.vala:98 playtv.vala:262
+msgid "Configure"
+msgstr ""
+
+#: playtv.vala:81
+msgid "County"
+msgstr ""
+
+#: playtv.vala:25
+msgid "GTK+3 based interface for watching online TV channels"
+msgstr ""
+
+#: playtv.vala:82
+msgid "Genre"
+msgstr ""
+
+#: playtv.vala:83
+msgid "Name"
+msgstr ""

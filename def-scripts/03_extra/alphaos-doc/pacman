@@ -1,0 +1,32 @@
+Pacman is a utility which manages software packages in Linux. 
+It uses simple compressed files as a package format, and maintains a text-based 
+package database (more of a hierarchy), just in case some hand tweaking is necessary.
+It will add, remove and upgrade packages in the system, handle dependencies 
+automatically and can download packages from a remote server.
+
+Invoking pacman involves specifying an operation with any potential options 
+and targets to operate on. A target is usually a package name, filename, 
+URL, or a search string. Targets can be provided as command line arguments. 
+
+Examples (with simple text editor leafpad):
+     
+  pacman -Sy
+  Update package list
+
+  pacman -Ss leafpad
+  Search for package leafpad in the database, searching both in packages' names and descriptions
+
+  pacman -S leafpad
+  Download and install leafpad including dependencies.
+     
+  pacman -Si leafpad
+  Display extensive information about a given package
+     
+  pacman -U /path/to/package/package_name-version.pkg.tar.xz  
+  Install a 'local' package that is not from a remote repository (e.g. the package is from the AUR): 
+
+  pacman -Rs leafpad
+  Remove leafpad and its dependencies which are not required by any other installed package.
+
+More information: 
+  https://wiki.archlinux.org/index.php/Pacman

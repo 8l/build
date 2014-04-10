@@ -1,0 +1,84 @@
+#!/usr/bin/bash
+
+if [ -f /root/.usb-drive-log-probedisk ];then
+ for ONEUSBDRV in `cat /root/.usb-drive-log-probedisk | tr '\n' ' '`
+ do
+  dd if=/dev/$ONEUSBDRV of=/dev/null bs=512 count=1 >/dev/null 2>&1
+ done
+fi
+
+MNTDDEVS="`mount | cut -f 1 -d ' ' | cut -f 3 -d '/' | grep -E '^hd|^sd|^scd|^sr|^mmc' | tr '\n' ' '`"
+
+if [ ! -e /proc/ide ];then
+ ALLDRVS="`ls -1 /sys/block | grep -E '^scd|^sd|^mmc|^sr' | tr '\n' ' '`"
+else
+ ALLDRVS="`ls -1 /sys/block | grep -E '^scd|^sd|^mmc|^sr' | tr '\n' ' '``ls -1 /proc/ide | grep '^hd' | tr '\n' ' '`"
+fi
+
+for ONEDRV in $ALLDRVS
+do
+  case $ONEDRV in
+   hd*)
+     MEDIA="`cat /proc/ide/$ONEDRV/media`"
+     [ "$MEDIA" = "disk" ] && MEDIA="drive"
+     [ "$MEDIA" = "cdrom" ] && MEDIA="optical"
+     INFO="`cat /proc/ide/$ONEDRV/model`"
+   ;;
+   sd*)
+     MEDIA="drive"
+     VENDOR="`cat /sys/block/$ONEDRV/device/vendor | tr -s ' '`"
+     MODEL="`cat /sys/block/$ONEDRV/device/model | tr -s ' '`"
+     INFO="$VENDOR$MODEL"
+     DRVNAMES="$DRVNAMES `echo -n "$ONEDRV" | cut -b 1-3` "
+     
+     if [ "`echo "$ATADRIVES" | grep "$ONEDRV"`" = "" ];then
+      MEDIA="usbdrv"
+      echo "$ONEDRV" >> /root/.usb-drive-log-probedisk
+      sort -u /root/.usb-drive-log-probedisk > /tmp/usb-drive-log-probedisk-tmp
+      mv -f /tmp/usb-drive-log-probedisk-tmp /root/.usb-drive-log-probedisk
+      if [ -e /sys/block/${ONEDRV}/size ];then
+       [ "`cat /sys/block/${ONEDRV}/size`" = "2880" ] && MEDIA="floppy"
+      fi
+      if [ -e /sys/block/${ONEDRV}/device/model ];then
+       [ "`grep -E ' FDD| UF000x|Floppy|USB\-FDU|^FD\-|FLOPPY' /sys/block/${ONEDRV}/device/model`" != "" ] && MEDIA="floppy"
+      fi
+     else
+      if [ -e /sys/block/${ONEDRV}/removable ];then
+       [ "`cat /sys/block/${ONEDRV}/removable`" = "1" ] && MEDIA="floppy"
+      fi
+     fi
+
+   ;;
+   scd*|sr*)
+     MEDIA="optical"
+     VENDOR="`cat /sys/block/$ONEDRV/device/vendor | tr -s ' '`"
+     MODEL="`cat /sys/block/$ONEDRV/device/model | tr -s ' '`"
+     INFO="$VENDOR$MODEL"
+   ;;
+   mmc*)
+     MEDIA="card"
+     INFO="MMC/SD: `cat /sys/block/$ONEDRV/device/name`"
+   ;;
+   *)
+     continue
+   ;;
+  esac
+  echo "/dev/$ONEDRV|$MEDIA|$INFO"
+
+done
+
+for ONEMNTD in $MNTDDEVS
+do
+ case $ONEMNTD in
+  hd*|sd*|sr*)
+   MNTDDRVs="`echo -n "$ONEMNTD" | cut -b 1-3` "
+   ;;
+  scd*)
+   MNTDDRVs="`echo -n "$ONEMNTD" | cut -b 1-4` "
+   ;;
+  mmc*)
+   MNTDDRVs="`echo -n "$ONEMNTD" | cut -b 1-7` "
+   ;;
+ esac
+ [ "`echo "$ALLDRVS" | grep "$MNTDDRVs"`" = "" ] && logger -s "PROBEDISK ERROR: MOUNTED UNPLUGGED $ONEMNTD"
+done

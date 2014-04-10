@@ -1,0 +1,19 @@
+name="control-center"
+version="1.1.0"
+revision="1"
+category="system"
+description="Central place for accessing system configuration tools"
+source=""
+homepage="http://alphaos.tuxfamily.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3"
+makedepends="vala"
+
+compile() {
+  mv $startdir/$name $build
+}
+
+package() {
+  cd $name
+  make DESTDIR=$destdir install
+}

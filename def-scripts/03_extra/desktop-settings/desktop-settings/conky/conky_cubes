@@ -1,0 +1,52 @@
+#based on Cubes Conky by votritis
+alignment tl
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+use_xft yes
+update_interval 1.0
+minimum_size 700 500
+maximum_width 700
+draw_shades no
+draw_outline no
+draw_borders no
+font Fresca:bold:size=9
+uppercase no
+stippled_borders 1
+border_width 10
+gap_x 10
+gap_y 5
+TEXT
+${voffset 250}${color EEEEEE}${font Fresca:bold:size=9}
+${goto 135}$kernel
+${voffset -5}
+${goto 135}Upt:${goto 180}$uptime_short
+${goto 135}Cpu:${goto 180}$cpu%
+${goto 135}Mem:${goto 180}$mem
+
+${voffset -85}
+${goto 314}ROOTFS
+${voffset -5}
+${goto 292}Used:${goto 335}${fs_used /}
+${goto 296}Free:${goto 336}${fs_free /}
+
+${voffset -70}
+${goto 450}Cpu:${goto 500}${top cpu 1}%
+${goto 452}${font Fresca:bold:size=8}${top name 1}$font
+${voffset -5}
+${goto 450}Mem:${goto 500}${top_mem mem 1}%
+${goto 452}${font Fresca:bold:size=8}${top_mem name 1}$font
+
+${voffset -90}
+${goto 640}${font Fresca:bold:size=8}Up: ${upspeed eth0}$font
+${goto 605}${color 353535}${upspeedgraph eth0 10,100 450000 8B0000}$color
+${voffset -7}
+${goto 635}${font Fresca:bold:size=8}Down: ${downspeed eth0}$font
+${goto 605}${color 353535}${downspeedgraph eth0 10,100 450000 8B0000}$color
+
+${image /usr/share/conky/conky_cubes_images/cc1.png  144x144 -p 80,200}
+${image /usr/share/conky/conky_cubes_images/cc2.png  144x144 -p 240,200}
+${image /usr/share/conky/conky_cubes_images/cc3.png  144x144 -p 400,200}
+${image /usr/share/conky/conky_cubes_images/cc4.png  144x144 -p 560,200}

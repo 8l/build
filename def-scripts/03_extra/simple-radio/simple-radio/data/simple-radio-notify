@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+OUTPUT="/tmp/simple_radio_output_*"
+
+start_notification() {
+  while [ "$(pidof simple-radio)" ]; do
+  
+    if [ -f $OUTPUT ]; then
+      TITLE=$(cat $OUTPUT | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
+      NAME=$(cat $OUTPUT | grep "name:"| sed 's| name:||g')
+
+      sleep 2s
+      
+      NEW_TITLE=$(cat $OUTPUT | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
+      NEW_NAME=$(cat $OUTPUT | grep "name:"| sed 's| name: ||g')
+      
+      if [ "$NEW_TITLE" != "$TITLE" ]; then
+        notify-send -i simple-radio-notification "$NEW_TITLE" "$NEW_NAME"
+      fi
+      
+      TITLE="$NEW_TITLE"
+      NAME="$NEW_NAME"
+    
+    fi
+  done
+}
+
+send_notification() {
+  if [ -f $OUTPUT ]; then
+    TITLE=$(cat $OUTPUT | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
+    NAME=$(cat $OUTPUT | grep "name:"| sed 's| name:||g')
+    notify-send -i simple-radio-notification "$TITLE" "$NAME"
+  fi
+}
+
+case $1 in
+  start)
+	start_notification ;;
+  send)
+    send_notification ;;
+esac

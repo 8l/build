@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=PlayTV
+Comment=GTK+3 based interface for watching online TV channels
+Exec=playtv
+Icon=playtv
+Terminal=false
+Categories=GTK;AudioVideo;Video;Player;
+StartupNotify=true

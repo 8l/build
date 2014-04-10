@@ -1,0 +1,61 @@
+#!/usr/bin/bash
+# 
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+. /mnt/live/lib/.config
+
+if [ ! "$1" ]; then
+  echo "error: no bundle name specified"
+  exit 1
+else
+  BUNDLE="$(basename "$1")"
+  EXT="${BUNDLE##*.}"
+  if [ "$EXT" != "$BEXT" ]; then
+    echo "error: wrong file name specified"
+    exit 1
+  fi
+  if [ ! -f "$BUNDLE" ]; then
+    echo "error: file does not exist"
+    exit 1
+  fi
+  DATE="$(date -r "$1" "+%d-%b-%Y")"
+  SIZE="$(du -sh "$1" | awk '{print $1}')"      
+  cd "$(dirname "$1")"
+  if [ ! -d "/mnt/live/memory/bundles/$BUNDLE" ]; then
+    YAD_DIALOG="$(yad --title="Bundle GUI" --text="Bundle $BUNDLE currently is <b><span color='#520707'>NOT ACTIVE</span></b>.\nBundle size:           $SIZE\nDate of creation:   $DATE" \
+                --image="application-x-sb" --window-icon="application-x-sb" --fixed --center --width 420 \
+                --button="Activate:0" --button="Cancel:1")"
+    ret=$?; [[ $ret -ne 0 ]] && exit 1
+    bundle -a "$BUNDLE"
+    if [ $? -eq 0 ]; then
+      notify-send -i dialog-information-symbolic "Bundle GUI" "Bundle $BUNDLE activated!"
+    else
+      notify-send -i dialog-error-symbolic "Bundle GUI" "$BUNDLE activate failed!"
+    fi
+  else
+    YAD_DIALOG="$(yad --title="Bundle GUI" --text="Bundle $BUNDLE currently is <b><span color='#346803'>ACTIVE</span></b>.\nBundle size:           $SIZE\nDate of creation:   $DATE" \
+                --image="application-x-sb" --window-icon="application-x-sb" --fixed --center --width 420 \
+                --button="Deactivate:0" --button="Cancel:1")"
+    ret=$?; [[ $ret -ne 0 ]] && exit 1
+    bundle -d "$BUNDLE"
+    if [ $? -eq 0 ]; then
+      notify-send -i dialog-information-symbolic "Bundle GUI" "Bundle $BUNDLE deactivated!"
+    else
+      notify-send -i dialog-error-symbolic "Bundle GUI" "$BUNDLE deactivate failed!"
+    fi
+  fi
+fi

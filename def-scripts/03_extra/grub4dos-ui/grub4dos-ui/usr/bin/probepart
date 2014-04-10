@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+
+PARTITIONS="`grep '^ .*[^k][0-9]$' /proc/partitions | tr -s ' ' | cut -f 4-5 -d ' ' | grep -vE ' loop| ram'`"
+PARTNAMES="`echo "$PARTITIONS" | cut -f 2 -d ' '`"
+
+ALLDRVS="`ls -1 /sys/block | grep -E '^scd|^sd|^mmc|^sr'`"
+ALLDEVS="`echo "${PARTNAMES} ${ALLDRVS}" | tr '\n' ' '`"
+
+for ONEDEV in $PARTNAMES; do
+  MEDIATYPE=""
+  FSTYPE="unknown"
+  DPATTERN=' '${ONEDEV}'$'
+  SIZE=`echo "$PARTITIONS" | grep "$DPATTERN" | cut -f 1 -d ' '`
+  DEVICE="`echo "$PARTITIONS" | grep "$DPATTERN" | cut -f 2 -d ' '`"
+  FSTYPE="`fstype /dev/$DEVICE 2>/dev/null`"
+  echo "/dev/$DEVICE|$FSTYPE|$SIZE"
+done

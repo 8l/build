@@ -1,0 +1,22 @@
+name="alphaos-doc"
+version="1.0"
+revision="1"
+category="system"
+description="alphaOS documentation"
+source=""
+homepage="https://bitbucket.org/simargl/alphaos"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends=""
+makedepends=""
+
+compile() {
+  mkdir -p $destdir/usr/share/alphaos/doc
+}
+
+package() {
+  install -Dm644 $startdir/installation $destdir/usr/share/alphaos/doc/installation
+  install -Dm644 $startdir/settings $destdir/usr/share/alphaos/doc/settings
+  install -Dm644 $startdir/conky $destdir/usr/share/alphaos/doc/conky
+  install -Dm644 $startdir/pacman $destdir/usr/share/alphaos/doc/pacman
+  install -Dm644 $startdir/bootcodes $destdir/usr/share/alphaos/doc/bootcodes
+}

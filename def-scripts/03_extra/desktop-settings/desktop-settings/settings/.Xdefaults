@@ -1,0 +1,25 @@
+!~/.Xdefault: Control the behavior of x-clients.
+!
+
+!urxvt
+urxvt*termName:             rxvt
+urxvt*font:                 xft:Consolas:pixelsize=17
+URxvt*iconFile:             /usr/share/pixmaps/rxvt-unicode.png
+urxvt*transparent:          false
+urxvt*shading:              20
+urxvt*fading:               80
+urxvt*scrollBar:            true
+urxvt*saveLines:            500
+urxvt*pointerBlank:         true
+urxvt*foreground:           #FFE400
+urxvt*background:           #000000
+urxvt*cursorColor:          #d66018
+
+!fonts
+Xft.antialias:              true
+Xft.hinting:                true
+Xft.hintstyle:              hintslight
+Xft.lcdfilter:              lcddefault
+Xft.hintstyle:              3
+Xft.dpi:                    96
+Xcursor.theme:              Vanilla-DMZ-Black

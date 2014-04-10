@@ -1,0 +1,23 @@
+name="kickshaw"
+version="0.5"
+_realver="0.5_RC_source_only"
+revision="1"
+category="utilities"
+description="Editor for Openbox menus"
+source="http://download.savannah.gnu.org/releases/obladi/${name}_${_realver}.tar.bz2"
+homepage="http://download.savannah.gnu.org/releases/obladi/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="openbox gtk3"
+makedepends=""
+
+compile() {
+  cd kickshaw_$version
+  patch -Np1 -i $startdir/fix_taskbar_icon.patch
+  cd source
+  make
+}
+
+package() {
+  install -Dm755 kickshaw $destdir/usr/bin/kickshaw
+  install -Dm644 $startdir/menu-editor.png $destdir/usr/share/icons/hicolor/96x96/apps/menu-editor.png
+}

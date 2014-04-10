@@ -1,0 +1,61 @@
+background yes
+use_xft yes
+xftfont Cantarell:size=8
+xftalpha 1
+update_interval 1.0
+total_run_times 0
+own_window yes
+own_window_transparent yes
+own_window_type normal
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+minimum_size 150 150
+maximum_width 150
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders yes
+default_color CECECE
+default_shade_color CECECE
+default_outline_color CECECE
+alignment tr
+gap_x 20
+gap_y 10
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+override_utf8_locale no
+color1 D6D6D6
+##############################################
+#  Output
+##############################################
+TEXT
+
+
+${font Fresca:pixelsize=12:bold}${color1}SYSTEM INFO ${hr} ${color}$font
+$sysname $alignr $kernel
+Uptime:$alignr$uptime_short
+RAM:$alignr$mem/$memmax
+Disk:$alignr${fs_used /}/${fs_size /}
+CPU:$alignr${cpu cpu0}%
+${cpugraph cpu0 15,150 0E3F82 00B9FF}
+
+${font Fresca:pixelsize=12:bold}${color1}ETH0 ${hr} ${color}$font
+Down: ${downspeed eth0} ${alignr}Up: ${upspeed eth0} 
+${downspeedgraph eth0 15,72 0E3F82 00B9FF}${alignr}${upspeedgraph eth0 15,72 00B9FF 0E3F82}
+
+${font Fresca:pixelsize=12:bold}${color1}TOP PROCESSES ${hr} ${color}$font
+${top_mem name 1}${alignr}${top mem 1} %
+${top_mem name 2}${alignr}${top mem 2} %
+${top_mem name 3}${alignr}${top mem 3} %
+${top_mem name 4}${alignr}${top mem 4} %
+${top_mem name 5}${alignr}${top mem 5} %
+
+${font Fresca:pixelsize=12:bold}${color1}SHORTCUT KEYS ${hr} ${color}$font
+Super+t$alignr Terminal
+Super+f$alignr File Manager
+Super+e$alignr Text Editor
+Super+w$alignr Web Browser
+Super+m$alignr Music Player
+Super+r$alignr Simple Radio
+Super+v$alignr Volume Control

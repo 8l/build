@@ -1,0 +1,47 @@
+#!/usr/bin/bash
+#
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+. /etc/spkg/main.config
+. /etc/spkg/main.functions
+
+case "$1" in
+  -Sy)
+  paka_build_base ;;
+  
+  -Ss)
+  PKG="$2"
+  paka_search_package ;;
+  
+  -Sd)
+  PKG="$2"
+  paka_convert_package ;;
+  
+  -S)
+  PKG="$2"
+  paka_install_package ;;
+  
+  shell)
+  paka_shell_search ;;
+  
+  list)
+  paka_list_check ;;    
+  
+  -R|-r)
+  spkg -r "$2" ;;
+  
+esac

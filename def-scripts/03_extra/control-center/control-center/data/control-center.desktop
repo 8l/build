@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Control Center
+Comment=Central place for accessing system configuration tools
+Terminal=false
+Type=Application
+Exec=control-center
+Icon=control-center
+Categories=System;

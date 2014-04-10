@@ -1,0 +1,5 @@
+::sysinit:/etc/rc.sysinit
+tty1::respawn:agetty -a root -8 -s 38400 tty1 linux
+tty2::respawn:agetty -8 -s 38400 tty2 linux
+tty3::respawn:agetty -8 -s 38400 tty3 linux
+::ctrlaltdel:wmreboot

@@ -1,0 +1,40 @@
+name="alphaos-tools"
+version="14.1"
+version_sysvinit="2.88dsf"
+version_rdate="1.5"
+version_toybox="0.4.7"
+revision="1"
+category="system"
+description="alphaos binaries"
+source="http://archive.ubuntu.com/ubuntu/pool/main/s/sysvinit/sysvinit_${version_sysvinit}.orig.tar.gz
+http://fossies.org/linux/misc/rdate-${version_rdate}.tar.gz
+http://landley.net/toybox/downloads/toybox-${version_toybox}.tar.bz2"
+homepage="http://alphaos.tuxfamily.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="glibc"
+makedepends=""
+
+compile()
+{
+  # sysvinit
+  cd $build/sysvinit-${version_sysvinit}
+  make -C src killall5
+  # rdate
+  cd $build/rdate-${version_rdate}
+  ./configure \
+    --prefix=/usr
+  make
+  # toybox
+  cd $build/toybox-$version_toybox
+  sed -i 's|# CONFIG_INIT is not set|CONFIG_INIT=y|g' .config
+  make
+}
+
+package() {
+  install -Dm755 $build/sysvinit-${version_sysvinit}/src/killall5 $destdir/usr/bin/killall5
+  install -Dm755 $build/rdate-${version_rdate}/src/rdate $destdir/usr/bin/rdate
+  install -Dm755 $build/toybox-$version_toybox/toybox $destdir/usr/bin/toybox
+  ln -s toybox $destdir/usr/bin/pidof
+  ln -s toybox $destdir/usr/bin/init
+  ln -s toybox $destdir/usr/bin/fstype
+}

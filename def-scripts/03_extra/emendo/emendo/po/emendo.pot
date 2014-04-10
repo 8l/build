@@ -1,0 +1,188 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-06 18:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: emendo.vala:177
+msgid "About"
+msgstr ""
+
+#: emendo.vala:419 emendo.vala:1079
+msgid "Cancel"
+msgstr ""
+
+#: emendo.vala:581
+msgid "Case sensitive"
+msgstr ""
+
+#: emendo.vala:603
+msgid "Close"
+msgstr ""
+
+#: emendo.vala:847
+msgid "Color scheme"
+msgstr ""
+
+#: emendo.vala:956
+msgid "Editor"
+msgstr ""
+
+#: emendo.vala:841
+msgid "Editor font"
+msgstr ""
+
+#: emendo.vala:896
+msgid "Enable text wrapping"
+msgstr ""
+
+#: emendo.vala:385
+msgid "Error"
+msgstr ""
+
+#: emendo.vala:387
+#, c-format
+msgid ""
+"Error saving file %s.\n"
+"The file on disk may now be truncated!"
+msgstr ""
+
+#: emendo.vala:560
+msgid "Find & Replace"
+msgstr ""
+
+#: emendo.vala:604
+msgid "Find and Replace"
+msgstr ""
+
+#: emendo.vala:154
+msgid "Find the entered text in the current file"
+msgstr ""
+
+#: emendo.vala:884
+msgid "Highlight current line"
+msgstr ""
+
+#: emendo.vala:866
+msgid "Indent width"
+msgstr ""
+
+#: emendo.vala:905
+msgid "Insert spaces instead of tabs"
+msgstr ""
+
+#: emendo.vala:860
+msgid "Margin width"
+msgstr ""
+
+#: emendo.vala:112
+msgid "New"
+msgstr ""
+
+#: emendo.vala:1080
+msgid "No"
+msgstr ""
+
+#: emendo.vala:389
+msgid "OK"
+msgstr ""
+
+#: emendo.vala:157
+msgid "Open"
+msgstr ""
+
+#: emendo.vala:310
+msgid "Open File..."
+msgstr ""
+
+#: emendo.vala:173
+msgid "Preferences"
+msgstr ""
+
+#: emendo.vala:1076
+msgid "Question"
+msgstr ""
+
+#: emendo.vala:139
+msgid "Redo your last action"
+msgstr ""
+
+#: emendo.vala:578
+msgid "Repace with:"
+msgstr ""
+
+#: emendo.vala:165
+msgid "Replace"
+msgstr ""
+
+#: emendo.vala:584
+msgid "Replace all at once"
+msgstr ""
+
+#: emendo.vala:118 emendo.vala:420
+msgid "Save"
+msgstr ""
+
+#: emendo.vala:161 emendo.vala:388
+msgid "Save As"
+msgstr ""
+
+#: emendo.vala:418
+msgid "Save file"
+msgstr ""
+
+#: emendo.vala:570
+msgid "Search for:"
+msgstr ""
+
+#: emendo.vala:169 emendo.vala:684
+msgid "Select Color"
+msgstr ""
+
+#: emendo.vala:878
+msgid "Show line numbers"
+msgstr ""
+
+#: emendo.vala:890
+msgid "Show margin on right"
+msgstr ""
+
+#: emendo.vala:872
+msgid "Tab width"
+msgstr ""
+
+#: emendo.vala:25
+msgid "Text editor with syntax highlighting"
+msgstr ""
+
+#: emendo.vala:1078
+#, c-format
+msgid ""
+"The file '%s' is not saved.\n"
+"Do you want to save it before closing?"
+msgstr ""
+
+#: emendo.vala:132
+msgid "Undo your last action"
+msgstr ""
+
+#: emendo.vala:957
+msgid "View"
+msgstr ""
+
+#: emendo.vala:1081
+msgid "Yes"
+msgstr ""

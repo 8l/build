@@ -1,0 +1,119 @@
+# Serbian translations for PACKAGE package.
+# Copyright (C) 2014 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# root <root@alphaos>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 001\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-16 23:00+0100\n"
+"PO-Revision-Date: 2014-01-04 18:40+0100\n"
+"Last-Translator: root <root@alphaos>\n"
+"Language-Team: Serbian\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: control-center.vala:51
+msgid "<b>Hardware</b>"
+msgstr "<b>Uređaji</b>"
+
+#: control-center.vala:45
+msgid "<b>Personal</b>"
+msgstr "<b>Lično</b>"
+
+#: control-center.vala:56
+msgid "<b>System</b>"
+msgstr "<b>Sistem</b>"
+
+#: control-center.vala:54
+msgid "A full-featured GTK based trayicon UI for ConnMan"
+msgstr "Funkcionalni GTK interfejs za ConnMan"
+
+#: control-center.vala:61
+msgid "About"
+msgstr "O programu"
+
+#: control-center.vala:47
+msgid "Appearance"
+msgstr "Izgled"
+
+#: control-center.vala:25
+msgid "Central place for accessing system configuration tools"
+msgstr "Centralno mesto za pristup alatima za podešavanje sistema"
+
+#: control-center.vala:52
+msgid "Change screen resolution and configure external monitors"
+msgstr "Promena rezolucije ekrana"
+
+#: control-center.vala:46
+msgid "Change your desktop wallpaper"
+msgstr "Program za zamenu pozadine desktopa"
+
+#: control-center.vala:58
+msgid "Configure Grub4DOS bootup loader"
+msgstr "Konfiguracija Grub4DOS programa za pokretanje sistema"
+
+#: control-center.vala:53
+msgid "Configure keyboard, mouse, and other input devices"
+msgstr "Podešavanje tastature, miša i drugih ulaznih uređaja"
+
+#: control-center.vala:47
+msgid "Customize Look and Feel"
+msgstr "Prilagođavanje izgleda i utiska"
+
+#: control-center.vala:52
+msgid "Display"
+msgstr "Ekran"
+
+#: control-center.vala:58
+msgid "Grub4DOS"
+msgstr "Grub4DOS"
+
+#: control-center.vala:53
+msgid "Input Devices"
+msgstr "Ulazni uređaji"
+
+#: control-center.vala:49
+msgid "Kickshaw is a menu editor for Openbox"
+msgstr "Kickshaw je uređivač menija za Openbox menadžer prozora"
+
+#: control-center.vala:57
+msgid "Manage running processes"
+msgstr "Upravljanje procesima"
+
+#: control-center.vala:49
+msgid "Menu Editor"
+msgstr "Editor menija"
+
+#: control-center.vala:54
+msgid "Network"
+msgstr "Mreža"
+
+#: control-center.vala:48
+msgid "Openbox"
+msgstr "Openbox"
+
+#: control-center.vala:59
+msgid "Savefile creator for alphaOS"
+msgstr "Napravi personalnu datoteku za podešavanja"
+
+#: control-center.vala:59
+msgid "Setup Savefile"
+msgstr "Lična datoteka"
+
+#: control-center.vala:57
+msgid "Task Manager"
+msgstr "Procesi"
+
+#: control-center.vala:48
+msgid "Tweak settings for Openbox"
+msgstr "Izmena podešavanja za Openbox"
+
+#: control-center.vala:46
+msgid "Wallpaper"
+msgstr "Pozadina"

@@ -1,0 +1,33 @@
+name="spacefm"
+version="0.9.1"
+_realver="0.9.4"
+revision="1"
+category="utilities"
+description="Multi-panel tabbed file manager"
+source="https://github.com/IgnorantGuru/spacefm/raw/pkg/${_realver}/$name-${_realver}.tar.xz"
+homepage="http://igurublog.wordpress.com//"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3 shared-mime-info desktop-file-utils startup-notification udev"
+makedepends="intltool gettext"
+
+compile() {
+  cd $name-${_realver}
+  patch -Np1 -i $startdir/drive_icons_and_archives_091.patch
+  ./configure \
+    --prefix=/usr \
+    --with-gtk3 \
+    --disable-superuser-checks \
+    --disable-nls
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  sed -i 's|Categories=System;FileTools;Utility;Core;GTK;FileManager;|Categories=Utility;|g' $destdir/usr/share/applications/spacefm.desktop
+  sed -i 's|Name=SpaceFM File Search|Name=File Search|g' $destdir/usr/share/applications/spacefm-find.desktop
+  rm -rf $destdir/usr/share/applications/spacefm-folder-handler.desktop
+  rm -rf $destdir/usr/share/icons
+  install -D -m644 $startdir/spacefm.png $destdir/usr/share/icons/hicolor/96x96/apps/spacefm.png
+  install -D -m644 $startdir/spacefm-find.png $destdir/usr/share/icons/hicolor/96x96/apps/spacefm-find.png
+  ln -s spacefm.png $destdir/usr/share/icons/hicolor/96x96/apps/spacefm-root.png
+}

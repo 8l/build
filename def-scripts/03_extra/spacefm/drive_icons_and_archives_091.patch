@@ -1,0 +1,79 @@
+diff -urN spacefm-0.9.1/src/ptk/ptk-file-archiver.c spacefm-0.9.1.new/src/ptk/ptk-file-archiver.c
+--- spacefm-0.9.1/src/ptk/ptk-file-archiver.c	2013-11-06 15:16:29.000000000 +0100
++++ spacefm-0.9.1.new/src/ptk/ptk-file-archiver.c	2013-12-01 14:10:08.151553871 +0100
+@@ -380,7 +380,7 @@
+     if ( format == 3 || format == 4 || format == 6 )
+     {
+         // use terminal for noisy rar, 7z, zip creation
+-        task->task->exec_terminal = TRUE;
++        task->task->exec_terminal = FALSE;
+         task->task->exec_sync = FALSE;
+         s1 = cmd;
+         cmd = g_strdup_printf( "%s ; fm_err=$?; if [ $fm_err -ne 0 ]; then echo; echo -n '%s: '; read s; exit $fm_err; fi", s1, "[ Finished With Errors ]  Press Enter to close" );
+@@ -652,7 +652,7 @@
+             if ( i == 3 || i == 4 || i == 6 )
+             {
+                 // zip 7z rar in terminal for password & output
+-                in_term = TRUE;  // run in terminal
++                in_term = FALSE;  // run in terminal
+                 keep_term = FALSE;
+                 prompt = g_strdup_printf( " ; fm_err=$?; if [ $fm_err -ne 0 ]; then echo; echo -n '%s: '; read s; exit $fm_err; fi", /* no translate for security*/
+                             "[ Finished With Errors ]  Press Enter to close" );
+diff -urN spacefm-0.9.1/src/settings.c spacefm-0.9.1.new/src/settings.c
+--- spacefm-0.9.1/src/settings.c	2013-11-06 15:16:29.000000000 +0100
++++ spacefm-0.9.1.new/src/settings.c	2013-12-01 14:08:00.094559817 +0100
+@@ -9547,23 +9547,23 @@
+ 
+         set = xset_set( "dev_icon_audiocd", "lbl", _("Audio CD") );
+         set->menu_style = XSET_MENU_ICON;
+-        xset_set_set( set, "icn", "gtk-cdrom" );
++        xset_set_set( set, "icn", "media-optical" );
+         set->line = g_strdup( "" );
+         set->line = g_strdup( "#devices-settings-icon" );
+ 
+         set = xset_set( "dev_icon_optical_mounted", "lbl", _("Optical Mounted") );
+         set->menu_style = XSET_MENU_ICON;
+-        xset_set_set( set, "icn", "gtk-cdrom" );
++        xset_set_set( set, "icn", "drive-optical" );
+         set->line = g_strdup( "#devices-settings-icon" );
+ 
+         set = xset_set( "dev_icon_optical_media", "lbl", _("Optical Has Media") );
+         set->menu_style = XSET_MENU_ICON;
+-        xset_set_set( set, "icn", "gtk-yes" );
++        xset_set_set( set, "icn", "media-optical" );
+         set->line = g_strdup( "#devices-settings-icon" );
+ 
+         set = xset_set( "dev_icon_optical_nomedia", "lbl", _("Optical No Media") );
+         set->menu_style = XSET_MENU_ICON;
+-        xset_set_set( set, "icn", "gtk-close" );
++        xset_set_set( set, "icn", "media-optical" );
+         set->line = g_strdup( "#devices-settings-icon" );
+ 
+         set = xset_set( "dev_icon_floppy_mounted", "lbl", _("Floppy Mounted") );
+@@ -9578,22 +9578,22 @@
+ 
+         set = xset_set( "dev_icon_remove_mounted", "lbl", _("Removable Mounted") );
+         set->menu_style = XSET_MENU_ICON;
+-        xset_set_set( set, "icn", "gtk-add" );
++        xset_set_set( set, "icn", "drive-removable-media" );
+         set->line = g_strdup( "#devices-settings-icon" );
+ 
+         set = xset_set( "dev_icon_remove_unmounted", "lbl", _("Removable Unmounted") );
+         set->menu_style = XSET_MENU_ICON;
+-        xset_set_set( set, "icn", "gtk-remove" );
++        xset_set_set( set, "icn", "media-removable" );
+         set->line = g_strdup( "#devices-settings-icon" );
+ 
+         set = xset_set( "dev_icon_internal_mounted", "lbl", _("Internal Mounted") );
+         set->menu_style = XSET_MENU_ICON;
+-        xset_set_set( set, "icn", "gtk-open" );
++        xset_set_set( set, "icn", "drive-removable-media" );
+         set->line = g_strdup( "#devices-settings-icon" );
+ 
+         set = xset_set( "dev_icon_internal_unmounted", "lbl", _("Internal Unmounted") );
+         set->menu_style = XSET_MENU_ICON;
+-        xset_set_set( set, "icn", "gtk-harddisk" );
++        xset_set_set( set, "icn", "drive-harddisk" );
+         set->line = g_strdup( "#devices-settings-icon" );
+ 
+         set = xset_set( "dev_icon_network", "lbl", _("Mounted Network") );

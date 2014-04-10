@@ -1,0 +1,33 @@
+#!/usr/bin/bash
+# 
+# Simple logout dialog in YAD
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+menu=$(yad --title "alphaOS Logout" --window-icon="gnome-logout" \
+--width 300 --undecorated --center --skip-taskbar \
+--button="Logout:3" --button="Reboot:4" --button="Poweroff:5" --button="Cancel:6")
+
+button=$? 
+
+case $button in
+  3*)     cmd="killall X" ;;
+  4*)     cmd="wmreboot" ;;  
+  5*)     cmd="wmpoweroff" ;;
+  6*)     cmd="echo ok" ;;
+esac
+$cmd
+exit 0

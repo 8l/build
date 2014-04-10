@@ -1,0 +1,21 @@
+name="openbox-menu"
+version="86e1c4b"
+revision="1"
+category="development"
+description="Dynamic XDG menu for openbox"
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-$version.tar.xz"
+homepage="http://mimasgpc.free.fr/openbox-menu.html"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3 menu-cache"
+makedepends=""
+
+compile() {
+  cd $name-$version
+  patch -Np1 -i $startdir/gtk3_and_larger_icons.patch
+  make
+}
+
+package() {
+  install -D -m755 openbox-menu $destdir/usr/bin/openbox-menu
+  install -D -m755 $startdir/openbox-menu-wrapper $destdir/usr/bin/openbox-menu-wrapper
+}

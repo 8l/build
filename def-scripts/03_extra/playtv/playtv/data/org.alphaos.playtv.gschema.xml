@@ -1,0 +1,109 @@
+<schemalist>
+  <schema id="org.alphaos.playtv.preferences" path="/org/alphaos/playtv/preferences/">
+    <key name="video-mode" type="s">
+      <default>'xv'</default>
+      <summary>Video output mode</summary>
+      <description>Video output mode</description>
+    </key>
+    <key name="tv01" type="as">
+      <default>[ 'Serbia', 'General', 'RTS', 'mmsh://rts.videostreaming.rs/rts']</default>
+      <summary>TV 01</summary>
+      <description>TV 01 name and address</description>
+    </key>
+    <key name="tv02" type="as">
+      <default>[ 'Serbia', 'General', 'Vojvodina1', 'rtsp://212.200.191.85/rtv1' ]</default>
+      <summary>TV 02</summary>
+      <description>TV 02 name and address</description>
+    </key>
+    <key name="tv03" type="as">
+      <default>[ 'Germany', 'Music', 'Deluxe', 'rtmp://flash.cdn.deluxemusic.tv/deluxemusic.tv-live/web_850.stream' ]</default>
+      <summary>TV 03</summary>
+      <description>TV 03 name and address</description>
+    </key>
+    <key name="tv04" type="as">
+      <default>[ 'Latvia', 'Music', 'Music Baltic', 'rtmp://80.232.172.37/rtplive/vlc.sdp' ]</default>
+      <summary>TV 07</summary>
+      <description>TV 07 name and address</description>
+    </key>
+    <key name="tv05" type="as">
+      <default>[ 'Greece', 'Music', 'Greek Hits', 'mmsh://wpso.com:200/music' ]</default>
+      <summary>TV 08</summary>
+      <description>TV 08 name and address</description>
+    </key>
+    <key name="tv06" type="as">
+      <default>[ 'G.Britain', 'News', 'Sky News', 'mms://live1.wm.skynews.servecast.net/skynews_wmlz_live300k']</default>
+      <summary>TV 04</summary>
+      <description>TV 04 name and address</description>
+    </key>
+    <key name="tv07" type="as">
+      <default>[ 'G.Britain', 'News', 'BBC', 'mms://rmv8.bbc.net.uk/news/olmedia/n5ctrl/tvseq/od/bbc2/bb/wm/video/daily_pol_bb.wmv' ]</default>
+      <summary>TV 06</summary>
+      <description>TV 06 name and address</description>
+    </key>
+    <key name="tv08" type="as">
+      <default>[ 'Macedonia', 'News', '24Vesti', 'mmsh://62.162.58.55/24vesti']</default>
+      <summary>TV 05</summary>
+      <description>TV 05 name and address</description>
+    </key>
+    <key name="tv09" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 09</summary>
+      <description>TV 09 name and address</description>
+    </key>
+    <key name="tv10" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 10</summary>
+      <description>TV 10 name and address</description>
+    </key>
+    <key name="tv11" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 11</summary>
+      <description>TV 11 name and address</description>
+    </key>    
+    <key name="tv12" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 12</summary>
+      <description>TV 12 name and address</description>
+    </key>    
+     <key name="tv13" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 13</summary>
+      <description>TV 13 name and address</description>
+    </key>   
+    <key name="tv14" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 14</summary>
+      <description>TV 14 name and address</description>
+    </key>    
+    <key name="tv15" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 15</summary>
+      <description>TV 15 name and address</description>
+    </key>
+    <key name="tv16" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 16</summary>
+      <description>TV 16 name and address</description>
+    </key>
+    <key name="tv17" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 17</summary>
+      <description>TV 17 name and address</description>
+    </key>      
+     <key name="tv18" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 18</summary>
+      <description>TV 18 name and address</description>
+    </key>   
+    <key name="tv19" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 19</summary>
+      <description>TV 19 name and address</description>
+    </key>    
+    <key name="tv20" type="as">
+      <default>[ '', '', '', '' ]</default>
+      <summary>TV 20</summary>
+      <description>TV 20 name and address</description>
+    </key>
+  </schema>
+</schemalist>

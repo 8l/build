@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+description="alsa sound system"
+
+case "$1" in
+
+   start)
+      alsactl restore
+      ;;
+
+   stop)
+      alsactl store
+      ;;
+      
+esac

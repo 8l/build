@@ -1,0 +1,33 @@
+diff -urN obconf-2.0.5_git20130908/configure.ac obconf-2.0.5_git20130908.new/configure.ac
+--- obconf-2.0.5_git20130908/configure.ac	2013-09-08 18:18:55.000000000 +0200
++++ obconf-2.0.5_git20130908.new/configure.ac	2014-04-01 23:44:42.000000000 +0200
+@@ -1,5 +1,5 @@
+ AC_PREREQ([2.54])
+-AC_INIT([obconf], [2.0.4], [http://bugzilla.icculus.org])
++AC_INIT([obconf], [2.0.5_git20130908], [http://bugzilla.icculus.org])
+ AM_INIT_AUTOMAKE([subdir-objects foreign dist-xz])
+ AC_CONFIG_SRCDIR([src/main.c])
+ 
+diff -urN obconf-2.0.5_git20130908/src/obconf.ui obconf-2.0.5_git20130908.new/src/obconf.ui
+--- obconf-2.0.5_git20130908/src/obconf.ui	2013-09-08 18:18:55.000000000 +0200
++++ obconf-2.0.5_git20130908.new/src/obconf.ui	2014-04-01 23:46:53.785809796 +0200
+@@ -299,7 +299,9 @@
+     <property name="can_focus">False</property>
+     <property name="border_width">6</property>
+     <property name="title" translatable="yes">Openbox Configuration Manager</property>
+-    <property name="icon_name">preferences-system-windows</property>
++    <property name="default_width">500</property>
++    <property name="default_height">500</property>
++    <property name="icon_name">obconf</property>
+     <signal handler="on_main_window_delete_event" name="delete_event"/>
+     <child>
+       <object class="GtkVBox" id="vbox8">
+@@ -3356,7 +3358,7 @@
+                               <object class="GtkImage" id="image3">
+                                 <property name="visible">True</property>
+                                 <property name="can_focus">False</property>
+-                                <property name="pixel_size">150</property>
++                                <property name="pixel_size">64</property>
+                                 <property name="icon_name">video-display</property>
+                               </object>
+                               <packing>

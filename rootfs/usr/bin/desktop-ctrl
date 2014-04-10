@@ -1,0 +1,84 @@
+#!/usr/bin/bash
+# 
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+tint2_restart_function() {
+  if [ "$(pidof tint2)" ]; then
+    killall tint2 && sleep 1s && tint2 &
+    exit 0
+  else
+    tint2 &
+    exit 0
+  fi
+}
+
+conky_restart_function() {
+  if [ "$(pidof conky)" ]; then
+    killall conky && sleep 1s && conky &
+    exit 0
+  else
+    conky &
+    exit 0
+  fi
+}
+
+# tint2
+case "$1" in
+  tint2)
+  case "$2" in
+    restart)
+    tint2_restart_function;;
+    theme)
+    case "$3" in
+      default)
+      ln -sf /usr/share/tint2/tint2rc_default $HOME/.config/tint2/tint2rc
+      tint2_restart_function;;
+      gaia10)
+      ln -sf /usr/share/tint2/tint2rc_gaia10_mod $HOME/.config/tint2/tint2rc
+      tint2_restart_function;;
+      left)
+      ln -sf /usr/share/tint2/tint2rc_left_sidebar $HOME/.config/tint2/tint2rc
+      tint2_restart_function;;
+      crunchbang)
+      ln -sf /usr/share/tint2/tint2rc_crunchbang $HOME/.config/tint2/tint2rc
+      tint2_restart_function;;
+    esac
+  esac
+esac
+
+# conky
+case "$1" in
+  conky)
+  case "$2" in
+    restart)
+    conky_restart_function;;
+    theme)
+    case "$3" in
+      classic)
+      ln -sf /usr/share/conky/conky_classic $HOME/.conkyrc
+      conky_restart_function;;
+      cubes)
+      ln -sf /usr/share/conky/conky_cubes $HOME/.conkyrc
+      conky_restart_function;;
+      gotham)
+      ln -sf /usr/share/conky/conky_gotham $HOME/.conkyrc
+      conky_restart_function;;
+    esac
+  esac
+esac
+
+exit

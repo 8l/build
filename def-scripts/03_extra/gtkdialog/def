@@ -1,0 +1,24 @@
+name="gtkdialog"
+version="0.8.3"
+_realver="0.8.4_svn514"
+revision="1"
+category="utilities"
+description="Gtkdialog is a small utility for fast and easy GUI building."
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-${_realver}.tar.xz"
+homepage="http://code.google.com/p/gtkdialog"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3"
+makedepends="pkgconfig"
+
+compile() {
+  cd $name-${_realver}
+  ./autogen.sh \
+    --prefix=/usr \
+    --enable-gtk3
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  rm -r $destdir/usr/share
+}

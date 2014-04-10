@@ -1,0 +1,11 @@
+diff -urN lxrandr-0.1.2/src/lxrandr.c lxrandr-0.1.2.new/src/lxrandr.c
+--- lxrandr-0.1.2/src/lxrandr.c	2011-07-23 17:33:48.000000000 +0200
++++ lxrandr-0.1.2.new/src/lxrandr.c	2014-02-14 16:25:38.657995465 +0100
+@@ -232,6 +232,7 @@
+ 
+     gtk_container_set_border_width ( ( GtkContainer*)about_dlg , 2 );
+     gtk_about_dialog_set_version ( (GtkAboutDialog*)about_dlg, VERSION );
++    gtk_about_dialog_set_logo_icon_name ( (GtkAboutDialog*)about_dlg, "lxrandr" );
+     gtk_about_dialog_set_program_name ( (GtkAboutDialog*)about_dlg, _( "LXRandR" ) );
+     //gtk_about_dialog_set_logo( (GtkAboutDialog*)about_dlg, gdk_pixbuf_new_from_file(  PACKAGE_DATA_DIR"/pixmaps/lxrandr.png", NULL ) );
+     gtk_about_dialog_set_copyright ( (GtkAboutDialog*)about_dlg, _( "Copyright (C) 2008-2011" ) );

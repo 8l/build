@@ -1,0 +1,22 @@
+name="connman-ui"
+version="r20.e4a8ddc"
+revision="1"
+category="network"
+description="A full-featured GTK based trayicon UI for ConnMan"
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-$version.tar.xz"
+homepage="https://github.com/tbursztyka/connman-ui"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="connman gtk3"
+makedepends="intltool"
+
+compile() {
+  cd $name-$version
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr
+  make
+}
+
+package() {
+  make PREFIX=/usr DESTDIR=$destdir install
+}

@@ -1,0 +1,194 @@
+diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
+--- lxtask-0.1.4/src/interface.c	2011-06-21 23:50:00.000000000 +0200
++++ lxtask-0.1.4.new/src/interface.c	2014-04-02 15:44:33.221559486 +0200
+@@ -41,6 +41,9 @@
+ GtkWidget* create_main_window (void)
+ {
+     GtkWidget *window;
++    GtkWidget *menubutton;
++    GtkWidget *menubutton_image;
++    GtkWidget *header_bar;
+     GtkWidget *menubar, *menu, *item;// *sub;
+     GtkWidget *vbox1;
+     GtkWidget *bbox1;
+@@ -50,13 +53,33 @@
+     GtkWidget *button3;
+ 
+     GtkWidget *system_info_box;
+-
++#if GTK_CHECK_VERSION(3,10,0)
++    menubutton_image = gtk_image_new_from_icon_name("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
++    
++    menubutton = gtk_menu_button_new ();
++    gtk_button_set_image (GTK_BUTTON (menubutton), menubutton_image);
++    
++    header_bar = gtk_header_bar_new (); 
++    gtk_header_bar_set_title (GTK_HEADER_BAR (header_bar), _("Task Manager"));
++    gtk_header_bar_set_show_close_button(GTK_HEADER_BAR (header_bar), TRUE);
++    gtk_header_bar_pack_end (GTK_HEADER_BAR (header_bar), GTK_WIDGET (menubutton));
++    gtk_widget_show_all (header_bar);
++#endif
++    
+     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
++#if GTK_CHECK_VERSION(3,10,0)
++    gtk_window_set_titlebar (GTK_WINDOW (window), header_bar);
++#else 
+     gtk_window_set_title (GTK_WINDOW (window), _("Task Manager"));
++#endif
+     gtk_window_set_default_size (GTK_WINDOW (window), win_width, win_height);
+     gtk_window_set_icon_name (GTK_WINDOW (window),"utilities-system-monitor");
+ 
++#if GTK_CHECK_VERSION(3,0,0)
++    bbox1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
++#else
+     bbox1 = gtk_vbox_new (FALSE, 10);
++#endif    
+     gtk_widget_show (bbox1);
+     gtk_container_add (GTK_CONTAINER (window), bbox1);
+ 
+@@ -64,6 +87,11 @@
+ 	gtk_widget_show( menubar );
+ 	gtk_box_pack_start(GTK_BOX (bbox1), menubar, FALSE, TRUE, 0 );
+ 
++#if GTK_CHECK_VERSION(3,10,0)
++    menu = gtk_menu_new();
++    menu = create_mainmenu();
++    gtk_menu_button_set_popup (GTK_MENU_BUTTON (menubutton), menu);
++#else
+ 	/* build menu */
+ 	menu = gtk_menu_new();
+ 	item = gtk_menu_item_new_with_mnemonic( _("_File") );
+@@ -91,14 +119,22 @@
+     g_signal_connect ((gpointer) item, "activate", G_CALLBACK (show_about_dialog), NULL);
+ 
+ 	gtk_widget_show_all( menubar );
+-
++#endif
+ 	/* window content */
++#if GTK_CHECK_VERSION(3,0,0)
++    vbox1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
++#else
+     vbox1 = gtk_vbox_new (FALSE, 10);
++#endif
+     gtk_widget_show (vbox1);
+     gtk_box_pack_start( GTK_BOX(bbox1), vbox1, TRUE, TRUE, 0 );
+     gtk_container_set_border_width (GTK_CONTAINER (vbox1), 6);
+ 
++#if GTK_CHECK_VERSION(3,0,0)
++    system_info_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10);
++#else
+     system_info_box = gtk_hbox_new (TRUE, 10);
++#endif
+     gtk_widget_show (system_info_box);
+     gtk_box_pack_start (GTK_BOX (vbox1), system_info_box, FALSE, TRUE, 0);
+ 
+@@ -141,8 +177,11 @@
+     gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(list_store));
+ 
+     gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(list_store), COLUMN_TIME, GTK_SORT_ASCENDING);
+-
++#if GTK_CHECK_VERSION(3,0,0)
++    bbox1 = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
++#else
+     bbox1 = gtk_hbutton_box_new();
++#endif    
+     gtk_box_pack_start(GTK_BOX(vbox1), bbox1, FALSE, TRUE, 0);
+     gtk_widget_show (bbox1);
+ 
+@@ -151,7 +190,11 @@
+     gtk_widget_show (button3);
+     gtk_box_pack_start (GTK_BOX (bbox1), button3, FALSE, FALSE, 0);
+ 
++#if GTK_CHECK_VERSION(3,0,0)
++    button1 = gtk_button_new_with_label (_("Quit"));
++#else
+     button1 = gtk_button_new_from_stock ("gtk-quit");
++#endif     
+     gtk_widget_show (button1);
+     gtk_box_pack_start (GTK_BOX (bbox1), button1, FALSE, FALSE, 0);
+ 
+@@ -311,6 +354,9 @@
+     GtkWidget *show_other_tasks1;
+     GtkWidget *show_cached_as_free1;
+     GtkWidget *separator1;
++#if GTK_CHECK_VERSION(3,10,0)
++    GtkWidget *about_menuitem;
++#endif
+     GtkAccelGroup *accel_group;
+ 
+     accel_group = gtk_accel_group_new ();
+@@ -331,8 +377,12 @@
+     gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(show_other_tasks1), show_other_tasks);
+     gtk_widget_show (show_other_tasks1);
+     gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), show_other_tasks1);
+-
++    
++#if GTK_CHECK_VERSION(3,10,0)
++    show_cached_as_free1 = gtk_check_menu_item_new_with_mnemonic (_("Show cache as free"));
++#else
+     show_cached_as_free1 = gtk_check_menu_item_new_with_mnemonic (_("Show memory used by cache as free"));
++#endif
+     gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(show_cached_as_free1), show_cached_as_free);
+     gtk_widget_show (show_cached_as_free1);
+     gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), show_cached_as_free1);
+@@ -341,7 +391,11 @@
+     gtk_widget_show(separator1);
+     gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), separator1);
+ 
++#if GTK_CHECK_VERSION(3,10,0)
++    preferences1 = gtk_menu_item_new_with_mnemonic (_("Preferences"));
++#else
+     preferences1 = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
++#endif
+     g_signal_connect(G_OBJECT (preferences1), "activate", G_CALLBACK (show_preferences), NULL);
+     gtk_widget_show(preferences1);
+     gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), preferences1);
+@@ -353,6 +407,13 @@
+ 
+     gtk_menu_set_accel_group (GTK_MENU (mainmenu), accel_group);
+ 
++#if GTK_CHECK_VERSION(3,10,0)
++    about_menuitem = gtk_menu_item_new_with_mnemonic (_("About"));
++    gtk_widget_show (about_menuitem);
++    gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), about_menuitem);
++    g_signal_connect ((gpointer) about_menuitem, "activate", G_CALLBACK (show_about_dialog), NULL);
++#endif
++
+     return mainmenu;
+ }
+ 
+@@ -376,6 +437,7 @@
+ 
+     gtk_container_set_border_width ( ( GtkContainer*)about_dlg , 2 );
+     gtk_about_dialog_set_version ( (GtkAboutDialog*)about_dlg, VERSION );
++    gtk_about_dialog_set_logo_icon_name ( (GtkAboutDialog*)about_dlg, "utilities-system-monitor" );
+ #if !GTK_CHECK_VERSION(2,12,0)
+     gtk_about_dialog_set_name ( (GtkAboutDialog*)about_dlg, _( "LXTask" ) );
+ #else
+@@ -587,12 +649,25 @@
+     GtkWidget *dlg;
+     GtkWidget *c_area;
+     GtkWidget *notebook = gtk_notebook_new();
++    
++#if GTK_CHECK_VERSION(3,0,0)
++    GtkWidget *general_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
++#else
+     GtkWidget *general_box = gtk_vbox_new(FALSE, 0);
++#endif    
++#if GTK_CHECK_VERSION(3,0,0)
++    GtkWidget *refresh_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10);
++#else
+     GtkWidget *refresh_box = gtk_hbox_new(FALSE, 0);
++#endif
++
+     refresh_spin = gtk_spin_button_new_with_range(1, 60, 1);
+     gtk_spin_button_set_value(GTK_SPIN_BUTTON(refresh_spin), refresh_interval);
+-
++#if GTK_CHECK_VERSION(3,0,0)
++    dlg = gtk_dialog_new_with_buttons(_("Preferences"), NULL, 0, _("Cancel"), GTK_RESPONSE_REJECT, _("OK"), GTK_RESPONSE_ACCEPT, NULL);
++#else
+     dlg = gtk_dialog_new_with_buttons(_("Preferences"), NULL, 0, GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
++#endif
+     c_area = gtk_dialog_get_content_area(GTK_DIALOG (dlg));
+ 
+     gtk_box_pack_start(GTK_BOX (c_area), notebook, TRUE, TRUE, 0);

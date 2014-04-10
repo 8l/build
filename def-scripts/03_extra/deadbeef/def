@@ -1,0 +1,57 @@
+name="deadbeef"
+version="0.5.6"
+_realver="0.6.1"
+revision="2"
+category="multimedia"
+description="An audio player for GNU/Linux based on GTK3."
+source="http://downloads.sourceforge.net/project/$name/$name-${_realver}.tar.bz2"
+homepage="http://deadbeef.sourceforge.net"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3 alsa-lib hicolor-icon-theme desktop-file-utils"
+makedepends="libvorbis libmad curl imlib2 wavpack libcdio libx11 faad2 zlib intltool pkgconfig"
+
+compile() {
+  cd $name-${_realver}
+  ./configure \
+    --prefix=/usr \
+    --docdir=/usr/share/deadbeef/doc \
+    --enable-gtk3 \
+    --enable-artwork-imlib2 \
+    --disable-ffmpeg \
+    --disable-gtk2 \
+    --disable-oss \
+    --disable-pulse \
+    --disable-coreaudio \
+    --disable-lfm \
+    --disable-sid \
+    --disable-ffap \
+    --disable-vtx \
+    --disable-adplug \
+    --disable-flac \
+    --disable-sndfile \
+    --disable-cdda \
+    --disable-gme \
+    --disable-shellexec \
+    --disable-musepack \
+    --disable-wildmidi \
+    --disable-tta \
+    --disable-dca \
+    --disable-src \
+    --disable-vfs-zip \
+    --disable-converter \
+    --disable-dumb \
+    --disable-shn \
+    --disable-psf \
+    --disable-mono2stereo \
+    --disable-shellexecui \
+    --disable-alac \
+    --disable-pltbrowser \
+    --disable-abstract-socket \
+    --disable-static
+  make
+}
+
+package() { 
+  make DESTDIR=$destdir install
+  for i in 16x16 22x22 24x24 36x36 48x48 64x64 72x72 128x128 192x192 256x256 scalable; do rm -r $destdir/usr/share/icons/hicolor/$i; done
+}

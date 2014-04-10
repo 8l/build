@@ -1,0 +1,19 @@
+name="wpset"
+version="0.9.5"
+revision="1"
+category="graphics"
+description="Wallpaper setter"
+source=""
+homepage="http://alphaos.tuxfamily.org"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="imlibsetroot findutils"
+makedepends="vala"
+
+compile() {
+  mv $startdir/$name $build
+}
+
+package() {
+  cd $name
+  make DESTDIR=$destdir install
+}

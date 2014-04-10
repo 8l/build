@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+description="system message bus"
+pidfile="/run/dbus/pid"
+socket="/run/dbus/system_bus_socket"
+
+case "$1" in
+   
+   start)
+      rm -f $socket $pidfile
+      dbus-uuidgen --ensure
+      dbus-daemon --system
+      ;;
+
+   stop)
+      killall dbus-daemon
+      rm -f $socket $pidfile
+      ;;
+      
+esac

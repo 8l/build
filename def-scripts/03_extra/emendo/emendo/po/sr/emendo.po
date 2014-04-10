@@ -1,0 +1,193 @@
+# Serbian translations for PACKAGE package.
+# Copyright (C) 2014 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# root <root@alphaos>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 001\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-06 18:45+0100\n"
+"PO-Revision-Date: 2014-01-04 19:04+0100\n"
+"Last-Translator: root <root@alphaos>\n"
+"Language-Team: Serbian\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: emendo.vala:177
+msgid "About"
+msgstr "O programu"
+
+#: emendo.vala:419 emendo.vala:1079
+msgid "Cancel"
+msgstr "Otkaži"
+
+#: emendo.vala:581
+msgid "Case sensitive"
+msgstr "Osetljivost na velika i mala slova"
+
+#: emendo.vala:603
+msgid "Close"
+msgstr "Zatvori"
+
+#: emendo.vala:847
+msgid "Color scheme"
+msgstr "Šema boja"
+
+#: emendo.vala:956
+msgid "Editor"
+msgstr "Uređivač"
+
+#: emendo.vala:841
+msgid "Editor font"
+msgstr "Font uređivača"
+
+#: emendo.vala:896
+msgid "Enable text wrapping"
+msgstr "Omogući prelamanje"
+
+#: emendo.vala:385
+msgid "Error"
+msgstr "Greška"
+
+#: emendo.vala:387
+#, c-format
+msgid ""
+"Error saving file %s.\n"
+"The file on disk may now be truncated!"
+msgstr ""
+"Greška u snimanju datoteke %s.\n"
+"Datoteka na disku može biti oštećena!"
+
+#: emendo.vala:560
+msgid "Find & Replace"
+msgstr "Traži i zameni"
+
+#: emendo.vala:604
+msgid "Find and Replace"
+msgstr "Nađi i zameni"
+
+#: emendo.vala:154
+msgid "Find the entered text in the current file"
+msgstr "Pronađi tekst"
+
+#: emendo.vala:884
+msgid "Highlight current line"
+msgstr "Označi trenutnu liniju"
+
+#: emendo.vala:866
+msgid "Indent width"
+msgstr "Širina uvlačenja"
+
+#: emendo.vala:905
+msgid "Insert spaces instead of tabs"
+msgstr "Ubaci prostore umjesto kartica"
+
+#: emendo.vala:860
+msgid "Margin width"
+msgstr "Širina margine"
+
+#: emendo.vala:112
+msgid "New"
+msgstr "Novi"
+
+#: emendo.vala:1080
+msgid "No"
+msgstr "Ne"
+
+#: emendo.vala:389
+msgid "OK"
+msgstr "U redu"
+
+#: emendo.vala:157
+msgid "Open"
+msgstr "Otvori"
+
+#: emendo.vala:310
+msgid "Open File..."
+msgstr "Otvori datoteku..."
+
+#: emendo.vala:173
+msgid "Preferences"
+msgstr "Podešavanja"
+
+#: emendo.vala:1076
+msgid "Question"
+msgstr "Pitanje"
+
+#: emendo.vala:139
+msgid "Redo your last action"
+msgstr "Vrati poslednju radnju"
+
+#: emendo.vala:578
+msgid "Repace with:"
+msgstr "Zameni sa:"
+
+#: emendo.vala:165
+msgid "Replace"
+msgstr "Zameni"
+
+#: emendo.vala:584
+msgid "Replace all at once"
+msgstr "Zameni sve odjednom"
+
+#: emendo.vala:118 emendo.vala:420
+msgid "Save"
+msgstr "Snimi"
+
+#: emendo.vala:161 emendo.vala:388
+msgid "Save As"
+msgstr "Snimi kao"
+
+#: emendo.vala:418
+msgid "Save file"
+msgstr "Snimi datoteku"
+
+#: emendo.vala:570
+msgid "Search for:"
+msgstr "Traži:"
+
+#: emendo.vala:169 emendo.vala:684
+msgid "Select Color"
+msgstr "Izbor boja"
+
+#: emendo.vala:878
+msgid "Show line numbers"
+msgstr "Prikaži brojeve redova"
+
+#: emendo.vala:890
+msgid "Show margin on right"
+msgstr "Prikaži desnu marginu"
+
+#: emendo.vala:872
+msgid "Tab width"
+msgstr "Širina kartica"
+
+#: emendo.vala:25
+msgid "Text editor with syntax highlighting"
+msgstr "Uređivač teksta sa oznakom sintakse"
+
+#: emendo.vala:1078
+#, c-format
+msgid ""
+"The file '%s' is not saved.\n"
+"Do you want to save it before closing?"
+msgstr ""
+"Datoteka '%s' nije snimljena.\n"
+"Da li želite da je snimite prije zatvaranja?"
+
+#: emendo.vala:132
+msgid "Undo your last action"
+msgstr "Poništi poslednju radnju"
+
+#: emendo.vala:957
+msgid "View"
+msgstr "Pogled"
+
+#: emendo.vala:1081
+msgid "Yes"
+msgstr "Da"

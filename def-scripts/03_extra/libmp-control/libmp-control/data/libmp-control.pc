@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libmp-control
+Description: Library and Vala bindings to work with mpv slave mode
+Version: 0.0.1
+Requires: gio-2.0
+Libs: -L${libdir} -lmp-control
+Cflags: -I${includedir}

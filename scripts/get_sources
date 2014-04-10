@@ -1,0 +1,88 @@
+#!/usr/bin/bash
+#
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+. /etc/spkg/main.config
+
+CORE_SRC="/mnt/home/data/alphaos/01_core/spkg/sources"
+XORG_SRC="/mnt/home/data/alphaos/02_xorg/spkg/sources"
+EXTRA_SRC="/mnt/home/data/alphaos/03_extra/spkg/sources"
+DEVEL_SRC="/mnt/home/data/alphaos/04_devel/spkg/sources"
+
+CORE="/mnt/home/data/bitbucket/alphaos/def-scripts/01_core"
+XORG="/mnt/home/data/bitbucket/alphaos/def-scripts/02_xorg"
+EXTRA="/mnt/home/data/bitbucket/alphaos/def-scripts/03_extra"
+DEVEL="/mnt/home/data/bitbucket/alphaos/def-scripts/04_devel"
+
+for dir in $CORE_SRC $XORG_SRC $EXTRA_SRC $DEVEL_SRC; do [ ! -d $dir ] && mkdir -p $dir; done
+
+get_core_sources() {
+  rm -rf $maindir/*
+  mkdir -p $defdir
+  for i in $(ls $CORE); do cp -a $CORE/$i $defdir; done
+  ln -s $CORE_SRC $srcdir
+  for i in $(ls $CORE); do spkg -d $i; done
+}
+
+get_xorg_sources() {
+  rm -rf $maindir/*
+  mkdir -p $defdir
+  for i in $(ls $XORG); do cp -a $XORG/$i $defdir; done
+  ln -s $XORG_SRC $srcdir
+  for i in $(ls $XORG); do spkg -d $i; done
+}
+
+get_extra_sources() {
+  rm -rf $maindir/*
+  mkdir -p $defdir
+  for i in $(ls $EXTRA); do cp -a $EXTRA/$i $defdir; done
+  ln -s $EXTRA_SRC $srcdir
+  for i in $(ls $EXTRA); do spkg -d $i; done
+}
+
+get_devel_sources() {
+  rm -rf $maindir/*
+  mkdir -p $defdir
+  for i in $(ls $DEVEL); do cp -a $DEVEL/$i $defdir; done
+  ln -s $DEVEL_SRC $srcdir
+  for i in $(ls $DEVEL); do spkg -d $i; done
+}
+
+case "$1" in
+
+  core)
+    get_core_sources ;;
+
+  xorg)
+    get_xorg_sources ;;
+  
+  extra)
+    get_extra_sources ;;
+  
+  devel)
+    get_devel_sources ;;
+    
+  all)
+    get_core_sources
+    get_xorg_sources
+    get_extra_sources
+    get_devel_sources ;;
+  
+  *)
+    echo "sfs_build -- Options: core xorg extra devel all" ;;
+    
+esac

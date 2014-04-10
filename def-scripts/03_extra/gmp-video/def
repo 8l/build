@@ -1,0 +1,19 @@
+name="gmp-video"
+version="0.9.1"
+revision="1"
+category="multimedia"
+description="Mpv frontend in Vala and GTK3"
+source=""
+homepage="http://alphaos.tuxfamily.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3 libmp-control"
+makedepends="vala"
+
+compile() {
+  mv $startdir/$name $build
+}
+
+package() {
+  cd $name
+  make DESTDIR=$destdir install
+}
