@@ -8,6 +8,7 @@ flex-2.5.37-1-x86_64.pkg.tar.xz
 gc-7.2.d-2-x86_64.pkg.tar.xz
 gcc-4.8.2-4-x86_64.pkg.tar.xz
 gettext-0.18.3.1-2-x86_64.pkg.tar.xz
+git-1.8.4.2-1-x86_64.pkg.tar.xz
 gnome-common-3.10.0-1-any.pkg.tar.xz
 gperf-3.0.4-4-x86_64.pkg.tar.xz
 guile-2.0.9-1-x86_64.pkg.tar.xz
@@ -24,6 +25,7 @@ make-4.0-1-x86_64.pkg.tar.xz
 nasm-2.10.09-1-x86_64.pkg.tar.xz
 patch-2.7.1-2-x86_64.pkg.tar.xz
 perl-5.18.1-1-x86_64.pkg.tar.xz
+perl-error-0.17021-1-any.pkg.tar.xz
 perl-uri-1.60-1-any.pkg.tar.xz
 perl-xml-parser-2.41-4-x86_64.pkg.tar.xz
 pkg-config-0.28-1-x86_64.pkg.tar.xz
