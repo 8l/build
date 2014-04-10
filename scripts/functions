@@ -25,8 +25,8 @@ DEVEL_SB="devel_14.sb"
 
 # VARIABLES
 
-ROOTFS="$PWD/../rootfs"
 LINUX_SPKG="/mnt/home/data/alphaos/00_linux/spkg/packages"
+UEFI_PKG="/mnt/home/data/alphaos/00_linux/spkg/other/uefi_pkg.tar.xz"
 
 CORE_ARCH="/mnt/home/data/alphaos/01_core/arch/packages"
 CORE_SPKG="/mnt/home/data/alphaos/01_core/spkg/packages"
@@ -56,7 +56,6 @@ NEWISO_DIR="$pkgdir/iso"
 VERSION="14"
 ISO_VERSION="14.5"
 DATE=$(date +"%Y%m%d")
-UEFI_PKG="/mnt/home/data/alphaos/00_linux/spkg/other/uefi_pkg.tar.xz"
 
 # SB_COMPRESSION="-comp xz -b 524288 -Xbcj x86"
 
