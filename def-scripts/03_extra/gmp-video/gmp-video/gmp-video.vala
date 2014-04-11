@@ -17,7 +17,7 @@
 
 using LibmpControl;
 
-private class Program : Gtk.Window
+private class Program : Gtk.Application
 {
   const string NAME        = "GMP Video";
   const string VERSION     = "0.9.1";
@@ -37,7 +37,7 @@ private class Program : Gtk.Window
   Gtk.DrawingArea drawing_area;
   Gtk.Grid buttons_grid;
   Gtk.Menu context_menu;
-  Gtk.Window window;
+  Gtk.ApplicationWindow window;
   private const Gtk.TargetEntry[] targets = { {"text/uri-list", 0, 0} };
   
   string FIFO;
@@ -51,14 +51,28 @@ private class Program : Gtk.Window
   double subtitle_scale;
   string subtitle_fuzziness;
 
-  public Program()
+  private const GLib.ActionEntry[] action_entries =
   {
-    load_settings();
-    draw_ui();
+    { "about", action_about },
+    { "quit",  action_quit  }
+  };
+
+  private Program()
+  {
+    Object(application_id: "org.alphaos.gmp-video", flags: ApplicationFlags.HANDLES_OPEN);
+    add_action_entries(action_entries, this);
   }
 
-  private void load_settings()
+  public override void startup()
   {
+    base.startup();
+
+    var menu = new Menu();
+    menu.append("About", "app.about");
+    menu.append("Quit",  "app.quit");
+
+    set_app_menu(menu);
+
     settings = new GLib.Settings("org.alphaos.gmp-video.preferences");
     drawing_area_width = settings.get_int("drawing-area-width");
     drawing_area_height = settings.get_int("drawing-area-height");
@@ -66,10 +80,7 @@ private class Program : Gtk.Window
     subtitle_color = settings.get_string("subtitle-color");
     subtitle_scale = settings.get_double("subtitle-scale");
     subtitle_fuzziness = settings.get_string("subtitle-fuzziness");
-  }
-  
-  private void draw_ui()
-  { 
+
     string random_number = GLib.Random.int_range(1000, 5000).to_string();
     FIFO = "/tmp/gmp_video_fifo_" + random_number;
     OUTPUT = "/tmp/gmp_video_output_" + random_number;
@@ -131,29 +142,24 @@ private class Program : Gtk.Window
     context_menu = new Gtk.Menu();
     add_popup_menu(context_menu);
     
-    var menuitem_about = new Gtk.MenuItem.with_label(_("About"));
-    menuitem_about.activate.connect(about_dialog);
-    
-    var menu = new Gtk.Menu();
-    menu.append(menuitem_about);
-    menu.show_all();
+    var gear_menu = new Gtk.Menu();
+    add_popup_menu(gear_menu);
     
     var menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(menu);
+    menubutton.set_popup(gear_menu);
     menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
-    
+
     headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);
     headerbar.set_title(NAME);
     headerbar.pack_end(menubutton);
     
-    window = new Gtk.Window();
+    window = new Gtk.ApplicationWindow(this);
     window.set_titlebar(headerbar);
     window.add(grid);
     window.show_all();
     window.set_icon_name(ICON);
-    window.destroy.connect(() => { mpv_stop_playback(FIFO, OUTPUT); Gtk.main_quit();});
     window.key_press_event.connect(keyboard_events);
     Gtk.drag_dest_set(grid, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
     grid.drag_data_received.connect(on_drag_data_received);
@@ -161,12 +167,27 @@ private class Program : Gtk.Window
     var drawing_area_window = (Gdk.X11.Window)drawing_area.get_window();
     xid = (long)drawing_area_window.get_xid();
   }
+
+  public override void activate() 
+  {
+    window.present();
+  }
   
+  public override void open(File[] files, string hint)
+  {
+    foreach (File f in files)
+    {
+      file = f.get_uri();
+    }
+    activate();
+    gmp_video_start_playback();
+  }  
+
   private void set_button_size_relief_focus(Gtk.Button button_name)
   {
     button_name.set_relief(Gtk.ReliefStyle.NONE);
     button_name.set_can_focus(false);
-  } 
+  }
   
   // Context menu
   private void add_popup_menu(Gtk.Menu menu)
@@ -177,7 +198,7 @@ private class Program : Gtk.Window
     var menuitem_subtitle = new Gtk.MenuItem.with_label(_("Subtitle"));
     var menuitem_aspect = new Gtk.MenuItem.with_label(_("Aspect ratio"));
     
-    menuitem_open_file.activate.connect(open_file);
+    menuitem_open_file.activate.connect(show_open_dialog);
     menuitem_play_url.activate.connect(play_url);
 
     // Subtitles submenu
@@ -225,13 +246,15 @@ private class Program : Gtk.Window
     menuitem_aspect_54.show();
     menuitem_aspect_11.show();
     
-    context_menu.append(menuitem_open_file);
-    context_menu.append(menuitem_play_url);
-    context_menu.append(menuitem_subtitle);
-    context_menu.append(menuitem_aspect);
+    menu.append(menuitem_open_file);
+    menu.append(menuitem_play_url);
+    menu.append(menuitem_subtitle);
+    menu.append(menuitem_aspect);
+    
+    menu.show_all();
   }
   
-  private void open_file()
+  private void show_open_dialog()
   {
    var dialog = new Gtk.FileChooserDialog(_("Open File..."), window, Gtk.FileChooserAction.OPEN,
                                         "gtk-cancel", Gtk.ResponseType.CANCEL,
@@ -450,7 +473,7 @@ private class Program : Gtk.Window
     headerbar.set_title("%s - %s".printf(NAME, basename));
   }
 
-  private void about_dialog()
+  private void action_about()
   {
     var about = new Gtk.AboutDialog();
     about.set_program_name(NAME);
@@ -467,22 +490,15 @@ private class Program : Gtk.Window
     about.hide();
   }
   
-    // Start program
-  private void run(string[] args)
+  private void action_quit()
   {
-    if (args.length >= 2)
-    {
-      file = args[1];
-      gmp_video_start_playback();
-    }
+    mpv_stop_playback(FIFO, OUTPUT);
+    quit();
   }
-  
-  public static int main (string[] args)
+
+  private static int main (string[] args)
   {
-    Gtk.init(ref args);
-    var GmpVideo = new Program();
-    GmpVideo.run(args);
-    Gtk.main();
-    return 0;
+    Program app = new Program();
+    return app.run(args);
   }
 }
