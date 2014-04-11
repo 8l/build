@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-private class Program : Gtk.Window
+private class Program : Gtk.Application
 {
   const string NAME         = "Control Center";
   const string VERSION      = "1.1.0";
@@ -26,12 +26,31 @@ private class Program : Gtk.Window
   const int    MAX_ROW_APPS = 4; // max apps per row can be changed
  
   Gtk.Grid grid;
-  Gtk.Window window;
+  Gtk.ApplicationWindow window;
   static int app_number;
   static int row_number;
- 
-  public Program()
+
+  private const GLib.ActionEntry[] action_entries =
   {
+    { "about", action_about },
+    { "quit",  action_quit  }
+  };
+
+  private Program()
+  {
+    Object(application_id: "org.alphaos.control-center", flags: ApplicationFlags.FLAGS_NONE);
+    add_action_entries(action_entries, this);
+  }
+
+  protected override void startup()
+  {
+    base.startup();
+
+    var menu = new Menu();
+    menu.append("About", "app.about");
+    menu.append("Quit",  "app.quit");
+
+    set_app_menu(menu);
 
     // Grid
     grid = new Gtk.Grid();
@@ -57,24 +76,11 @@ private class Program : Gtk.Window
     create_entry(_("Setup Savefile"),  "makepfile.sh",        "application-x-fs4",             _("Savefile creator for alphaOS"));
     create_entry(_("Grub4DOS"),        "grub4dos-ui",         "grub4dos-ui",                   _("Configure Grub4DOS bootup loader"));
 
-    var menuitem_about = new Gtk.MenuItem.with_label(_("About"));
-    menuitem_about.activate.connect(about_dialog);
-   
-    var menu = new Gtk.Menu();
-    menu.append(menuitem_about);
-    menu.show_all();
-   
-    var menubutton = new Gtk.MenuButton();
-    menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(menu);
-    menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
-   
     var headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);
     headerbar.set_title(NAME);
-    headerbar.pack_end(menubutton);
-   
-    window = new Gtk.Window();
+
+    window = new Gtk.ApplicationWindow(this);
     window.window_position = Gtk.WindowPosition.CENTER;
     window.set_titlebar(headerbar);
     window.add(grid);
@@ -82,7 +88,11 @@ private class Program : Gtk.Window
     window.set_border_width(10);
     window.set_icon_name(ICON);
     window.show_all();
-    window.destroy.connect(Gtk.main_quit);
+  }
+
+  public override void activate()
+  {
+    window.present();
   }
  
   // Creates new group - argument: label
@@ -150,7 +160,7 @@ private class Program : Gtk.Window
     button_name.set_can_focus(false);
   }
   
-  private void about_dialog()
+  private void action_about()
   {
     var about = new Gtk.AboutDialog();
     about.set_program_name(NAME);
@@ -167,11 +177,14 @@ private class Program : Gtk.Window
     about.hide();
   }
 
-  public static int main (string[] args)
+  private void action_quit()
   {
-    Gtk.init(ref args);
-    new Program();
-    Gtk.main();
-    return 0;
+    quit();
+  }
+
+  private static int main (string[] args)
+  {
+    Program app = new Program();
+    return app.run(args);
   }
 }
