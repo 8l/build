@@ -17,7 +17,7 @@
 
 using LibmpControl;
 
-class program : Gtk.Window
+private class Program : Gtk.Application
 {
   const string NAME = "PlayTV";
   const string VERSION = "0.2.1";
@@ -28,7 +28,7 @@ class program : Gtk.Window
   Gtk.TreeView treeview;
   Gtk.ListStore liststore;
   long xid;
-  Gtk.Window window;
+  Gtk.ApplicationWindow window;
   Gtk.DrawingArea drawing_area;
   Gtk.ScrolledWindow scrolled;
   Gtk.HeaderBar headerbar;
@@ -60,9 +60,29 @@ class program : Gtk.Window
   
   string FIFO;
   string OUTPUT;
-  
-  public program()
+
+  private const GLib.ActionEntry[] action_entries =
   {
+    { "about", action_about },
+    { "quit",  action_quit  }
+  };
+
+  private Program()
+  {
+    Object(application_id: "org.alphaos.playtv", flags: ApplicationFlags.FLAGS_NONE);
+    add_action_entries(action_entries, this);
+  }
+  
+  public override void startup()
+  {
+    base.startup();
+
+    var menu = new Menu();
+    menu.append("About",     "app.about");
+    menu.append("Quit",      "app.quit");
+
+    set_app_menu(menu);
+
     string random_number = GLib.Random.int_range(1000, 5000).to_string();
     FIFO = "/tmp/tvplay_fifo_" + random_number;
     OUTPUT = "/tmp/tvplay_output_" + random_number;    
@@ -97,36 +117,36 @@ class program : Gtk.Window
     paned.add2(scrolled);
 
     var menuitem_configure = new Gtk.MenuItem.with_label(_("Configure"));
-    menuitem_configure.activate.connect(configure_dialog);
+    menuitem_configure.activate.connect(action_configure);
     
-    var menuitem_about = new Gtk.MenuItem.with_label(_("About"));
-    menuitem_about.activate.connect(about_dialog);
-    
-    var menu = new Gtk.Menu();
-    menu.append(menuitem_configure); 
-    menu.append(menuitem_about);
-    menu.show_all();
+    var gear_menu = new Gtk.Menu();
+    gear_menu.append(menuitem_configure); 
+    gear_menu.show_all();
     
     var menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(menu);
+    menubutton.set_popup(gear_menu);
     menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
-    
+
     headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);
     headerbar.set_title(NAME);
     headerbar.pack_end(menubutton);
     
-    window = new Gtk.Window();
+    window = new Gtk.ApplicationWindow(this);
     window.set_icon_name(ICON);
     window.set_titlebar(headerbar);
     window.set_default_size(790, 410);
     window.add(paned);
     window.show_all();
-    window.destroy.connect(() => { mpv_stop_playback(FIFO, OUTPUT); Gtk.main_quit();});
     
     var drawing_area_window = (Gdk.X11.Window)drawing_area.get_window();
     xid = (long)drawing_area_window.get_xid();
+  }
+
+  public override void activate()
+  {
+    window.present();
   }
   
   private void load_settings()
@@ -234,7 +254,7 @@ class program : Gtk.Window
   }
 
   // Configure
-  private void configure_dialog()
+  private void action_configure()
   {
     configure_grid = new Gtk.Grid();
     configure_grid.set_row_spacing(5);
@@ -338,7 +358,7 @@ class program : Gtk.Window
     entry_name.height_request = height;
   }
   
-  private void about_dialog()
+  private void action_about()
   {
     var about = new Gtk.AboutDialog();
     about.set_program_name(NAME);
@@ -355,11 +375,15 @@ class program : Gtk.Window
     about.hide();
   }
   
-  public static int main (string[] args)
+  private void action_quit()
   {
-    Gtk.init(ref args);
-    new program();
-    Gtk.main();
-    return 0;
+    mpv_stop_playback(FIFO, OUTPUT);
+    quit();
+  }
+
+  private static int main (string[] args)
+  {
+    Program app = new Program();
+    return app.run(args);
   }
 }
