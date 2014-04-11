@@ -9,17 +9,7 @@
       <default>550</default>
       <summary>Heigth</summary>
       <description>Main window heigth</description>
-    </key>
-    <key name="last-file" type="s">
-      <default>''</default>
-      <summary>Last opened file</summary>
-      <description>Last opened file</description>
-    </key>
-    <key name="save-last-file" type="b">
-      <default>true</default>
-      <summary>Save last opened file</summary>
-      <description>Save last opened file</description>
-    </key>    
+    </key>  
     <key name="slideshow-delay" type="u">
       <default>2000</default>
       <summary>Slideshow delay</summary>

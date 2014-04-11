@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Program : Gtk.Window
+private class Program : Gtk.Application
 {
   const string NAME        = "Voyager";
   const string VERSION     = "0.2.2";
@@ -26,7 +26,7 @@ class Program : Gtk.Window
   Gtk.Image image;
   Gdk.Pixbuf pixbuf;
   Gdk.Pixbuf pixbuf_scaled;
-  Gtk.Window window;
+  Gtk.ApplicationWindow window;
   Gtk.HeaderBar headerbar;
   Gtk.TreeView treeview;
   Gtk.ListStore liststore;
@@ -46,10 +46,8 @@ class Program : Gtk.Window
   int saved_pixbuf_height;
   uint slideshow_delay;
   bool slideshow_active;
-  bool save_last_file;
   string[] images;
   string file;
-  string last_file;
   double scale_current_value;
   private uint timeout_id;
   private const Gtk.TargetEntry[] targets = { {"text/uri-list", 0, 0} };
@@ -67,34 +65,39 @@ class Program : Gtk.Window
   
   Gtk.Adjustment hadj;
   Gtk.Adjustment vadj;
-  
-  public Program()
+
+  private const GLib.ActionEntry[] action_entries =
   {
-    load_settings();
-    generate_ui();
+    { "about", action_about },
+    { "quit",  action_quit  }
+  };
+
+  private Program()
+  {
+    Object(application_id: "org.alphaos.voyager", flags: ApplicationFlags.HANDLES_OPEN);
+    add_action_entries(action_entries, this);
   }
 
-  private void load_settings()
+  public override void startup()
   {
+    base.startup();
+
+    var menu = new Menu();
+    menu.append("About", "app.about");
+    menu.append("Quit",  "app.quit");
+
+    set_app_menu(menu);
+
     settings = new GLib.Settings("org.alphaos.voyager.preferences");
     width = settings.get_int("width");
     height = settings.get_int("height");
-    last_file = settings.get_string("last-file");
-    save_last_file = settings.get_boolean("save-last-file");
     slideshow_delay = settings.get_uint("slideshow-delay");
     screen_width = Gdk.Screen.width();
     screen_height = Gdk.Screen.height();
-  }
 
-  private void generate_ui()
-  {
     image = new Gtk.Image();
 
     // Buttons
-    var button_open = new Gtk.Button.with_label(_("Open"));
-    button_open.valign = Gtk.Align.CENTER;
-    button_open.clicked.connect(button_open_clicked);
-
     var button_prev = new Gtk.Button.from_icon_name("go-previous-symbolic", Gtk.IconSize.MENU);
     var button_next = new Gtk.Button.from_icon_name("go-next-symbolic", Gtk.IconSize.MENU);
     button_prev.clicked.connect(show_previous_image);
@@ -114,31 +117,25 @@ class Program : Gtk.Window
     scale.set_size_request(100, 0);
     scale.value_changed.connect(scale_zoom_level);
 
-    // Menu
-    var menuitem_about = new Gtk.MenuItem.with_label(_("About"));
-    menuitem_about.activate.connect(about_dialog);
+    // Context menu
+    context_menu = new Gtk.Menu();
+    add_popup_menu(context_menu);
 
-    var menu = new Gtk.Menu();
-    menu.append(menuitem_about);
-    menu.show_all();
-    
+    var gear_menu = new Gtk.Menu();
+    add_popup_menu(gear_menu);
+
     var menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(menu);
+    menubutton.set_popup(gear_menu);
     menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
-    
+
     // HeaderBar
     headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);
     headerbar.set_title(NAME);
     headerbar.pack_start(prev_next_box);
-    headerbar.pack_start(button_open);
     headerbar.pack_end(menubutton);
     headerbar.pack_end(scale);
-
-    // Context menu
-    context_menu = new Gtk.Menu();
-    add_popup_menu(context_menu);
     
     // TreeView
     var cell = new Gtk.CellRendererText();
@@ -170,18 +167,7 @@ class Program : Gtk.Window
     var paned = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
     paned.add1(scrolled_window_treeview);
     paned.add2(scrolled_window_image);
-    
-    // Window
-    window = new Gtk.Window();
-    window.add(paned);
-    window.set_titlebar(headerbar);
-    window.set_default_size(width, height);
-    window.set_icon_name(ICON);
-    window.show_all();
-    window.delete_event.connect(() => { program_exit_clicked(); return true; });
-    window.key_press_event.connect(keyboard_events);
-    window.scroll_event.connect(scrolled);
-    
+
     Gtk.drag_dest_set(paned, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
     paned.drag_data_received.connect(on_drag_data_received);
     
@@ -189,6 +175,32 @@ class Program : Gtk.Window
     scrolled_window_image.button_press_event.connect(mouse_button_press_events);
     scrolled_window_image.motion_notify_event.connect(mouse_motion_events);
     scrolled_window_image.button_release_event.connect(mouse_button_release_events);
+
+    // Window
+    window = new Gtk.ApplicationWindow(this);
+    window.add(paned);
+    window.set_titlebar(headerbar);
+    window.set_default_size(width, height);
+    window.set_icon_name(ICON);
+    window.show_all();
+    window.key_press_event.connect(keyboard_events);
+    window.scroll_event.connect(scrolled);
+  }
+
+  public override void activate()
+  {
+    window.present();
+  }
+
+  public override void open(File[] files, string hint)
+  {
+    activate();
+    foreach (File f in files)
+    {
+      file = f.get_uri().replace("file://", "").replace("file:/", "");
+    }
+    load_pixbuf_on_start(file);
+    list_images(Path.get_dirname(file));
   }
 
   // Treeview
@@ -289,7 +301,7 @@ class Program : Gtk.Window
   }
   
   // Open
-  private void button_open_clicked()
+  private void show_open_dialog()
   {
     var dialog = new Gtk.FileChooserDialog(_("Open File..."), window, Gtk.FileChooserAction.OPEN,
                                         "gtk-cancel", Gtk.ResponseType.CANCEL,
@@ -511,18 +523,21 @@ class Program : Gtk.Window
 
   private void add_popup_menu(Gtk.Menu menu)
   {
-    
+    var context_open = new Gtk.MenuItem.with_label(_("Open"));
+    context_open.activate.connect(show_open_dialog);
+    context_open.show();
+
     string? wpset_path = Environment.find_program_in_path("wpset");
     var context_set_as_wallpaper = new Gtk.MenuItem.with_label(_("Set as Wallpaper"));
     context_set_as_wallpaper.activate.connect(set_image_as_wallpaper);
     
-    var context_separator1 = new Gtk.SeparatorMenuItem();
-    
     if (wpset_path != null)
     {
       context_set_as_wallpaper.show();
-      context_separator1.show();
     }
+
+    var context_separator1 = new Gtk.SeparatorMenuItem();
+    context_separator1.show();
 
     var context_next = new Gtk.MenuItem.with_label(_("Next Image"));
     context_next.activate.connect(show_next_image);
@@ -559,16 +574,17 @@ class Program : Gtk.Window
     context_slideshow.activate.connect(start_stop_slideshow);
     context_slideshow.show();
 
-    context_menu.append(context_set_as_wallpaper);
-    context_menu.append(context_separator1);
-    context_menu.append(context_next);
-    context_menu.append(context_previous);
-    context_menu.append(context_separator2);
-    context_menu.append(context_zoom_in);
-    context_menu.append(context_zoom_out);
-    context_menu.append(context_separator3);
-    context_menu.append(context_edit_with_gimp);
-    context_menu.append(context_slideshow);
+    menu.append(context_open);
+    menu.append(context_set_as_wallpaper);
+    menu.append(context_separator1);
+    menu.append(context_next);
+    menu.append(context_previous);
+    menu.append(context_separator2);
+    menu.append(context_zoom_in);
+    menu.append(context_zoom_out);
+    menu.append(context_separator3);
+    menu.append(context_edit_with_gimp);
+    menu.append(context_slideshow);
   }
 
   private void full_screen_switch()
@@ -688,22 +704,7 @@ class Program : Gtk.Window
     Gtk.drag_finish(drag_context, true, false, time);
   }
 
-  // Program exit
-  private void program_exit_clicked()
-  {
-    window.get_size(out width, out height);
-    settings.set_int("width", width);
-    settings.set_int("height", height);
-    if (save_last_file == true)
-    {
-      settings.set_string("last-file", file);
-    }
-    GLib.Settings.sync();
-    Gtk.main_quit();
-  }
-
-  // Clicked About
-  private void about_dialog()
+  private void action_about()
   {
     var about = new Gtk.AboutDialog();
     about.set_program_name(NAME);
@@ -719,34 +720,19 @@ class Program : Gtk.Window
     about.run();
     about.hide();
   }
-  
-  // Program start
-  private void run(string[] args)
+
+  private void action_quit()
   {
-    if (args.length >= 2)
-    {
-      file = args[1];
-      load_pixbuf_on_start(file);
-      list_images(Path.get_dirname(file));
-    }
-    else
-    {
-      if (last_file != "")
-      {
-        file = last_file;
-        load_pixbuf_on_start(file);
-        list_images(Path.get_dirname(file));
-      }
-    }
+    window.get_size(out width, out height);
+    settings.set_int("width", width);
+    settings.set_int("height", height);
+    GLib.Settings.sync();
+    this.quit();
   }
-  
-  // The main method
-  static int main(string[] args)
+
+  private static int main (string[] args)
   {
-    Gtk.init (ref args);
-    var Voyager = new Program();
-    Voyager.run(args);
-    Gtk.main();
-    return 0;
+    Program app = new Program();
+    return app.run(args);
   }
 }
