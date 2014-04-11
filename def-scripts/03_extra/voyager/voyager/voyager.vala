@@ -170,11 +170,6 @@ private class Program : Gtk.Application
 
     Gtk.drag_dest_set(paned, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
     paned.drag_data_received.connect(on_drag_data_received);
-    
-    scrolled_window_image.add_events(Gdk.EventMask.ALL_EVENTS_MASK);
-    scrolled_window_image.button_press_event.connect(mouse_button_press_events);
-    scrolled_window_image.motion_notify_event.connect(mouse_motion_events);
-    scrolled_window_image.button_release_event.connect(mouse_button_release_events);
 
     // Window
     window = new Gtk.ApplicationWindow(this);
@@ -185,6 +180,12 @@ private class Program : Gtk.Application
     window.show_all();
     window.key_press_event.connect(keyboard_events);
     window.scroll_event.connect(scrolled);
+    window.delete_event.connect(() => { save_settings(); quit(); return true; });
+
+    scrolled_window_image.add_events(Gdk.EventMask.ALL_EVENTS_MASK);
+    scrolled_window_image.button_press_event.connect(mouse_button_press_events);
+    scrolled_window_image.motion_notify_event.connect(mouse_motion_events);
+    scrolled_window_image.button_release_event.connect(mouse_button_release_events);
   }
 
   public override void activate()
@@ -704,6 +705,14 @@ private class Program : Gtk.Application
     Gtk.drag_finish(drag_context, true, false, time);
   }
 
+  private void save_settings()
+  {
+    window.get_size(out width, out height);
+    settings.set_int("width", width);
+    settings.set_int("height", height);
+    GLib.Settings.sync();
+  }
+  
   private void action_about()
   {
     var about = new Gtk.AboutDialog();
@@ -723,10 +732,7 @@ private class Program : Gtk.Application
 
   private void action_quit()
   {
-    window.get_size(out width, out height);
-    settings.set_int("width", width);
-    settings.set_int("height", height);
-    GLib.Settings.sync();
+    save_settings();
     this.quit();
   }
 
