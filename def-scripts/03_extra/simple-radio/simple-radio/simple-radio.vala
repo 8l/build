@@ -17,7 +17,7 @@
 
 using LibmpControl;
 
-private class Program : Gtk.Window
+private class Program : Gtk.StatusIcon
 {
   const string NAME = "Simple Radio";
   const string VERSION = "1.5.0";
@@ -175,7 +175,7 @@ private class Program : Gtk.Window
 
     var menuitem_about = new Gtk.MenuItem.with_label(_("About"));
     menuitem_about.override_font(Pango.FontDescription.from_string("Oxygen 11"));
-    menuitem_about.activate.connect(about_dialog);
+    menuitem_about.activate.connect(action_about);
     
     var menuitem_quit = new Gtk.MenuItem.with_label(_("Quit"));
     menuitem_quit.override_font(Pango.FontDescription.from_string("Oxygen 11"));
@@ -294,7 +294,7 @@ private class Program : Gtk.Window
     return true;
   }
 
-  private void about_dialog()
+  private void action_about()
   {
     var about = new Gtk.AboutDialog();
     about.set_program_name(NAME);
@@ -313,8 +313,7 @@ private class Program : Gtk.Window
   public static int main (string[] args)
   {
     Gtk.init(ref args);
-    var window = new Program();
-    window.hide();
+    new Program();
     Gtk.main();
     return 0;
   }
