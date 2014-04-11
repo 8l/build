@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Program : Gtk.Window
+private class Program : Gtk.Application
 {
   const string NAME = "Wallpaper Setter";
   const string VERSION = "0.9.5";
@@ -23,7 +23,7 @@ class Program : Gtk.Window
   const string ICON = "preferences-desktop-wallpaper";
   const string[] AUTHORS = { "Simargl <archpup-at-gmail-dot-com>", null };
   
-  Gtk.Window window;
+  Gtk.ApplicationWindow window;
   GLib.Settings settings;
   Gdk.Pixbuf pixbuf;
   Gtk.ListStore liststore;
@@ -32,21 +32,32 @@ class Program : Gtk.Window
   string[] images_dir;
   Gtk.ScrolledWindow scrolled;
   private const Gtk.TargetEntry[] targets = { {"text/uri-list", 0, 0} };
-  
-  public Program()
+
+  private const GLib.ActionEntry[] action_entries =
   {
-    load_settings();
-    wallpaper_setter_gui();
+    { "about", action_about },
+    { "quit",  action_quit  }
+  };
+
+  private Program()
+  {
+    Object(application_id: "org.alphaos.wpset", flags: ApplicationFlags.FLAGS_NONE);
+    add_action_entries(action_entries, this);
   }
   
-  private void load_settings()
+  public override void startup()
   {
+    base.startup();
+
+    var menu = new Menu();
+    menu.append("About",      "app.about");
+    menu.append("Quit",       "app.quit");
+
+    set_app_menu(menu);
+
     settings = new GLib.Settings("org.alphaos.wpset.preferences");
     images_dir = settings.get_strv("images-dir");
-  }
-  
-  void wallpaper_setter_gui()
-  {
+
     var cell_pixbuf = new Gtk.CellRendererPixbuf();
     var cell_name = new Gtk.CellRendererText();
     
@@ -64,27 +75,21 @@ class Program : Gtk.Window
     {
       list_images(images_dir[i]);
     }
+
     var menuitem_add = new Gtk.MenuItem.with_label(_("Add folder"));
-    menuitem_add.activate.connect(add_directory_dialog);
+    menuitem_add.activate.connect(action_add);
 
     var menuitem_reset = new Gtk.MenuItem.with_label(_("Reset list"));
-    menuitem_reset.activate.connect(reset_liststore);   
-    
-    var menuitem_separator = new Gtk.SeparatorMenuItem();
-    
-    var menuitem_about = new Gtk.MenuItem.with_label(_("About"));
-    menuitem_about.activate.connect(about_dialog);
-    
-    var menu = new Gtk.Menu();
-    menu.append(menuitem_add);
-    menu.append(menuitem_reset);
-    menu.append(menuitem_separator);
-    menu.append(menuitem_about);
-    menu.show_all();
+    menuitem_reset.activate.connect(action_reset);
+
+    var gear_menu = new Gtk.Menu();
+    gear_menu.append(menuitem_add);
+    gear_menu.append(menuitem_reset);
+    gear_menu.show_all();
     
     var menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(menu);
+    menubutton.set_popup(gear_menu);
     menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
     
     var headerbar = new Gtk.HeaderBar();
@@ -99,22 +104,26 @@ class Program : Gtk.Window
     scrolled.add(view);
     
     var grid = new Gtk.Grid();
-    grid.attach(scrolled,           0, 0, 3, 1);
+    grid.attach(scrolled, 0, 0, 3, 1);
     grid.set_column_spacing(5);
     grid.set_row_spacing(5);
     
-    window = new Gtk.Window();
+    window = new Gtk.ApplicationWindow(this);
     window.set_icon_name(ICON);
     window.window_position = Gtk.WindowPosition.CENTER;
     window.set_titlebar(headerbar);
     window.add(grid);
     window.set_border_width(5);
     window.show_all();
-    window.destroy.connect(Gtk.main_quit);
     
     Gtk.drag_dest_set(grid, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
     grid.drag_data_received.connect(on_drag_data_received);
   }  
+
+  public override void activate()
+  {
+    window.present();
+  }
   
   void list_images(string directory)
   {
@@ -154,7 +163,7 @@ class Program : Gtk.Window
     }
   }
   
-  private void add_directory_dialog()
+  private void action_add()
   {
     var dialog = new Gtk.FileChooserDialog(_("Add folder..."), window, Gtk.FileChooserAction.SELECT_FOLDER,
                                          "gtk-cancel", Gtk.ResponseType.CANCEL,
@@ -190,7 +199,7 @@ class Program : Gtk.Window
     }
   }
   
-  private void reset_liststore()
+  private void action_reset()
   {
     liststore.clear();
     images_dir = {"/usr/share/backgrounds"};
@@ -216,7 +225,7 @@ class Program : Gtk.Window
     Gtk.drag_finish(drag_context, true, false, time);
   }
   
-  private void about_dialog()
+  private void action_about()
   {
     var about = new Gtk.AboutDialog();
     about.set_program_name(NAME);
@@ -232,12 +241,15 @@ class Program : Gtk.Window
     about.run();
     about.hide();
   }
-
-  public static int main (string[] args)
+  
+  private void action_quit()
   {
-    Gtk.init(ref args);
-    new Program();
-    Gtk.main();
-    return 0;
+    quit();
+  }
+
+  private static int main (string[] args)
+  {
+    Program app = new Program();
+    return app.run(args);
   }
 }
