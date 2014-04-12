@@ -17,7 +17,7 @@
 
 using LibmpControl;
 
-private class Program : Gtk.StatusIcon
+private class Program : GLib.Object
 {
   const string NAME = "Simple Radio";
   const string VERSION = "1.5.0";
@@ -70,7 +70,7 @@ private class Program : Gtk.StatusIcon
     simple_radio.activate.connect(send_notification);
     simple_radio.scroll_event.connect(volume_level_change_on_scroll);
     
-    update_tray_icon("simple-radio-stop");    
+    update_tray_icon("simple-radio-stop");
     create_menutray();
     start_notifications();
   }

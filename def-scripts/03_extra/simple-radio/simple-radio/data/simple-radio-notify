@@ -22,13 +22,13 @@ start_notification() {
   while [ "$(pidof simple-radio)" ]; do
   
     if [ -f $OUTPUT ]; then
-      TITLE=$(cat $OUTPUT | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
-      NAME=$(cat $OUTPUT | grep "name:"| sed 's| name:||g')
+      TITLE=$(cat $OUTPUT 2>/dev/null | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
+      NAME=$(cat $OUTPUT 2>/dev/null | grep "name:"| sed 's| name:||g')
 
       sleep 2s
       
-      NEW_TITLE=$(cat $OUTPUT | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
-      NEW_NAME=$(cat $OUTPUT | grep "name:"| sed 's| name: ||g')
+      NEW_TITLE=$(cat $OUTPUT 2>/dev/null | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
+      NEW_NAME=$(cat $OUTPUT 2>/dev/null | grep "name:"| sed 's| name: ||g')
       
       if [ "$NEW_TITLE" != "$TITLE" ]; then
         notify-send -i simple-radio-notification "$NEW_TITLE" "$NEW_NAME"
@@ -43,8 +43,8 @@ start_notification() {
 
 send_notification() {
   if [ -f $OUTPUT ]; then
-    TITLE=$(cat $OUTPUT | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
-    NAME=$(cat $OUTPUT | grep "name:"| sed 's| name:||g')
+    TITLE=$(cat $OUTPUT 2>/dev/null | grep "Demuxer info title changed to"  | sed 's|Demuxer info title changed to ||g' | tail -1)
+    NAME=$(cat $OUTPUT 2>/dev/null | grep "name:"| sed 's| name:||g')
     notify-send -i simple-radio-notification "$TITLE" "$NAME"
   fi
 }
