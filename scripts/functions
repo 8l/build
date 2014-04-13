@@ -26,7 +26,6 @@ DEVEL_SB="devel_14.sb"
 # VARIABLES
 
 LINUX_SPKG="/mnt/home/data/alphaos/00_linux/spkg/packages"
-UEFI_PKG="/mnt/home/data/alphaos/00_linux/spkg/other/uefi_pkg.tar.xz"
 
 CORE_ARCH="/mnt/home/data/alphaos/01_core/arch/packages"
 CORE_SPKG="/mnt/home/data/alphaos/01_core/spkg/packages"
@@ -423,15 +422,16 @@ initramfs_depmod()
 makeiso_standard()
 {
   rm -r $NEWISO_DIR/tmp 2>/dev/null
-  mkdir -p $NEWISO_DIR/tmp/alphaos/{boot,modules}
+  mkdir -p $NEWISO_DIR/tmp/{alphaos/{boot,modules},syslinux}
   cp $HOME/{$MAIN_SB,$EXTRA_SB} $NEWISO_DIR/tmp/alphaos
   cp $HOME/boot/{initrfs.img,vmlinuz} $NEWISO_DIR/tmp/alphaos/boot
-  [ ! -f $UEFI_PKG ] && wget http://sourceforge.net/projects/alphaos/files/sources/$(basename $UEFI_PKG) -P $(dirname $UEFI_PKG)
-  [ ! -f $UEFI_PKG ] && exit 1
-  tar -xf $UEFI_PKG -C $NEWISO_DIR/tmp
-  cd $NEWISO_DIR
-  xorriso -as mkisofs -rock -omit-version-number -disable-deep-relocation -joliet -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot --efi-boot efiboot.img -no-emul-boot -o alphaos_${ISO_VERSION}-$DATE-$CARCH.iso tmp
+  cp /usr/lib/syslinux/bios/{isolinux.bin,ldlinux.c32,vesamenu.c32,libcom32.c32,libutil.c32} $NEWISO_DIR/tmp/syslinux
+  cp ./isolinux.cfg $NEWISO_DIR/tmp/syslinux
+  cd $NEWISO_DIR/tmp
+  mkisofs -D -R -o alphaos_${ISO_VERSION}-$DATE-$CARCH.iso -b syslinux/isolinux.bin -c syslinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table $NEWISO_DIR/tmp
   isohybrid alphaos_${ISO_VERSION}-$DATE-$CARCH.iso
+  mv alphaos_${ISO_VERSION}-$DATE-$CARCH.iso $NEWISO_DIR
+  cd $NEWISO_DIR
   md5sum alphaos_${ISO_VERSION}-$DATE-$CARCH.iso > alphaos_${ISO_VERSION}-$DATE-$CARCH.iso.md5
   rm -r $NEWISO_DIR/tmp
 }
@@ -439,15 +439,16 @@ makeiso_standard()
 makeiso_minimal()
 {
   rm -r $NEWISO_DIR/tmp 2>/dev/null
-  mkdir -p $NEWISO_DIR/tmp/alphaos/{boot,modules}
+  mkdir -p $NEWISO_DIR/tmp/{alphaos/{boot,modules},syslinux}
   cp $HOME/$MAIN_SB $NEWISO_DIR/tmp/alphaos
   cp $HOME/boot/{initrfs.img,vmlinuz} $NEWISO_DIR/tmp/alphaos/boot
-  [ ! -f $UEFI_PKG ] && wget http://sourceforge.net/projects/alphaos/files/sources/$(basename $UEFI_PKG) -P $(dirname $UEFI_PKG)
-  [ ! -f $UEFI_PKG ] && exit 1
-  tar -xf $UEFI_PKG -C $NEWISO_DIR/tmp
+  cp /usr/lib/syslinux/bios/{isolinux.bin,ldlinux.c32,vesamenu.c32,libcom32.c32,libutil.c32} $NEWISO_DIR/tmp/syslinux
+  cp ./isolinux.cfg $NEWISO_DIR/tmp/syslinux
+  cd $NEWISO_DIR/tmp
+  mkisofs -D -R -o alphaos_${ISO_VERSION}-$DATE-$CARCH_min.iso -b syslinux/isolinux.bin -c syslinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table $NEWISO_DIR/tmp
+  isohybrid alphaos_${ISO_VERSION}-$DATE-$CARCH_min.iso
+  mv alphaos_${ISO_VERSION}-$DATE-$CARCH_min.iso $NEWISO_DIR
   cd $NEWISO_DIR
-  xorriso -as mkisofs -rock -omit-version-number -disable-deep-relocation -joliet -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot --efi-boot efiboot.img -no-emul-boot -o alphaos_${ISO_VERSION}-$DATE-$CARCH.iso tmp
-  isohybrid alphaos_${ISO_VERSION}-$DATE-$CARCH.iso
-  md5sum alphaos_${ISO_VERSION}-$DATE-$CARCH.iso > alphaos_${ISO_VERSION}-$DATE-$CARCH.iso.md5
+  md5sum alphaos_${ISO_VERSION}-$DATE-$CARCH_min.iso > alphaos_${ISO_VERSION}-$DATE-$CARCH_min.iso.md5
   rm -r $NEWISO_DIR/tmp
 }
