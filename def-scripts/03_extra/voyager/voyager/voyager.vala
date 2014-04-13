@@ -181,6 +181,7 @@ private class Program : Gtk.Application
     window.key_press_event.connect(keyboard_events);
     window.scroll_event.connect(scrolled);
     window.delete_event.connect(() => { save_settings(); quit(); return true; });
+    add_window(window);
 
     scrolled_window_image.add_events(Gdk.EventMask.ALL_EVENTS_MASK);
     scrolled_window_image.button_press_event.connect(mouse_button_press_events);
