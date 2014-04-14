@@ -161,7 +161,6 @@ private class Program : Gtk.Application
     window.set_icon_name(ICON);
     window.key_press_event.connect(keyboard_events);
     window.show_all();
-    add_window(window);
 
     Gtk.drag_dest_set(grid, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
     grid.drag_data_received.connect(on_drag_data_received);
@@ -177,11 +176,11 @@ private class Program : Gtk.Application
   
   public override void open(File[] files, string hint)
   {
+    window.present();
     foreach (File f in files)
     {
       file = f.get_uri();
     }
-    activate();
     gmp_video_start_playback();
   }  
 
