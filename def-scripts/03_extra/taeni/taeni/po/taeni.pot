@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-25 21:03+0100\n"
+"POT-Creation-Date: 2014-04-14 21:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,38 +17,46 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: taeni.vala:105
+#: taeni.vala:77
 msgid "About"
 msgstr ""
 
-#: taeni.vala:203
+#: taeni.vala:307
 msgid "Background"
 msgstr ""
 
-#: taeni.vala:245
+#: taeni.vala:198
 msgid "Copy"
 msgstr ""
 
-#: taeni.vala:193
+#: taeni.vala:297
 msgid "Font"
 msgstr ""
 
-#: taeni.vala:207
+#: taeni.vala:311
 msgid "Foreground"
 msgstr ""
 
-#: taeni.vala:250
+#: taeni.vala:193
+msgid "New tab"
+msgstr ""
+
+#: taeni.vala:201
 msgid "Paste"
 msgstr ""
 
-#: taeni.vala:102 taeni.vala:229
+#: taeni.vala:73 taeni.vala:333
 msgid "Preferences"
 msgstr ""
 
-#: taeni.vala:259
+#: taeni.vala:78
+msgid "Quit"
+msgstr ""
+
+#: taeni.vala:206
 msgid "Select all"
 msgstr ""
 
-#: taeni.vala:26
+#: taeni.vala:22
 msgid "Terminal emulator based on GTK+ and VTE"
 msgstr ""

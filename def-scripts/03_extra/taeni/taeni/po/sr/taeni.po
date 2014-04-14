@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-25 21:03+0100\n"
+"POT-Creation-Date: 2014-04-14 21:28+0200\n"
 "PO-Revision-Date: 2014-01-04 10:01+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -18,38 +18,46 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: taeni.vala:105
+#: taeni.vala:77
 msgid "About"
 msgstr "O programu"
 
-#: taeni.vala:203
+#: taeni.vala:307
 msgid "Background"
 msgstr "Pozadina"
 
-#: taeni.vala:245
+#: taeni.vala:198
 msgid "Copy"
 msgstr "Kopiraj"
 
-#: taeni.vala:193
+#: taeni.vala:297
 msgid "Font"
 msgstr "Font"
 
-#: taeni.vala:207
+#: taeni.vala:311
 msgid "Foreground"
 msgstr "Boja teksta"
 
-#: taeni.vala:250
+#: taeni.vala:193
+msgid "New tab"
+msgstr "Nova kartica"
+
+#: taeni.vala:201
 msgid "Paste"
 msgstr "Zalepi"
 
-#: taeni.vala:102 taeni.vala:229
+#: taeni.vala:73 taeni.vala:333
 msgid "Preferences"
 msgstr "Podešavanja"
 
-#: taeni.vala:259
+#: taeni.vala:78
+msgid "Quit"
+msgstr "Zatvori"
+
+#: taeni.vala:206
 msgid "Select all"
 msgstr "Selektuj sve"
 
-#: taeni.vala:26
+#: taeni.vala:22
 msgid "Terminal emulator based on GTK+ and VTE"
 msgstr "Linux terminal baziran na GTK+ i VTE"
