@@ -19,7 +19,7 @@
 private class Program : Gtk.Application
 {
   const string NAME         = "Control Center";
-  const string VERSION      = "1.1.0";
+  const string VERSION      = "1.4.0";
   const string DESCRIPTION  = _("Central place for accessing system configuration tools");
   const string ICON         = "control-center";
   const string[] AUTHORS = { "Simargl <archpup-at-gmail-dot-com>", "Efgee <efgee2003-at-yahoo-dot-com>", null };
