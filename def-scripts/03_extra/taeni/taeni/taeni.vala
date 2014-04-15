@@ -127,10 +127,15 @@ private class Program : Gtk.Application
   
   public override int command_line(ApplicationCommandLine command_line)
   {
-    create_tab();
-    window.present();
     var args = command_line.get_arguments();
     argument = args[1];
+    string path = "";
+    if (argument == "-d")
+    {
+      path = args[2];
+    }
+    create_tab(path);
+    window.present();
     if (argument == "-e")
     {
       command = args[2];
@@ -144,7 +149,7 @@ private class Program : Gtk.Application
     term.feed_child(command + "\n", command.length + 1);
   }
 
-  private void create_tab()
+  private void create_tab(string path)
   {
     term = new Vte.Terminal();
     term.set_encoding("UTF-8");
@@ -157,7 +162,7 @@ private class Program : Gtk.Application
     
     try
     {
-      term.fork_command_full(Vte.PtyFlags.DEFAULT, "", { Vte.get_user_shell() }, null, SpawnFlags.SEARCH_PATH, null, out child_pid);
+      term.fork_command_full(Vte.PtyFlags.DEFAULT, path, { Vte.get_user_shell() }, null, SpawnFlags.SEARCH_PATH, null, out child_pid);
     }
     catch(Error e)
     {
@@ -191,7 +196,7 @@ private class Program : Gtk.Application
   private void add_popup_menu(Gtk.Menu menu)
   {
     var context_new = new Gtk.MenuItem.with_label(_("New tab"));
-    context_new.activate.connect(() => { create_tab(); });
+    context_new.activate.connect(() => { create_tab(""); });
 
     var context_separator1 = new Gtk.SeparatorMenuItem();
 
