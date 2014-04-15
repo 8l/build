@@ -12,6 +12,9 @@ makedepends="pkgconfig intltool"
 compile() {
   cd $name-$version
   patch -Np1 -i $startdir/logo-icon.patch
+  patch -Np1 -i $startdir/fix-integer-overflow.patch
+  patch -Np1 -i $startdir/fix-sort-by-user.patch
+  patch -Np1 -i $startdir/fix-cpu-count.patch
   ./configure \
     --sysconfdir=/etc \
     --prefix=/usr \
