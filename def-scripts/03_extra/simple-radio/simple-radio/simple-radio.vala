@@ -169,7 +169,7 @@ private class Program : GLib.Object
     menuitem_stop.override_font(Pango.FontDescription.from_string("Oxygen 11"));
     menuitem_stop.activate.connect(radio_exit);
 
-    var menuitem_configure = new Gtk.MenuItem.with_label(_("Configure"));
+    var menuitem_configure = new Gtk.MenuItem.with_label(_("Edit list"));
     menuitem_configure.override_font(Pango.FontDescription.from_string("Oxygen 11"));
     menuitem_configure.activate.connect(configure_dialog);
 
@@ -240,7 +240,7 @@ private class Program : GLib.Object
 
     var configure_headerbar = new Gtk.HeaderBar();
     configure_headerbar.set_show_close_button(true);
-    configure_headerbar.set_title(_("Configure"));
+    configure_headerbar.set_title(_("Edit list"));
     
     configure = new Gtk.Dialog();
     configure.set_resizable(false);

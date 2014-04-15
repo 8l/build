@@ -83,8 +83,8 @@ private class Program : Gtk.Application
     base.startup();
 
     var menu = new Menu();
-    menu.append("About", "app.about");
-    menu.append("Quit",  "app.quit");
+    menu.append(_("About"),     "app.about");
+    menu.append(_("Quit"),      "app.quit");
 
     set_app_menu(menu);
 
@@ -305,7 +305,7 @@ private class Program : Gtk.Application
   // Open
   private void show_open_dialog()
   {
-    var dialog = new Gtk.FileChooserDialog(_("Open File..."), window, Gtk.FileChooserAction.OPEN,
+    var dialog = new Gtk.FileChooserDialog(_("Open"), window, Gtk.FileChooserAction.OPEN,
                                         "gtk-cancel", Gtk.ResponseType.CANCEL,
                                         "gtk-open", Gtk.ResponseType.ACCEPT);
     dialog.set_transient_for(window);

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-16 23:00+0100\n"
+"POT-Creation-Date: 2014-04-15 18:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,102 +17,106 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: control-center.vala:51
+#: control-center.vala:69
 msgid "<b>Hardware</b>"
 msgstr ""
 
-#: control-center.vala:45
+#: control-center.vala:63
 msgid "<b>Personal</b>"
 msgstr ""
 
-#: control-center.vala:56
+#: control-center.vala:74
 msgid "<b>System</b>"
 msgstr ""
 
-#: control-center.vala:54
+#: control-center.vala:72
 msgid "A full-featured GTK based trayicon UI for ConnMan"
 msgstr ""
 
-#: control-center.vala:61
+#: control-center.vala:50
 msgid "About"
 msgstr ""
 
-#: control-center.vala:47
+#: control-center.vala:65
 msgid "Appearance"
 msgstr ""
 
-#: control-center.vala:25
+#: control-center.vala:23
 msgid "Central place for accessing system configuration tools"
 msgstr ""
 
-#: control-center.vala:52
+#: control-center.vala:70
 msgid "Change screen resolution and configure external monitors"
 msgstr ""
 
-#: control-center.vala:46
+#: control-center.vala:64
 msgid "Change your desktop wallpaper"
 msgstr ""
 
-#: control-center.vala:58
+#: control-center.vala:77
 msgid "Configure Grub4DOS bootup loader"
 msgstr ""
 
-#: control-center.vala:53
+#: control-center.vala:71
 msgid "Configure keyboard, mouse, and other input devices"
 msgstr ""
 
-#: control-center.vala:47
+#: control-center.vala:65
 msgid "Customize Look and Feel"
 msgstr ""
 
-#: control-center.vala:52
+#: control-center.vala:70
 msgid "Display"
 msgstr ""
 
-#: control-center.vala:58
+#: control-center.vala:77
 msgid "Grub4DOS"
 msgstr ""
 
-#: control-center.vala:53
+#: control-center.vala:71
 msgid "Input Devices"
 msgstr ""
 
-#: control-center.vala:49
+#: control-center.vala:67
 msgid "Kickshaw is a menu editor for Openbox"
 msgstr ""
 
-#: control-center.vala:57
+#: control-center.vala:75
 msgid "Manage running processes"
 msgstr ""
 
-#: control-center.vala:49
+#: control-center.vala:67
 msgid "Menu Editor"
 msgstr ""
 
-#: control-center.vala:54
+#: control-center.vala:72
 msgid "Network"
 msgstr ""
 
-#: control-center.vala:48
+#: control-center.vala:66
 msgid "Openbox"
 msgstr ""
 
-#: control-center.vala:59
+#: control-center.vala:51
+msgid "Quit"
+msgstr ""
+
+#: control-center.vala:76
 msgid "Savefile creator for alphaOS"
 msgstr ""
 
-#: control-center.vala:59
+#: control-center.vala:76
 msgid "Setup Savefile"
 msgstr ""
 
-#: control-center.vala:57
+#: control-center.vala:75
 msgid "Task Manager"
 msgstr ""
 
-#: control-center.vala:48
+#: control-center.vala:66
 msgid "Tweak settings for Openbox"
 msgstr ""
 
-#: control-center.vala:46
+#: control-center.vala:64
 msgid "Wallpaper"
 msgstr ""

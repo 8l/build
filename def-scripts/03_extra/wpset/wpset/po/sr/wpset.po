@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-16 15:58+0100\n"
+"POT-Creation-Date: 2014-04-15 18:41+0200\n"
 "PO-Revision-Date: 2014-01-15 20:45+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -18,26 +18,23 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: wpset.vala:79
+#: wpset.vala:38
 msgid "About"
 msgstr "O programu"
 
-#: wpset.vala:71
-msgid "Add directory"
+#: wpset.vala:79 wpset.vala:168
+msgid "Add folder"
 msgstr "Dodaj fasciklu"
 
-#: wpset.vala:161
-msgid "Add directory..."
-msgstr "Dodaj fasciklu..."
-
-#: wpset.vala:68
-msgid "Apply"
-msgstr "Primeni"
-
-#: wpset.vala:25
+#: wpset.vala:22
 msgid "Change your desktop wallpaper"
 msgstr "Program za menjanje pozadine ekrana"
 
-#: wpset.vala:74
+#: wpset.vala:39
+msgid "Quit"
+msgstr "Odustani"
+
+#: wpset.vala:82
 msgid "Reset list"
 msgstr "Podrazumevana lista"
+

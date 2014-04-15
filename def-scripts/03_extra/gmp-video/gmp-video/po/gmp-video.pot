@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-21 18:51+0100\n"
+"POT-Creation-Date: 2014-04-15 18:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,62 +17,66 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gmp-video.vala:134
+#: gmp-video.vala:71
 msgid "About"
 msgstr ""
 
-#: gmp-video.vala:239
+#: gmp-video.vala:264
 msgid "All Media Files"
 msgstr ""
 
-#: gmp-video.vala:177
+#: gmp-video.vala:200
 msgid "Aspect ratio"
 msgstr ""
 
-#: gmp-video.vala:432
+#: gmp-video.vala:457
 msgid "Close"
 msgstr ""
 
-#: gmp-video.vala:185
+#: gmp-video.vala:208
 msgid "Decrease size"
 msgstr ""
 
-#: gmp-video.vala:184
+#: gmp-video.vala:207
 msgid "Increase size"
 msgstr ""
 
-#: gmp-video.vala:25
+#: gmp-video.vala:24
 msgid "Mpv frontend in Vala and GTK3"
 msgstr ""
 
-#: gmp-video.vala:174
+#: gmp-video.vala:197
 msgid "Open"
 msgstr ""
 
-#: gmp-video.vala:235
-msgid "Open File..."
-msgstr ""
-
-#: gmp-video.vala:411 gmp-video.vala:417
+#: gmp-video.vala:436 gmp-video.vala:442
 msgid "Open URL"
 msgstr ""
 
-#: gmp-video.vala:431
+#: gmp-video.vala:260
+msgid "Open file"
+msgstr ""
+
+#: gmp-video.vala:456
 msgid "Play"
 msgstr ""
 
-#: gmp-video.vala:175
+#: gmp-video.vala:198
 msgid "Play URL"
 msgstr ""
 
-#: gmp-video.vala:183
+#: gmp-video.vala:72
+msgid "Quit"
+msgstr ""
+
+#: gmp-video.vala:206
 msgid "Select file"
 msgstr ""
 
-#: gmp-video.vala:261
-msgid "Select subtitle..."
+#: gmp-video.vala:286
+msgid "Select subtitle"
 msgstr ""
 
-#: gmp-video.vala:176
+#: gmp-video.vala:199
 msgid "Subtitle"
 msgstr ""

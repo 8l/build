@@ -35,8 +35,8 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about", action_about },
-    { "quit",  action_quit  }
+    menu.append(_("About"),     "app.about");
+    menu.append(_("Quit"),      "app.quit");
   };
 
   private Program()
@@ -165,7 +165,7 @@ private class Program : Gtk.Application
   
   private void action_add()
   {
-    var dialog = new Gtk.FileChooserDialog(_("Add folder..."), window, Gtk.FileChooserAction.SELECT_FOLDER,
+    var dialog = new Gtk.FileChooserDialog(_("Add folder"), window, Gtk.FileChooserAction.SELECT_FOLDER,
                                          "gtk-cancel", Gtk.ResponseType.CANCEL,
                                          "gtk-open", Gtk.ResponseType.ACCEPT);
     dialog.set_transient_for(window);

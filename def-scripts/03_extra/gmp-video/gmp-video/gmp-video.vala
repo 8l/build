@@ -68,8 +68,8 @@ private class Program : Gtk.Application
     base.startup();
 
     var menu = new Menu();
-    menu.append("About", "app.about");
-    menu.append("Quit",  "app.quit");
+    menu.append(_("About"),     "app.about");
+    menu.append(_("Quit"),      "app.quit");
 
     set_app_menu(menu);
 
@@ -257,7 +257,7 @@ private class Program : Gtk.Application
   
   private void show_open_dialog()
   {
-   var dialog = new Gtk.FileChooserDialog(_("Open File..."), window, Gtk.FileChooserAction.OPEN,
+   var dialog = new Gtk.FileChooserDialog(_("Open file"), window, Gtk.FileChooserAction.OPEN,
                                         "gtk-cancel", Gtk.ResponseType.CANCEL,
                                         "gtk-open", Gtk.ResponseType.ACCEPT);
    var filter = new Gtk.FileFilter();
@@ -283,7 +283,7 @@ private class Program : Gtk.Application
 
   private void select_subtitle_dialog()
   {
-    var dialog = new Gtk.FileChooserDialog(_("Select subtitle..."), window, Gtk.FileChooserAction.OPEN,
+    var dialog = new Gtk.FileChooserDialog(_("Select subtitle"), window, Gtk.FileChooserAction.OPEN,
                                          "gtk-cancel", Gtk.ResponseType.CANCEL,
                                          "gtk-open", Gtk.ResponseType.ACCEPT);
     var filter = new Gtk.FileFilter();

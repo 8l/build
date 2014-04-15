@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-08 20:18+0100\n"
+"POT-Creation-Date: 2014-04-15 18:45+0200\n"
 "PO-Revision-Date: 2014-02-05 09:12+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -18,42 +18,54 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: voyager.vala:98
+#: voyager.vala:86
 msgid "About"
 msgstr "O programu"
 
-#: voyager.vala:24
+#: voyager.vala:567
+msgid "Edit With Gimp"
+msgstr "Uredi u gimpu"
+
+#: voyager.vala:22
 msgid "Image browser in Vala and Gtk+3"
 msgstr "Pregledač slika"
 
-#: voyager.vala:134
+#: voyager.vala:150
 msgid "Name"
 msgstr "Ime"
 
-#: voyager.vala:457
-msgid "Next"
-msgstr "Sledeći"
+#: voyager.vala:544
+msgid "Next Image"
+msgstr "Sledeća slika"
 
-#: voyager.vala:74
+#: voyager.vala:308 voyager.vala:528
 msgid "Open"
 msgstr "Otvori"
 
-#: voyager.vala:271
-msgid "Open File..."
-msgstr "Otvori datoteku..."
-
-#: voyager.vala:461
-msgid "Previous"
+#: voyager.vala:548
+msgid "Previous Image"
 msgstr "Prethodni"
 
-#: voyager.vala:439
+#: voyager.vala:87
+msgid "Quit"
+msgstr "Odustani"
+
+#: voyager.vala:533
 msgid "Set as Wallpaper"
 msgstr "Postavi kao pozadinu ekrana"
 
-#: voyager.vala:443
+#: voyager.vala:575 voyager.vala:640
+msgid "Start Slideshow"
+msgstr "Pokreni prezentaciju"
+
+#: voyager.vala:631
+msgid "Stop Slideshow"
+msgstr "Zaustavi prezentaciju"
+
+#: voyager.vala:555
 msgid "Zoom In"
 msgstr "Uvećaj"
 
-#: voyager.vala:447
+#: voyager.vala:559
 msgid "Zoom Out"
 msgstr "Umanji"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-21 18:51+0100\n"
+"POT-Creation-Date: 2014-04-15 18:47+0200\n"
 "PO-Revision-Date: 2014-01-05 13:18+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -18,62 +18,66 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: gmp-video.vala:134
+#: gmp-video.vala:71
 msgid "About"
 msgstr "O programu"
 
-#: gmp-video.vala:239
+#: gmp-video.vala:264
 msgid "All Media Files"
 msgstr "Audio i video datoteke"
 
-#: gmp-video.vala:177
+#: gmp-video.vala:200
 msgid "Aspect ratio"
 msgstr "Odnos stranica"
 
-#: gmp-video.vala:432
+#: gmp-video.vala:457
 msgid "Close"
 msgstr "Zatvori"
 
-#: gmp-video.vala:185
+#: gmp-video.vala:208
 msgid "Decrease size"
 msgstr "Smanji"
 
-#: gmp-video.vala:184
+#: gmp-video.vala:207
 msgid "Increase size"
 msgstr "Povećaj"
 
-#: gmp-video.vala:25
+#: gmp-video.vala:24
 msgid "Mpv frontend in Vala and GTK3"
 msgstr "Grafički interfejs za MPlayer"
 
-#: gmp-video.vala:174
+#: gmp-video.vala:197
 msgid "Open"
 msgstr "Otvori"
 
-#: gmp-video.vala:235
-msgid "Open File..."
-msgstr "Otvori datoteku..."
-
-#: gmp-video.vala:411 gmp-video.vala:417
+#: gmp-video.vala:436 gmp-video.vala:442
 msgid "Open URL"
 msgstr "Otvori URL"
 
-#: gmp-video.vala:431
+#: gmp-video.vala:260
+msgid "Open file"
+msgstr "Otvori datoteku"
+
+#: gmp-video.vala:456
 msgid "Play"
 msgstr "Pusti"
 
-#: gmp-video.vala:175
+#: gmp-video.vala:198
 msgid "Play URL"
 msgstr "Pusti URL"
 
-#: gmp-video.vala:183
+#: gmp-video.vala:72
+msgid "Quit"
+msgstr "Odustani"
+
+#: gmp-video.vala:206
 msgid "Select file"
 msgstr "Odaberi datoteku"
 
-#: gmp-video.vala:261
-msgid "Select subtitle..."
-msgstr "Odaberite titlove..."
+#: gmp-video.vala:286
+msgid "Select subtitle"
+msgstr "Odaberite titlove"
 
-#: gmp-video.vala:176
+#: gmp-video.vala:199
 msgid "Subtitle"
 msgstr "Titlovi"

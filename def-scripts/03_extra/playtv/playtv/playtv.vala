@@ -78,8 +78,8 @@ private class Program : Gtk.Application
     base.startup();
 
     var menu = new Menu();
-    menu.append("About",     "app.about");
-    menu.append("Quit",      "app.quit");
+    menu.append(_("About"),     "app.about");
+    menu.append(_("Quit"),      "app.quit");
 
     set_app_menu(menu);
 
@@ -116,7 +116,7 @@ private class Program : Gtk.Application
     paned.add1(drawing_area);
     paned.add2(scrolled);
 
-    var menuitem_configure = new Gtk.MenuItem.with_label(_("Configure"));
+    var menuitem_configure = new Gtk.MenuItem.with_label(_("Edit list"));
     menuitem_configure.activate.connect(action_configure);
     
     var gear_menu = new Gtk.Menu();
@@ -284,7 +284,7 @@ private class Program : Gtk.Application
 
     var configure_headerbar = new Gtk.HeaderBar();
     configure_headerbar.set_show_close_button(true);
-    configure_headerbar.set_title(_("Configure"));
+    configure_headerbar.set_title(_("Edit list"));
     
     configure = new Gtk.Dialog();
     configure.set_resizable(false);

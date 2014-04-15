@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-21 18:52+0100\n"
+"POT-Creation-Date: 2014-04-15 18:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: simple-radio.vala:223
-msgid "<b>Name</b>"
-msgstr ""
-
-#: simple-radio.vala:224
-msgid "<b>URL Address</b>"
-msgstr ""
-
-#: simple-radio.vala:187
+#: simple-radio.vala:176
 msgid "About"
 msgstr ""
 
-#: simple-radio.vala:183
-msgid "Configure"
+#: simple-radio.vala:172 simple-radio.vala:243
+msgid "Edit list"
 msgstr ""
 
-#: simple-radio.vala:25
+#: simple-radio.vala:24
 msgid "Play radio streams with mpv"
 msgstr ""
 
-#: simple-radio.vala:191
+#: simple-radio.vala:180
 msgid "Quit"
 msgstr ""
 
-#: simple-radio.vala:178
+#: simple-radio.vala:167
 msgid "Turn Off"
 msgstr ""

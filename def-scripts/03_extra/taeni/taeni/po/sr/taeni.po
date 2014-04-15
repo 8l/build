@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-14 21:28+0200\n"
+"POT-Creation-Date: 2014-04-15 18:46+0200\n"
 "PO-Revision-Date: 2014-01-04 10:01+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -22,39 +22,39 @@ msgstr ""
 msgid "About"
 msgstr "O programu"
 
-#: taeni.vala:307
+#: taeni.vala:312
 msgid "Background"
 msgstr "Pozadina"
 
-#: taeni.vala:198
+#: taeni.vala:203
 msgid "Copy"
 msgstr "Kopiraj"
 
-#: taeni.vala:297
+#: taeni.vala:302
 msgid "Font"
 msgstr "Font"
 
-#: taeni.vala:311
+#: taeni.vala:316
 msgid "Foreground"
 msgstr "Boja teksta"
 
-#: taeni.vala:193
+#: taeni.vala:198
 msgid "New tab"
 msgstr "Nova kartica"
 
-#: taeni.vala:201
+#: taeni.vala:206
 msgid "Paste"
 msgstr "Zalepi"
 
-#: taeni.vala:73 taeni.vala:333
+#: taeni.vala:73 taeni.vala:338
 msgid "Preferences"
 msgstr "Podešavanja"
 
 #: taeni.vala:78
 msgid "Quit"
-msgstr "Zatvori"
+msgstr "Odustani"
 
-#: taeni.vala:206
+#: taeni.vala:211
 msgid "Select all"
 msgstr "Selektuj sve"
 

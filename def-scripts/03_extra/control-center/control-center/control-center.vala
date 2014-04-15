@@ -47,8 +47,8 @@ private class Program : Gtk.Application
     base.startup();
 
     var menu = new Menu();
-    menu.append("About", "app.about");
-    menu.append("Quit",  "app.quit");
+    menu.append(_("About"),     "app.about");
+    menu.append(_("Quit"),      "app.quit");
 
     set_app_menu(menu);
 
