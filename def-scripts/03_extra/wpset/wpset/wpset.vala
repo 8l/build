@@ -18,7 +18,7 @@
 private class Program : Gtk.Application
 {
   const string NAME = "Wallpaper Setter";
-  const string VERSION = "0.9.5";
+  const string VERSION = "1.7.0";
   const string DESCRIPTION = _("Change your desktop wallpaper");
   const string ICON = "preferences-desktop-wallpaper";
   const string[] AUTHORS = { "Simargl <archpup-at-gmail-dot-com>", null };
@@ -35,8 +35,8 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    menu.append(_("About"),     "app.about");
-    menu.append(_("Quit"),      "app.quit");
+    { "about", action_about },
+    { "quit",  action_quit  }
   };
 
   private Program()
@@ -50,9 +50,9 @@ private class Program : Gtk.Application
     base.startup();
 
     var menu = new Menu();
-    menu.append("About",      "app.about");
-    menu.append("Quit",       "app.quit");
-
+    menu.append(_("About"),     "app.about");
+    menu.append(_("Quit"),      "app.quit");
+    
     set_app_menu(menu);
 
     settings = new GLib.Settings("org.alphaos.wpset.preferences");

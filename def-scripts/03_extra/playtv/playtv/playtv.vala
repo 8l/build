@@ -20,7 +20,7 @@ using LibmpControl;
 private class Program : Gtk.Application
 {
   const string NAME = "PlayTV";
-  const string VERSION = "0.2.1";
+  const string VERSION = "1.0.5";
   const string DESCRIPTION = _("GTK3 based interface for watching online TV channels");
   const string ICON = "playtv";
   const string[] AUTHORS = { "Simargl <archpup-at-gmail-dot-com>", null };

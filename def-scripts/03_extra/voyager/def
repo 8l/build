@@ -1,5 +1,5 @@
 name="voyager"
-version="0.2.2"
+version="1.2.5"
 revision="1"
 category="graphics"
 description="Image browser in Vala and GTK3"

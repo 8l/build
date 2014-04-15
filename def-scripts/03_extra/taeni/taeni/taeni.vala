@@ -18,7 +18,7 @@
 private class Program : Gtk.Application
 {
   const string NAME        = "Taeni";
-  const string VERSION     = "1.4.2";
+  const string VERSION     = "1.7.0";
   const string DESCRIPTION = _("Terminal emulator based on GTK+ and VTE");
   const string ICON        = "utilities-terminal";
   const string APP_ID      = "org.alphaos.taeni";

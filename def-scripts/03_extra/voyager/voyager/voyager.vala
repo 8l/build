@@ -18,7 +18,7 @@
 private class Program : Gtk.Application
 {
   const string NAME        = "Voyager";
-  const string VERSION     = "0.2.2";
+  const string VERSION     = "1.2.5";
   const string DESCRIPTION = _("Image browser in Vala and Gtk+3");
   const string ICON        = "voyager";
   const string[] AUTHORS   = { "Simargl <archpup-at-gmail-dot-com>", null };

@@ -20,7 +20,7 @@ using LibmpControl;
 private class Program : Gtk.Application
 {
   const string NAME        = "GMP Video";
-  const string VERSION     = "0.9.1";
+  const string VERSION     = "1.1.5";
   const string DESCRIPTION = _("Mpv frontend in Vala and GTK3");
   const string ICON        = "gmp-video";
   const string[] AUTHORS   = { "Simargl <archpup-at-gmail-dot-com>", null };

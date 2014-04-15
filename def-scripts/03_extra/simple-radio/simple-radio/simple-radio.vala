@@ -20,7 +20,7 @@ using LibmpControl;
 private class Program : GLib.Object
 {
   const string NAME = "Simple Radio";
-  const string VERSION = "1.5.0";
+  const string VERSION = "1.8.0";
   const string DESCRIPTION = _("Play radio streams with mpv");
   const string ICON = "simple-radio-play";
   const string[] AUTHORS = { "Simargl <archpup-at-gmail-dot-com>", null };

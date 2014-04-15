@@ -19,7 +19,7 @@
 private class Program : Gtk.Window
 {
   const string NAME        = "Emendo";
-  const string VERSION     = "2.5.1";
+  const string VERSION     = "2.6.0";
   const string DESCRIPTION = _("Text editor with syntax highlighting");
   const string ICON        = "emendo";
   const string[] AUTHORS   = { "Simargl <archpup-at-gmail-dot-com>", "Yosef Or Boczko <yoseforb-at-gmail-dot-com>", null };
