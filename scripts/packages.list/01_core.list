@@ -42,6 +42,7 @@ kmod-17-1-x86_64.pkg.tar.xz
 less-458-1-x86_64.pkg.tar.xz
 libarchive-3.1.2-6-x86_64.pkg.tar.xz
 libassuan-2.1.1-1-x86_64.pkg.tar.xz
+libatomic_ops-7.2.e-1-x86_64.pkg.tar.xz
 libcap-2.24-1-x86_64.pkg.tar.xz
 libcroco-0.6.8-1-x86_64.pkg.tar.xz
 libdaemon-0.14-2-x86_64.pkg.tar.xz
