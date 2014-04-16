@@ -19,9 +19,9 @@
 . /etc/spkg/main.config
 
 ROOTFS="$PWD/../rootfs"
-MAIN_SB="alpha_14.sb"
-EXTRA_SB="extra_14.sb"
-DEVEL_SB="devel_14.sb"
+MAIN_SB="alpha_15.sb"
+EXTRA_SB="extra_15.sb"
+DEVEL_SB="devel_15.sb"
 
 # VARIABLES
 
@@ -39,21 +39,21 @@ EXTRA_SPKG="/mnt/home/data/alphaos/03_extra/spkg/packages"
 DEVEL_ARCH="/mnt/home/data/alphaos/04_devel/arch/packages"
 DEVEL_SPKG="/mnt/home/data/alphaos/04_devel/spkg/packages"
 
-ARMDATE="2013/11/18"
+ARMDATE="2014/04/16"
 
 # INITRAMFS VARIABLES
 
-KERNEL_VERSION="3.12.0-ALPHAOS"
+KERNEL_VERSION="3.14.1-ALPHAOS"
 MODULES_DIR="$pkgdir/linux/install"
-KERNEL_PACKAGE="linux-3.12-1-$CARCH.spkg"
+KERNEL_PACKAGE="linux-3.14.1-1-$CARCH.spkg"
 INITRAMFS_TREE="$PWD/../initramfs"
 
 # MAKEISO VARIABLES
 
 HOME="/mnt/home/alphaos"
 NEWISO_DIR="$pkgdir/iso"
-VERSION="14"
-ISO_VERSION="14.5"
+VERSION="15"
+ISO_VERSION="15.0"
 DATE=$(date +"%Y%m%d")
 
 # SB_COMPRESSION="-comp xz -b 524288 -Xbcj x86"
