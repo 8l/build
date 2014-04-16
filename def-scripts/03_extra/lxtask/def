@@ -1,6 +1,6 @@
 name="lxtask"
 version="0.1.4"
-revision="3"
+revision="5"
 category="utilities"
 description="Task manager of the LXDE Desktop"
 source="http://downloads.sourceforge.net/sourceforge/lxde/$name-$version.tar.gz"
