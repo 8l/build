@@ -1,6 +1,6 @@
 name="linux"
-version="3.12"
-_realver="3.12"
+version="3.14.1"
+_realver="3.14.1"
 revision="1"
 category="system"
 description="The linux kernel and modules"
@@ -10,20 +10,21 @@ homepage="http://www.kernel.org"
 maintainer="simargl <archpup-at-gmail-dot-com>"
 depends="coreutils"
 makedepends=""
-config="config-3.12"
+config="config-3.14"
 replaces="kernel26"
 conflict="kernel26"
 provides="kernel26"
 
 apply_aufs_patches() {
   echo "Adding Aufs to the kernel sources"
-  patch -p1 < $build/aufs-standalone/aufs3-kbuild.patch
-  patch -p1 < $build/aufs-standalone/aufs3-base.patch
-  patch -p1 < $build/aufs-standalone/aufs3-mmap.patch
-  patch -p1 < $build/aufs-standalone/aufs3-standalone.patch
-  cp -va $build/aufs-standalone/Documentation .
-  cp -va $build/aufs-standalone/fs .
-  cp -va $build/aufs-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
+  echo "Adding Aufs to the kernel sources"
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-kbuild.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-base.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-mmap.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-standalone.patch
+  cp -va $build/aufs-standalone-${_realver:0:4}/Documentation .
+  cp -va $build/aufs-standalone-${_realver:0:4}/fs .
+  cp -va $build/aufs-standalone-${_realver:0:4}/include/uapi/linux/aufs_type.h include/uapi/linux
   echo "Reduce swappiness, to make the kernel perform less swapping"
   sed -i s/'int vm_swappiness = 60;'/'int vm_swappiness = 30;'/ mm/vmscan.c
   echo "Reducing the number of consoles"
@@ -58,7 +59,7 @@ package() {
   touch $destdir/etc/modules/firmware.dep.${_realver}-ALPHAOS
   mkdir -p $pkgdir/linux-${_realver}/boot
   cp arch/x86/boot/bzImage $pkgdir/linux-${_realver}/boot/vmlinuz
-  cp .config $destdir/etc/modules/linux.config-${_realver}
+  cp .config $destdir/etc/modules/config-${_realver}
   cp System.map $pkgdir/linux-${_realver}/boot
   cd $pkgdir
   tar -cJf boot-${_realver}.tar.xz linux-${_realver}

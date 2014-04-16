@@ -14,13 +14,13 @@ makedepends=""
 compile() {
   cd linux-${_realver}
   echo "Adding Aufs to the kernel sources"
-  patch -p1 < $build/aufs-standalone/aufs3-kbuild.patch
-  patch -p1 < $build/aufs-standalone/aufs3-base.patch
-  patch -p1 < $build/aufs-standalone/aufs3-mmap.patch
-  patch -p1 < $build/aufs-standalone/aufs3-standalone.patch
-  cp -va $build/aufs-standalone/Documentation .
-  cp -va $build/aufs-standalone/fs .
-  cp -va $build/aufs-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-kbuild.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-base.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-mmap.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-standalone.patch
+  cp -va $build/aufs-standalone-${_realver:0:4}/Documentation .
+  cp -va $build/aufs-standalone-${_realver:0:4}/fs .
+  cp -va $build/aufs-standalone-${_realver:0:4}/include/uapi/linux/aufs_type.h include/uapi/linux
   echo "header-y += aufs_type.h" >> include/uapi/linux/Kbuild
 }
 

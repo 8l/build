@@ -1,5 +1,5 @@
 name="packer"
-version="20131115"
+version="20131001"
 revision="1"
 category="development"
 description="Bash wrapper for pacman and aur"

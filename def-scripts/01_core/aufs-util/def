@@ -1,5 +1,5 @@
 name="aufs-util"
-version="3.11"
+version="3.14"
 revision="1"
 category="development"
 description="Another Unionfs Implementation that supports NFS branches"
