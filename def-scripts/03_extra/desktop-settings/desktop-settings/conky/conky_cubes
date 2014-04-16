@@ -40,11 +40,11 @@ ${goto 450}Mem:${goto 500}${top_mem mem 1}%
 ${goto 452}${font Fresca:bold:size=8}${top_mem name 1}$font
 
 ${voffset -90}
-${goto 640}${font Fresca:bold:size=8}Up: ${upspeed eth0}$font
-${goto 605}${color 353535}${upspeedgraph eth0 10,100 450000 8B0000}$color
+${goto 640}${font Fresca:bold:size=8}Up: ${upspeed enp64s0}$font
+${goto 605}${color 353535}${upspeedgraph enp64s0 10,100 450000 8B0000}$color
 ${voffset -7}
-${goto 635}${font Fresca:bold:size=8}Down: ${downspeed eth0}$font
-${goto 605}${color 353535}${downspeedgraph eth0 10,100 450000 8B0000}$color
+${goto 635}${font Fresca:bold:size=8}Down: ${downspeed enp64s0}$font
+${goto 605}${color 353535}${downspeedgraph enp64s0 10,100 450000 8B0000}$color
 
 ${image /usr/share/conky/conky_cubes_images/cc1.png  144x144 -p 80,200}
 ${image /usr/share/conky/conky_cubes_images/cc2.png  144x144 -p 240,200}

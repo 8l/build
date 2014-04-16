@@ -41,8 +41,8 @@ CPU:$alignr${cpu cpu0}%
 ${cpugraph cpu0 15,150 0E3F82 00B9FF}
 
 ${font Fresca:pixelsize=12:bold}${color1}ETH0 ${hr} ${color}$font
-Down: ${downspeed eth0} ${alignr}Up: ${upspeed eth0} 
-${downspeedgraph eth0 15,72 0E3F82 00B9FF}${alignr}${upspeedgraph eth0 15,72 00B9FF 0E3F82}
+Down: ${downspeed enp64s0} ${alignr}Up: ${upspeed enp64s0} 
+${downspeedgraph enp64s0 15,72 0E3F82 00B9FF}${alignr}${upspeedgraph enp64s0 15,72 00B9FF 0E3F82}
 
 ${font Fresca:pixelsize=12:bold}${color1}TOP PROCESSES ${hr} ${color}$font
 ${top_mem name 1}${alignr}${top mem 1} %
