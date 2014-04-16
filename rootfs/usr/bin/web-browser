@@ -18,14 +18,15 @@
 [ -x /usr/bin/seamonkey ]              && seamonkey "$@"                                                          && exit 0
 [ -x /usr/bin/icecat ]                 && icecat "$@"                                                             && exit 0
 
-STOP="You don't have any web browser installed on your system at the moment, use pacman \
-package manager or makesb script to install prefered browser. For example:
+STOP="You don't have any web browser installed on your system at the moment, 
+use pacman package manager or makesb script to install prefered browser. 
+For example:
 <i>pacman -Sy; pacman -S firefox</i>
 or:
 <i>makesb firefox</i>
-First option will install web browser to your save file, other will make \
-SB bundle which will be placed inside modules directory and loaded on \
+First option will install web browser to your save file, other will make 
+SB bundle which will be placed inside modules directory and loaded on 
 every boot afterwards. Second option is recommended as more practical."
 
-INFO=$(yad --center --fixed --title="Web browser launcher for alphaOS" --text="$STOP" --window-icon="web-browser")
+INFO=$(yad --center --fixed --title="Web browser launcher for alphaOS" --text="$STOP" --window-icon="web-browser" --button="OK:0")
 exit 1
