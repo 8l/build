@@ -85,6 +85,6 @@ kernel26-headers
   cd $pkgdir 
   mksquashfs linux linux_${_realver}_src.sb -comp xz -b 524288
   rm -rf $pkgdir/{linux,linux-${_realver}}
-  ln -sf /usr/src/linux $destdir/lib/modules/${_realver}-ALPHAOS/build
-  ln -sf /usr/src/linux $destdir/lib/modules/${_realver}-ALPHAOS/source
+  ln -sf /usr/src/linux $destdir/usr/lib/modules/${_realver}-ALPHAOS/build
+  ln -sf /usr/src/linux $destdir/usr/lib/modules/${_realver}-ALPHAOS/source
 }
