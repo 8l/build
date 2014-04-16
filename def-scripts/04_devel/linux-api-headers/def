@@ -1,6 +1,6 @@
 name="linux-api-headers"
-version="3.10.6"
-_realver="3.12"
+version="3.13.2"
+_realver="3.14.1"
 revision="1"
 category="system"
 description="The linux kernel and modules"
