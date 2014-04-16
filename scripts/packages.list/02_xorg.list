@@ -3,6 +3,7 @@ compositeproto-0.4.2-2-any.pkg.tar.xz
 damageproto-1.2.1-2-any.pkg.tar.xz
 dmxproto-2.3.1-2-any.pkg.tar.xz
 dri2proto-2.8-1-any.pkg.tar.xz
+dri3proto-1.0-1-any.pkg.tar.xz
 fixesproto-5.0-2-any.pkg.tar.xz
 fontsproto-2.1.3-1-any.pkg.tar.xz
 glamor-egl-0.6.0-1-x86_64.pkg.tar.xz
@@ -36,6 +37,7 @@ libxpm-3.5.11-1-x86_64.pkg.tar.xz
 libxrandr-1.4.2-2-x86_64.pkg.tar.xz
 libxrender-0.9.8-1-x86_64.pkg.tar.xz
 libxres-1.0.7-1-x86_64.pkg.tar.xz
+libxshmfence-1.1-1-x86_64.pkg.tar.xz
 libxss-1.2.2-2-x86_64.pkg.tar.xz
 libxt-1.1.4-1-x86_64.pkg.tar.xz
 libxtst-1.2.2-1-x86_64.pkg.tar.xz
@@ -44,6 +46,7 @@ libxvmc-1.0.8-1-x86_64.pkg.tar.xz
 libxxf86dga-1.1.4-1-x86_64.pkg.tar.xz
 libxxf86vm-1.1.3-1-x86_64.pkg.tar.xz
 mtdev-1.1.4-1-x86_64.pkg.tar.xz
+presentproto-1.0-1-any.pkg.tar.xz
 printproto-1.0.5-2-any.pkg.tar.xz
 randrproto-1.4.0-1-any.pkg.tar.xz
 recordproto-1.14.2-1-any.pkg.tar.xz
