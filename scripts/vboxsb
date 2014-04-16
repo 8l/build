@@ -22,8 +22,6 @@ VBOX_RUN="VirtualBox-4.3.10-93012-Linux_amd64.run"
 VBOX_MIRROR="http://download.virtualbox.org/virtualbox"
 KERNEL_VER="$(uname -r)"
 
-http://download.virtualbox.org/virtualbox/4.3.10/VirtualBox-4.3.10-93012-Linux_amd64.run
-
 if [ ! -f $VBOX_DIR/$VBOX_RUN ]; then
   echo " > Downloading $VBOX_RUN..."
   wget $VBOX_MIRROR/$VBOX_VERSION/$VBOX_RUN -P $VBOX_DIR
