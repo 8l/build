@@ -170,20 +170,50 @@ private class Program : Gtk.Application
     }
     
     var scrollbar = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL, term.vadjustment);
-    
-    var grid = new Gtk.Grid();
-    grid.attach(term, 0, 0, 1, 1);
-    grid.attach(scrollbar, 1, 0, 1, 1);
-    grid.show_all();
 
-    notebook.append_page(grid, null);
+    var tab_label = new Gtk.Label("");
+    tab_label.width_request = 80;
+
+    var tab_button_close = new Gtk.Button.from_icon_name("window-close-symbolic", Gtk.IconSize.MENU);
+    tab_button_close.set_relief(Gtk.ReliefStyle.NONE);
+
+    var tab_grid = new Gtk.Grid();
+    tab_grid.attach(tab_label, 0, 0, 1, 1);
+    tab_grid.attach(tab_button_close, 1, 0, 1, 1);
+    tab_grid.set_column_spacing(10);
+    tab_grid.show_all();
+
+    var page_grid = new Gtk.Grid();
+    page_grid.attach(term, 0, 0, 1, 1);
+    page_grid.attach(scrollbar, 1, 0, 1, 1);
+    page_grid.show_all();
+
+    tab_button_close.clicked.connect(() =>
+    {
+      int page_num = notebook.page_num(page_grid);
+      notebook.remove_page(page_num);
+      if (notebook.get_n_pages() == 0)
+      {
+        action_quit();
+      }
+    });
+
+    term.window_title_changed.connect(() =>
+    {
+      string dir = term.get_window_title();
+      string dir_short = dir;
+      if (dir.length >= 18)
+      {
+        dir_short = dir.substring(0, 18) + "...";
+      }
+      tab_label.set_tooltip_text(dir);
+      tab_label.set_text(dir_short);
+    });
+
+    notebook.append_page(page_grid, tab_grid);
     notebook.show_all();
     notebook.set_current_page(notebook.get_n_pages() - 1);
     notebook.set_show_tabs(true);
-    if (notebook.get_n_pages() == 1)
-    {
-      notebook.set_show_tabs(false);
-    }
     
     term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
     term.set_cursor_shape(Vte.TerminalCursorShape.UNDERLINE);
