@@ -200,6 +200,7 @@ private class Program : Gtk.Application
 
     term.window_title_changed.connect(() =>
     {
+      get_current_terminal();
       string dir = term.get_window_title();
       string dir_short = dir;
       if (dir.length >= 18)
