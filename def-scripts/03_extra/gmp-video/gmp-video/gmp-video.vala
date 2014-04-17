@@ -161,6 +161,7 @@ private class Program : Gtk.Application
     window.set_icon_name(ICON);
     window.key_press_event.connect(keyboard_events);
     window.show_all();
+    window.delete_event.connect(() => { action_quit(); return true; });
 
     Gtk.drag_dest_set(grid, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
     grid.drag_data_received.connect(on_drag_data_received);

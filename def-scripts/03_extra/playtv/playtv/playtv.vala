@@ -139,6 +139,7 @@ private class Program : Gtk.Application
     window.set_default_size(790, 410);
     window.add(paned);
     window.show_all();
+    window.delete_event.connect(() => { action_quit(); return true; });
     
     var drawing_area_window = (Gdk.X11.Window)drawing_area.get_window();
     xid = (long)drawing_area_window.get_xid();
