@@ -192,6 +192,8 @@ sb_build_extra_module_cleaner()
   rm -r install/usr/share/applications/dconf-editor.desktop
   rm -r install/usr/share/applications/mpv.desktop
   rm -r install/usr/share/applications/qv4l2.desktop
+  rm -r install/usr/share/applications/gtk3-demo.desktop
+  rm -r install/usr/share/applications/gtk3-widget-factory.desktop
   #rm -r install/usr/share/applications/openbox.desktop
   for i in 16x16 22x22 24x24 32x32 48x48 64x64 256x256 scalable
   do rm -r install/usr/share/icons/hicolor/${i}/apps/*; done
