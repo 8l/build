@@ -87,14 +87,14 @@ private class Program : Gtk.Application
 
     set_app_menu(menu);
     
-    add_accelerator("<Control>T", "app.new-tab", null);
-    add_accelerator("<Control>W", "app.close-tab", null);
-    add_accelerator("<Control>Q", "app.quit", null);
-    add_accelerator("<Control>N", "app.next-tab", null);
-    add_accelerator("<Control>B", "app.prev-tab", null);
+    add_accelerator("<Control><Shift>T", "app.new-tab", null);
+    add_accelerator("<Control><Shift>W", "app.close-tab", null);
+    add_accelerator("<Control><Shift>Q", "app.quit", null);
+    add_accelerator("<Control>Page_Up", "app.next-tab", null);
+    add_accelerator("<Control>Page_Down", "app.prev-tab", null);
     add_accelerator("<Control><Shift>C", "app.copy", null);
     add_accelerator("<Control><Shift>V", "app.paste", null);
-    add_accelerator("<Control>A", "app.select-all", null);
+    add_accelerator("<Control><Shift>A", "app.select-all", null);
 
     settings = new GLib.Settings(APP_ID_PREF);
     width = settings.get_int("width");
