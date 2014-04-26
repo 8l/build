@@ -92,8 +92,8 @@ private class Program : Gtk.Application
     add_accelerator("<Control>Q", "app.quit", null);
     add_accelerator("<Control>N", "app.next-tab", null);
     add_accelerator("<Control>B", "app.prev-tab", null);
-    add_accelerator("<Control>C", "app.copy", null);
-    add_accelerator("<Control>V", "app.paste", null);
+    add_accelerator("<Control><Shift>C", "app.copy", null);
+    add_accelerator("<Control><Shift>V", "app.paste", null);
     add_accelerator("<Control>A", "app.select-all", null);
 
     settings = new GLib.Settings(APP_ID_PREF);
