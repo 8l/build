@@ -22,7 +22,7 @@ private class Program : Gtk.Application
   const string DESCRIPTION = _("Terminal emulator based on GTK+ and VTE");
   const string ICON        = "utilities-terminal";
   const string APP_ID      = "org.alphaos.taeni";
-  const string APP_ID_PREF = "org.alphaos.taeni.preferences";  
+  const string APP_ID_PREF = "org.alphaos.taeni.preferences";
   const string[] AUTHORS   = { "Simargl <archpup-at-gmail-dot-com>", null };
   
   Vte.Terminal term;
@@ -52,9 +52,16 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "pref",  action_pref  },
-    { "about", action_about },
-    { "quit",  action_quit  }
+    { "pref",       action_pref       },
+    { "about",      action_about      },
+    { "quit",       action_quit       },
+    { "new-tab",    action_new_tab    },
+    { "close-tab",  action_close_tab  },
+    { "next-tab",   action_next_tab   },
+    { "prev-tab",   action_prev_tab   },
+    { "copy",       action_copy       },
+    { "paste",      action_paste      },
+    { "select-all", action_select_all },
   };
 
   private Program()
@@ -80,6 +87,15 @@ private class Program : Gtk.Application
 
     set_app_menu(menu);
     
+    add_accelerator("<Control>T", "app.new-tab", null);
+    add_accelerator("<Control>W", "app.close-tab", null);
+    add_accelerator("<Control>Q", "app.quit", null);
+    add_accelerator("<Control>N", "app.next-tab", null);
+    add_accelerator("<Control>B", "app.prev-tab", null);
+    add_accelerator("<Control>C", "app.copy", null);
+    add_accelerator("<Control>V", "app.paste", null);
+    add_accelerator("<Control>A", "app.select-all", null);
+
     settings = new GLib.Settings(APP_ID_PREF);
     width = settings.get_int("width");
     height = settings.get_int("height");
@@ -172,7 +188,8 @@ private class Program : Gtk.Application
     var scrollbar = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL, term.vadjustment);
 
     var tab_label = new Gtk.Label("");
-    tab_label.width_request = 80;
+    tab_label.width_request = 190;
+    tab_label.set_alignment(0, 0);
 
     var tab_button_close = new Gtk.Button.from_icon_name("window-close-symbolic", Gtk.IconSize.MENU);
     tab_button_close.set_relief(Gtk.ReliefStyle.NONE);
@@ -180,7 +197,7 @@ private class Program : Gtk.Application
     var tab_grid = new Gtk.Grid();
     tab_grid.attach(tab_label, 0, 0, 1, 1);
     tab_grid.attach(tab_button_close, 1, 0, 1, 1);
-    tab_grid.set_column_spacing(10);
+    tab_grid.width_request = 200;
     tab_grid.show_all();
 
     var page_grid = new Gtk.Grid();
@@ -203,9 +220,9 @@ private class Program : Gtk.Application
       get_current_terminal();
       string dir = term.get_window_title();
       string dir_short = dir;
-      if (dir.length >= 18)
+      if (dir.length >= 23)
       {
-        dir_short = dir.substring(0, 18) + "...";
+        dir_short = dir.substring(0, 23) + "...";
       }
       tab_label.set_tooltip_text(dir);
       tab_label.set_text(dir_short);
@@ -227,20 +244,20 @@ private class Program : Gtk.Application
   private void add_popup_menu(Gtk.Menu menu)
   {
     var context_new = new Gtk.MenuItem.with_label(_("New tab"));
-    context_new.activate.connect(() => { create_tab(""); });
+    context_new.activate.connect(action_new_tab);
 
     var context_separator1 = new Gtk.SeparatorMenuItem();
 
     var context_copy = new Gtk.MenuItem.with_label(_("Copy"));
-    context_copy.activate.connect(() => { get_current_terminal(); term.copy_clipboard(); });
+    context_copy.activate.connect(action_copy);
 
     var context_paste = new Gtk.MenuItem.with_label(_("Paste"));
-    context_paste.activate.connect(() => { get_current_terminal(); term.paste_clipboard(); });
+    context_paste.activate.connect(action_paste);
 
     var context_separator2 = new Gtk.SeparatorMenuItem();
 
     var context_select_all = new Gtk.MenuItem.with_label(_("Select all"));
-    context_select_all.activate.connect(() => { get_current_terminal(); term.select_all(); });
+    context_select_all.activate.connect(action_select_all);
 
     menu.append(context_new);
     menu.append(context_separator1);
@@ -292,7 +309,7 @@ private class Program : Gtk.Application
     }
     settings.set_string("font", terminal_font);
   }
-  
+
   // Preferences dialog - on background change (2)
   private void bg_color_changed()
   {
@@ -309,7 +326,7 @@ private class Program : Gtk.Application
     }
     settings.set_string("bgcolor", terminal_bgcolor);
   }
-  
+
   // Preferences dialog - on foreground change (3)
   private void fg_color_changed()
   {
@@ -326,7 +343,7 @@ private class Program : Gtk.Application
     }
     settings.set_string("fgcolor", terminal_fgcolor);
   }
-  
+
   // Preferences dialog
   private void action_pref()
   {
@@ -380,6 +397,56 @@ private class Program : Gtk.Application
     preferences.show_all();
   }
 
+  private void action_new_tab()
+  {
+    create_tab("");
+  }
+
+  private void action_close_tab()
+  {
+    notebook.remove_page(notebook.get_current_page());
+    if (notebook.get_n_pages() == 0)
+    {
+      action_quit();
+    }
+  }
+
+  private void action_prev_tab()
+  {
+    if (notebook.get_n_pages()> 1)
+    {
+      get_current_terminal();
+      notebook.set_current_page(notebook.get_current_page() - 1);
+    }
+  }
+
+  private void action_next_tab()
+  {
+    if (notebook.get_n_pages()> 1)
+    {
+      get_current_terminal();
+      notebook.set_current_page(notebook.get_current_page() + 1);
+    }
+  }
+
+  private void action_copy()
+  {
+    get_current_terminal();
+    term.copy_clipboard();
+  }
+
+  private void action_paste()
+  {
+    get_current_terminal();
+    term.paste_clipboard();
+  }
+
+  private void action_select_all()
+  {
+    get_current_terminal();
+    term.select_all();
+  }
+
   private void action_about()
   {
     var about = new Gtk.AboutDialog();
@@ -404,7 +471,7 @@ private class Program : Gtk.Application
     settings.set_int("height", height);
     GLib.Settings.sync();
   }
-  
+
   private void action_quit()
   {
     save_settings();
