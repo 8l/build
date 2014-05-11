@@ -120,6 +120,7 @@ private class Program : Gtk.Application
     notebook = new Gtk.Notebook();
     notebook.expand = true;
     notebook.set_scrollable(true);
+    notebook.set_show_tabs(false);
 
     var grid = new Gtk.Grid();
     grid.attach(notebook, 0, 1, 1, 1);
@@ -188,16 +189,18 @@ private class Program : Gtk.Application
     var scrollbar = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL, term.vadjustment);
 
     var tab_label = new Gtk.Label("");
-    tab_label.width_request = 190;
-    tab_label.set_alignment(0, 0);
 
     var tab_button_close = new Gtk.Button.from_icon_name("window-close-symbolic", Gtk.IconSize.MENU);
     tab_button_close.set_relief(Gtk.ReliefStyle.NONE);
 
+    var empty_label = new Gtk.Label("");
+    empty_label.hexpand = true;
+
     var tab_grid = new Gtk.Grid();
     tab_grid.attach(tab_label, 0, 0, 1, 1);
-    tab_grid.attach(tab_button_close, 1, 0, 1, 1);
-    tab_grid.width_request = 200;
+    tab_grid.attach(empty_label, 1, 0, 1, 1);
+    tab_grid.attach(tab_button_close, 2, 0, 1, 1);
+    tab_grid.hexpand = true;
     tab_grid.show_all();
 
     var page_grid = new Gtk.Grid();
@@ -212,6 +215,10 @@ private class Program : Gtk.Application
       if (notebook.get_n_pages() == 0)
       {
         action_quit();
+      }
+      if (notebook.get_n_pages() == 1)
+      {
+        notebook.set_show_tabs(false);
       }
     });
 
@@ -231,7 +238,10 @@ private class Program : Gtk.Application
     notebook.append_page(page_grid, tab_grid);
     notebook.show_all();
     notebook.set_current_page(notebook.get_n_pages() - 1);
-    notebook.set_show_tabs(true);
+    if (notebook.get_n_pages() > 1)
+    {
+      notebook.set_show_tabs(true);
+    }
     
     term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
     term.set_cursor_shape(Vte.TerminalCursorShape.UNDERLINE);
