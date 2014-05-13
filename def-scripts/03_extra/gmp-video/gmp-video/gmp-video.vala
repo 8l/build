@@ -219,17 +219,20 @@ private class Program : Gtk.Application
     menuitem_subtitle.set_submenu(menuitem_subtitle_submenu);
 
     // Aspect ratio submenu
+    var menuitem_aspect_auto = new Gtk.MenuItem.with_label(_("Auto"));
     var menuitem_aspect_43 = new Gtk.MenuItem.with_label("4:3");
     var menuitem_aspect_169 = new Gtk.MenuItem.with_label("16:9");
     var menuitem_aspect_54 = new Gtk.MenuItem.with_label("5:4");
     var menuitem_aspect_11 = new Gtk.MenuItem.with_label("1:1");
     
+    menuitem_aspect_auto.activate.connect(() => { mpv_send_command(FIFO, "set aspect 0"); });
     menuitem_aspect_43.activate.connect(() => { mpv_send_command(FIFO, "set aspect 1.333333"); });
     menuitem_aspect_169.activate.connect(() => { mpv_send_command(FIFO, "set aspect 1.777778"); });
     menuitem_aspect_54.activate.connect(() => { mpv_send_command(FIFO, "set aspect 1.25"); });
     menuitem_aspect_11.activate.connect(() => { mpv_send_command(FIFO, "set aspect 1"); });
     
     var menuitem_aspect_submenu = new Gtk.Menu();
+    menuitem_aspect_submenu.add(menuitem_aspect_auto);
     menuitem_aspect_submenu.add(menuitem_aspect_43);
     menuitem_aspect_submenu.add(menuitem_aspect_169);
     menuitem_aspect_submenu.add(menuitem_aspect_54);
