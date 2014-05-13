@@ -155,7 +155,6 @@ setup_services()
   . /etc/rc.local
 
   ifconfig lo up
-  ifconfig $interface up
   read_bootcodes
 }
 
