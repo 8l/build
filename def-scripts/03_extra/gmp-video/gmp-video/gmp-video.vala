@@ -124,7 +124,7 @@ private class Program : Gtk.Application
     button_pause.clicked.connect(action_pause);
     button_rewind.clicked.connect(action_seek_minus_15);
     button_forward.clicked.connect(action_seek_plus_15);
-    button_stop.clicked.connect(() => { mpv_stop_playback(FIFO, OUTPUT); headerbar.set_title(NAME); button_pause.sensitive = false; });
+    button_stop.clicked.connect(() => { mpv_stop_playback(FIFO, OUTPUT); headerbar.set_title(NAME); playing = false; button_pause_set_image(); });
     button_volume.value_changed.connect(volume_level_changed);
 
     set_button_size_relief_focus(button_restart);
@@ -184,7 +184,6 @@ private class Program : Gtk.Application
     
     var drawing_area_window = (Gdk.X11.Window)drawing_area.get_window();
     xid = (long)drawing_area_window.get_xid();
-    button_pause.sensitive = false;
   }
 
   public override void activate() 
@@ -434,7 +433,6 @@ private class Program : Gtk.Application
     headerbar.set_title("%s - %s".printf(NAME, basename));
     playing = true;
     button_pause_set_image();
-    button_pause.sensitive = true;
   }
 
   private void action_full_screen_exit()
