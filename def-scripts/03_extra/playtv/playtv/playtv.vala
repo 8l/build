@@ -109,7 +109,7 @@ private class Program : Gtk.Application
     
     scrolled = new Gtk.ScrolledWindow(null, null);
     scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS);
-    scrolled.set_size_request(270, 410);
+    scrolled.set_size_request(250, 410);
     scrolled.add(treeview);
     
     var paned = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
