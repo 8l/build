@@ -50,11 +50,19 @@ private class Program : Gtk.Application
   string subtitle_color;
   double subtitle_scale;
   string subtitle_fuzziness;
+  bool playing;
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about", action_about },
-    { "quit",  action_quit  }
+    { "about",              action_about              },
+    { "quit",               action_quit               },
+    { "full-screen-exit",   action_full_screen_exit   },
+    { "full-screen-toggle", action_full_screen_toggle },
+    { "pause",              action_pause              },
+    { "seek-plus-15",       action_seek_plus_15       },
+    { "seek-minus-15",      action_seek_minus_15      },
+    { "seek-plus-120",      action_seek_plus_120      },
+    { "seek-minus-120",     action_seek_minus_120     }
   };
 
   private Program()
@@ -73,6 +81,14 @@ private class Program : Gtk.Application
 
     set_app_menu(menu);
 
+    add_accelerator("Escape", "app.full-screen-exit", null);
+    add_accelerator("F11", "app.full-screen-toggle", null);
+    add_accelerator("space", "app.pause", null);
+    add_accelerator("Right", "app.seek-plus-15", null);
+    add_accelerator("Left", "app.seek-minus-15", null);
+    add_accelerator("Page_Up", "app.seek-plus-120", null);
+    add_accelerator("Page_Down", "app.seek-minus-120", null);
+    
     settings = new GLib.Settings("org.alphaos.gmp-video.preferences");
     drawing_area_width = settings.get_int("drawing-area-width");
     drawing_area_height = settings.get_int("drawing-area-height");
@@ -95,7 +111,8 @@ private class Program : Gtk.Application
     drawing_area.set_hexpand(true);
     
     button_restart = new Gtk.Button.from_icon_name("view-refresh-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-    button_pause = new Gtk.Button.from_icon_name("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+    button_pause = new Gtk.Button();
+    button_pause_set_image();
     button_rewind = new Gtk.Button.from_icon_name("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
     button_forward = new Gtk.Button.from_icon_name("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
     button_stop = new Gtk.Button.from_icon_name("media-playback-stop-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
@@ -104,10 +121,10 @@ private class Program : Gtk.Application
     button_volume.set_value(1.00);
 
     button_restart.clicked.connect(() => { gmp_video_start_playback(); });
-    button_pause.clicked.connect(() => { mpv_send_command(FIFO, "cycle pause"); });
-    button_rewind.clicked.connect(() => { mpv_send_command(FIFO, "seek -15"); });
-    button_forward.clicked.connect(() => { mpv_send_command(FIFO, "seek +15"); });
-    button_stop.clicked.connect(() => { mpv_stop_playback(FIFO, OUTPUT); headerbar.set_title(NAME); });
+    button_pause.clicked.connect(action_pause);
+    button_rewind.clicked.connect(action_seek_minus_15);
+    button_forward.clicked.connect(action_seek_plus_15);
+    button_stop.clicked.connect(() => { mpv_stop_playback(FIFO, OUTPUT); headerbar.set_title(NAME); button_pause.sensitive = false; });
     button_volume.value_changed.connect(volume_level_changed);
 
     set_button_size_relief_focus(button_restart);
@@ -159,7 +176,6 @@ private class Program : Gtk.Application
     window.set_titlebar(headerbar);
     window.add(grid);
     window.set_icon_name(ICON);
-    window.key_press_event.connect(keyboard_events);
     window.show_all();
     window.delete_event.connect(() => { action_quit(); return true; });
 
@@ -168,6 +184,7 @@ private class Program : Gtk.Application
     
     var drawing_area_window = (Gdk.X11.Window)drawing_area.get_window();
     xid = (long)drawing_area_window.get_xid();
+    button_pause.sensitive = false;
   }
 
   public override void activate() 
@@ -189,6 +206,21 @@ private class Program : Gtk.Application
   {
     button_name.set_relief(Gtk.ReliefStyle.NONE);
     button_name.set_can_focus(false);
+  }
+  
+  private void button_pause_set_image()
+  {
+    Gtk.Image image_play_pause;
+    if (playing == true)
+    {
+      image_play_pause = new Gtk.Image.from_icon_name("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+    }
+    else
+    {
+      image_play_pause = new Gtk.Image.from_icon_name("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+    }
+    button_pause.set_image(image_play_pause);
+    button_pause.set_always_show_image(true);
   }
   
   // Context menu
@@ -309,81 +341,12 @@ private class Program : Gtk.Application
     }
     dialog.destroy();
   }
-
-  private void full_screen_switch()
-  {
-    window.fullscreen();
-    var invisible_cursor = new Gdk.Cursor(Gdk.CursorType.BLANK_CURSOR);
-    Gdk.Window w = window.get_window();
-    w.set_cursor(invisible_cursor);
-    buttons_grid.hide();
-  }
-  
-  private void full_screen_exit()
-  {  
-    window.unfullscreen();
-    Gdk.Window w = window.get_window();
-    w.set_cursor(null);
-    buttons_grid.show();
-  }
   
   private void volume_level_changed()
   {
     double level = button_volume.get_value() * 100;
     mpv_send_command(FIFO, "no-osd set volume %s".printf(level.to_string()));
   }
-  
-  // Keyboard shortcuts
-  private bool keyboard_events(Gdk.EventKey event)
-  {
-    string key = Gdk.keyval_name(event.keyval);
-    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
-    {
-      if(key=="Escape")
-      {
-        full_screen_exit();
-      }
-    }
-
-    if (key=="F11")
-    {
-      if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
-      {
-        full_screen_exit();
-      }
-      else
-      {
-        full_screen_switch();
-      }
-    }
-
-    if(key=="space")
-    {
-      mpv_send_command(FIFO, "pause");
-    }
-  
-    if(key=="Right")
-    {
-      mpv_send_command(FIFO, "seek +15");
-    }  
-      
-    if(key=="Left")
-    {
-      mpv_send_command(FIFO, "seek -15");
-    }
-    
-    if(key=="Page_Up")
-    {
-      mpv_send_command(FIFO, "seek -120");
-    }  
-      
-    if(key=="Page_Down")
-    {
-      mpv_send_command(FIFO, "seek +120");
-    }  
-      
-    return false;
-  } 
   
   // Mouse EventButton Press
   private bool mouse_button_press_events(Gdk.EventButton event)
@@ -396,14 +359,7 @@ private class Program : Gtk.Application
 
     if (event.type == Gdk.EventType.2BUTTON_PRESS)
     {
-      if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
-      {
-        full_screen_exit();
-      }
-      else
-      {
-        full_screen_switch();
-      }
+      action_full_screen_toggle();
     }
     return false;
   }
@@ -413,14 +369,14 @@ private class Program : Gtk.Application
   {
     if (event.direction == Gdk.ScrollDirection.UP)
     {
-      mpv_send_command(FIFO, "seek +15");
+      action_seek_plus_15();
     }
     if (event.direction == Gdk.ScrollDirection.DOWN)
     {
-      mpv_send_command(FIFO, "seek -15");
+      action_seek_minus_15();
     }
     return false;
-  }  
+  }
 
   // Drag Data
   private void on_drag_data_received(Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) 
@@ -476,6 +432,70 @@ private class Program : Gtk.Application
     mpv_video_with_subtitles(video_mode, subtitle_color, subtitle_scale, subtitle_fuzziness, xid, FIFO, file, OUTPUT);
     button_volume.set_value(1.00);
     headerbar.set_title("%s - %s".printf(NAME, basename));
+    playing = true;
+    button_pause_set_image();
+    button_pause.sensitive = true;
+  }
+
+  private void action_full_screen_exit()
+  {
+    window.unfullscreen();
+    Gdk.Window w = window.get_window();
+    w.set_cursor(null);
+    buttons_grid.show();
+  }
+  
+  private void action_full_screen_toggle()
+  {
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
+    {
+      window.unfullscreen();
+      Gdk.Window w = window.get_window();
+      w.set_cursor(null);
+      buttons_grid.show();
+    }
+    else
+    {
+      window.fullscreen();
+      var invisible_cursor = new Gdk.Cursor(Gdk.CursorType.BLANK_CURSOR);
+      Gdk.Window w = window.get_window();
+      w.set_cursor(invisible_cursor);
+      buttons_grid.hide();
+    }
+  }
+  
+  private void action_pause()
+  {
+    mpv_send_command(FIFO, "cycle pause");
+    if (playing == true)
+    {
+      playing = false;
+    }
+    else
+    {
+      playing = true;
+    }
+    button_pause_set_image();
+  }
+  
+  private void action_seek_plus_15()
+  {
+    mpv_send_command(FIFO, "seek +15");
+  }
+  
+  private void action_seek_minus_15()
+  {
+    mpv_send_command(FIFO, "seek -15");
+  }
+  
+  private void action_seek_plus_120()
+  {
+    mpv_send_command(FIFO, "seek +120");
+  }
+  
+  private void action_seek_minus_120()
+  {
+    mpv_send_command(FIFO, "seek -120");
   }
 
   private void action_about()
