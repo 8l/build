@@ -1,15 +1,26 @@
 diff -urN lxappearance-0.5.5/data/ui/about.ui.in lxappearance-0.5.5.new/data/ui/about.ui.in
 --- lxappearance-0.5.5/data/ui/about.ui.in	2014-01-07 16:24:51.000000000 +0100
-+++ lxappearance-0.5.5.new/data/ui/about.ui.in	2014-02-14 14:32:58.282925702 +0100
-@@ -1,4 +1,4 @@
++++ lxappearance-0.5.5.new/data/ui/about.ui.in	2014-05-19 15:02:46.000000000 +0200
+@@ -1,15 +1 @@
 -<?xml version="1.0"?><interface><object class="GtkAboutDialog" id="dlg"><property name="border_width">5</property><property name="window_position">center-on-parent</property><property name="type_hint">dialog</property><property name="has_separator">False</property><property name="program_name">LXAppearance</property><property name="version">@VERSION@</property><property name="copyright" translatable="yes">Copyright (C) 2011 LXDE Project</property><property name="comments" translatable="yes">Customizes look and feel of your desktop</property><property name="website">http://lxde.org/</property><property name="license">Copyright (C) 2010 LXDE Team
-+<?xml version="1.0"?><interface><object class="GtkAboutDialog" id="dlg"><property name="border_width">5</property><property name="logo_icon_name">preferences-desktop-theme</property><property name="window_position">center-on-parent</property><property name="type_hint">dialog</property><property name="program_name">LXAppearance</property><property name="version">0.5.5</property><property name="copyright" translatable="yes">Copyright (C) 2011 LXDE Project</property><property name="comments" translatable="yes">Customizes look and feel of your desktop</property><property name="website">http://lxde.org/</property><property name="license">Copyright (C) 2010 LXDE Team
- 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
+-
+-This program is free software; you can redistribute it and/or
+-modify it under the terms of the GNU General Public License
+-as published by the Free Software Foundation; either version 2
+-of the License, or (at your option) any later version.
+-
+-This program is distributed in the hope that it will be useful,
+-but WITHOUT ANY WARRANTY; without even the implied warranty of
+-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-GNU General Public License for more details.
+-
+-You should have received a copy of the GNU General Public License
+-along with this program; if not, write to the Free Software
+-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</property><property name="authors">&#x6D2A;&#x4EFB;&#x8AED; Hong Jen Yee (PCMan) &lt;pcman.tw@gmail.com&gt;</property><property name="translator_credits" translatable="yes" comments="Please replace this line with your own names, one name per line. ">translator-credits</property><property name="artists"></property><property name="wrap_license">True</property><child internal-child="vbox"><object class="GtkVBox" id="dialog-vbox1"><property name="visible">True</property><property name="spacing">2</property><child internal-child="action_area"><object class="GtkHButtonBox" id="dialog-action_area1"><property name="visible">True</property><property name="layout_style">end</property></object><packing><property name="expand">False</property><property name="pack_type">end</property><property name="position">0</property></packing></child></object></child></object></interface>
++<?xml version="1.0"?><interface><object class="GtkAboutDialog" id="dlg"><property name="border_width">5</property><property name="logo_icon_name">preferences-desktop-theme</property><property name="window_position">center-on-parent</property><property name="type_hint">dialog</property><property name="program_name">LXAppearance</property><property name="version">0.5.5</property><property name="copyright" translatable="yes">Copyright © LXDE team</property><property name="comments" translatable="yes">Customizes look and feel of your desktop</property><property name="website">http://lxde.org/</property><property name="license-type">GTK_LICENSE_GPL_2_0</property><property name="authors">Hong Jen Yee (PCMan) &lt;pcman.tw@gmail.com&gt;</property><property name="translator_credits" translatable="yes" comments="Please replace this line with your own names, one name per line. ">translator-credits</property><property name="artists"></property><property name="wrap_license">True</property><child internal-child="vbox"><object class="GtkVBox" id="dialog-vbox1"><property name="visible">True</property><property name="spacing">2</property><child internal-child="action_area"><object class="GtkHButtonBox" id="dialog-action_area1"><property name="visible">True</property><property name="layout_style">end</property></object><packing><property name="expand">False</property><property name="pack_type">end</property><property name="position">0</property></packing></child></object></child></object></interface>
 diff -urN lxappearance-0.5.5/data/ui/lxappearance.ui lxappearance-0.5.5.new/data/ui/lxappearance.ui
 --- lxappearance-0.5.5/data/ui/lxappearance.ui	2014-01-07 16:24:51.000000000 +0100
-+++ lxappearance-0.5.5.new/data/ui/lxappearance.ui	2014-02-14 16:05:22.000000000 +0100
++++ lxappearance-0.5.5.new/data/ui/lxappearance.ui	2014-05-19 14:59:50.546939154 +0200
 @@ -1758,10 +1758,9 @@
                </packing>
              </child>
@@ -38,7 +49,7 @@ diff -urN lxappearance-0.5.5/data/ui/lxappearance.ui lxappearance-0.5.5.new/data
                  <property name="use_stock">True</property>
 diff -urN lxappearance-0.5.5/src/widget-theme.c lxappearance-0.5.5.new/src/widget-theme.c
 --- lxappearance-0.5.5/src/widget-theme.c	2014-01-07 16:24:51.000000000 +0100
-+++ lxappearance-0.5.5.new/src/widget-theme.c	2014-02-14 15:55:49.059694922 +0100
++++ lxappearance-0.5.5.new/src/widget-theme.c	2014-05-19 14:59:50.546939154 +0200
 @@ -36,7 +36,7 @@
              if(!g_slist_find_custom(themes, name, (GCompareFunc)strcmp))
              {
