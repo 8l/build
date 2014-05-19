@@ -1,6 +1,6 @@
 diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
 --- lxtask-0.1.4/src/interface.c	2011-06-21 23:50:00.000000000 +0200
-+++ lxtask-0.1.4.new/src/interface.c	2014-04-02 15:44:33.221559486 +0200
++++ lxtask-0.1.4.new/src/interface.c   2014-05-15 18:10:33.000000000 +0200
 @@ -41,6 +41,9 @@
  GtkWidget* create_main_window (void)
  {
@@ -22,7 +22,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
 +    menubutton = gtk_menu_button_new ();
 +    gtk_button_set_image (GTK_BUTTON (menubutton), menubutton_image);
 +    
-+    header_bar = gtk_header_bar_new (); 
++    header_bar = gtk_header_bar_new ();
 +    gtk_header_bar_set_title (GTK_HEADER_BAR (header_bar), _("Task Manager"));
 +    gtk_header_bar_set_show_close_button(GTK_HEADER_BAR (header_bar), TRUE);
 +    gtk_header_bar_pack_end (GTK_HEADER_BAR (header_bar), GTK_WIDGET (menubutton));
@@ -157,7 +157,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      return mainmenu;
  }
  
-@@ -376,6 +437,7 @@
+@@ -376,15 +437,21 @@
  
      gtk_container_set_border_width ( ( GtkContainer*)about_dlg , 2 );
      gtk_about_dialog_set_version ( (GtkAboutDialog*)about_dlg, VERSION );
@@ -165,7 +165,23 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
  #if !GTK_CHECK_VERSION(2,12,0)
      gtk_about_dialog_set_name ( (GtkAboutDialog*)about_dlg, _( "LXTask" ) );
  #else
-@@ -587,12 +649,25 @@
+ 	gtk_about_dialog_set_program_name ( (GtkAboutDialog*)about_dlg, _( "LXTask" ) );
+ #endif
+     /* gtk_about_dialog_set_logo( (GtkAboutDialog*)about_dlg, gdk_pixbuf_new_from_file(  PACKAGE_DATA_DIR"/pixmaps/lxtask.png", NULL ) ); */
+-    gtk_about_dialog_set_copyright ( (GtkAboutDialog*)about_dlg, _( "Copyright (C) 2008 LXDE team" ) );
+-    gtk_about_dialog_set_comments ( (GtkAboutDialog*)about_dlg, _( "Lightweight task manager for LXDE project" ) );
++    gtk_about_dialog_set_copyright ( (GtkAboutDialog*)about_dlg, _( "Copyright \xc2\xa9 LXDE team" ) );
++    gtk_about_dialog_set_comments ( (GtkAboutDialog*)about_dlg, _( "Lightweight task manager" ) );
++#if GTK_CHECK_VERSION(3,10,0)
++    gtk_about_dialog_set_license_type ((GtkAboutDialog*)about_dlg, GTK_LICENSE_GPL_2_0);
++    gtk_window_set_skip_taskbar_hint((GtkWindow*)about_dlg, TRUE);
++#else
+     gtk_about_dialog_set_license ( (GtkAboutDialog*)about_dlg, "LXTask\n\nCopyright (C) 2008 LXDE team\n\nThis program is free software; you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation; either version 2\nof the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA." );
++#endif
+     gtk_about_dialog_set_website ( (GtkAboutDialog*)about_dlg, "http://lxde.org/" );
+     gtk_about_dialog_set_authors ( (GtkAboutDialog*)about_dlg, authors );
+     gtk_about_dialog_set_translator_credits ( (GtkAboutDialog*)about_dlg, translators );
+@@ -587,12 +654,25 @@
      GtkWidget *dlg;
      GtkWidget *c_area;
      GtkWidget *notebook = gtk_notebook_new();
