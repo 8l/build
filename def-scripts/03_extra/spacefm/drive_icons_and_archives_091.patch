@@ -1,6 +1,18 @@
-diff -urN spacefm-0.9.1/src/ptk/ptk-file-archiver.c spacefm-0.9.1.new/src/ptk/ptk-file-archiver.c
---- spacefm-0.9.1/src/ptk/ptk-file-archiver.c	2013-11-06 15:16:29.000000000 +0100
-+++ spacefm-0.9.1.new/src/ptk/ptk-file-archiver.c	2013-12-01 14:10:08.151553871 +0100
+diff -urN spacefm-0.9.4/data/spacefm.desktop.in spacefm-0.9.4.new/data/spacefm.desktop.in
+--- spacefm-0.9.4/data/spacefm.desktop.in	2014-03-30 14:17:28.000000000 +0200
++++ spacefm-0.9.4.new/data/spacefm.desktop.in	2014-05-19 22:04:10.683993143 +0200
+@@ -2,7 +2,7 @@
+ Version=1.0
+ _Name=SpaceFM
+ Categories=System;FileTools;Utility;Core;GTK;FileManager;
+-Exec=spacefm %F
++Exec=spacefm -r %F
+ Icon=spacefm
+ StartupNotify=true
+ Type=Application
+diff -urN spacefm-0.9.4/src/ptk/ptk-file-archiver.c spacefm-0.9.4.new/src/ptk/ptk-file-archiver.c
+--- spacefm-0.9.4/src/ptk/ptk-file-archiver.c	2014-03-30 14:17:28.000000000 +0200
++++ spacefm-0.9.4.new/src/ptk/ptk-file-archiver.c	2014-05-19 22:03:03.276996272 +0200
 @@ -380,7 +380,7 @@
      if ( format == 3 || format == 4 || format == 6 )
      {
@@ -19,10 +31,10 @@ diff -urN spacefm-0.9.1/src/ptk/ptk-file-archiver.c spacefm-0.9.1.new/src/ptk/pt
                  keep_term = FALSE;
                  prompt = g_strdup_printf( " ; fm_err=$?; if [ $fm_err -ne 0 ]; then echo; echo -n '%s: '; read s; exit $fm_err; fi", /* no translate for security*/
                              "[ Finished With Errors ]  Press Enter to close" );
-diff -urN spacefm-0.9.1/src/settings.c spacefm-0.9.1.new/src/settings.c
---- spacefm-0.9.1/src/settings.c	2013-11-06 15:16:29.000000000 +0100
-+++ spacefm-0.9.1.new/src/settings.c	2013-12-01 14:08:00.094559817 +0100
-@@ -9547,23 +9547,23 @@
+diff -urN spacefm-0.9.4/src/settings.c spacefm-0.9.4.new/src/settings.c
+--- spacefm-0.9.4/src/settings.c	2014-03-30 14:17:28.000000000 +0200
++++ spacefm-0.9.4.new/src/settings.c	2014-05-19 22:03:03.282996272 +0200
+@@ -9658,23 +9658,23 @@
  
          set = xset_set( "dev_icon_audiocd", "lbl", _("Audio CD") );
          set->menu_style = XSET_MENU_ICON;
@@ -50,7 +62,7 @@ diff -urN spacefm-0.9.1/src/settings.c spacefm-0.9.1.new/src/settings.c
          set->line = g_strdup( "#devices-settings-icon" );
  
          set = xset_set( "dev_icon_floppy_mounted", "lbl", _("Floppy Mounted") );
-@@ -9578,22 +9578,22 @@
+@@ -9689,22 +9689,22 @@
  
          set = xset_set( "dev_icon_remove_mounted", "lbl", _("Removable Mounted") );
          set->menu_style = XSET_MENU_ICON;
