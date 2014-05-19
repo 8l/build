@@ -2,10 +2,13 @@
 
 # Web browser launcher for alphaOS
 
-[ -x /usr/bin/firefox ]                && firefox "$@"                                                            && exit 0
-[ -x /usr/bin/firefox-nightly ]        && firefox-nightly "$@"                                                    && exit 0
-[ -x /usr/bin/firefox-aurora ]         && firefox-aurora "$@"                                                     && exit 0
-[ -x /usr/bin/firefox-beta-bin ]       && firefox-beta-bin "$@"                                                   && exit 0
+URL="$@"
+[ ! "$URL" ] && URL="about:home"
+
+[ -x /usr/bin/firefox ]                && firefox -new-tab $URL                                                   && exit 0
+[ -x /usr/bin/firefox-nightly ]        && firefox-nightly -new-tab $URL                                           && exit 0
+[ -x /usr/bin/firefox-aurora ]         && firefox-aurora -new-tab $URL                                            && exit 0
+[ -x /usr/bin/firefox-beta-bin ]       && firefox-beta-bin -new-tab $URL                                          && exit 0
 [ -x /usr/bin/chromium ]               && chromium --user-data-dir=$HOME/.config/chromium "$@"                    && exit 0
 [ -x /usr/bin/chromium-browser ]       && chromium-browser --user-data-dir=$HOME/.config/chromium-browser "$@"    && exit 0
 [ -x /usr/bin/google-chrome ]          && google-chrome --user-data-dir=$HOME/.config/google-chrome "$@"          && exit 0
