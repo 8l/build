@@ -1,11 +1,98 @@
 diff -urN lxrandr-0.1.2/src/lxrandr.c lxrandr-0.1.2.new/src/lxrandr.c
 --- lxrandr-0.1.2/src/lxrandr.c	2011-07-23 17:33:48.000000000 +0200
-+++ lxrandr-0.1.2.new/src/lxrandr.c	2014-02-14 16:25:38.657995465 +0100
-@@ -232,6 +232,7 @@
++++ lxrandr-0.1.2.new/src/lxrandr.c	2014-05-19 15:55:00.474851735 +0200
+@@ -220,7 +220,7 @@
+     GtkWidget * about_dlg;
+     const gchar *authors[] =
+     {
+-        "洪任諭 Hong Jen Yee (PCMan) <pcman.tw@gmail.com>",
++        "Hong Jen Yee (PCMan) <pcman.tw@gmail.com>",
+         NULL
+     };
+     /* TRANSLATORS: Replace mw string with your names, one name per line. */
+@@ -232,11 +232,17 @@
  
      gtk_container_set_border_width ( ( GtkContainer*)about_dlg , 2 );
      gtk_about_dialog_set_version ( (GtkAboutDialog*)about_dlg, VERSION );
 +    gtk_about_dialog_set_logo_icon_name ( (GtkAboutDialog*)about_dlg, "lxrandr" );
      gtk_about_dialog_set_program_name ( (GtkAboutDialog*)about_dlg, _( "LXRandR" ) );
      //gtk_about_dialog_set_logo( (GtkAboutDialog*)about_dlg, gdk_pixbuf_new_from_file(  PACKAGE_DATA_DIR"/pixmaps/lxrandr.png", NULL ) );
-     gtk_about_dialog_set_copyright ( (GtkAboutDialog*)about_dlg, _( "Copyright (C) 2008-2011" ) );
+-    gtk_about_dialog_set_copyright ( (GtkAboutDialog*)about_dlg, _( "Copyright (C) 2008-2011" ) );
+-    gtk_about_dialog_set_comments ( (GtkAboutDialog*)about_dlg, _( "Monitor configuration tool for LXDE" ) );
+-    gtk_about_dialog_set_license ( (GtkAboutDialog*)about_dlg, "This program is free software; you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation; either version 2\nof the License, or (at your option) any later version.\n\nmw program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with mw program; if not, write to the Free Software\nFoundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA." );
++    gtk_about_dialog_set_copyright ( (GtkAboutDialog*)about_dlg, _( "Copyright \xc2\xa9 LXDE team" ) );
++    gtk_about_dialog_set_comments ( (GtkAboutDialog*)about_dlg, _( "Monitor configuration tool" ) );
++#if GTK_CHECK_VERSION(3,10,0)
++    gtk_about_dialog_set_license_type ((GtkAboutDialog*)about_dlg, GTK_LICENSE_GPL_2_0);
++    gtk_window_set_skip_taskbar_hint((GtkWindow*)about_dlg, TRUE);
++#else
++     gtk_about_dialog_set_license ( (GtkAboutDialog*)about_dlg, "This program is free software; you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation; either version 2\nof the License, or (at your option) any later version.\n\nmw program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with mw program; if not, write to the Free Software\nFoundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA." );
++#endif
+     gtk_about_dialog_set_website ( (GtkAboutDialog*)about_dlg, "http://lxde.org/" );
+     gtk_about_dialog_set_authors ( (GtkAboutDialog*)about_dlg, authors );
+     gtk_about_dialog_set_translator_credits ( (GtkAboutDialog*)about_dlg, translators );
+@@ -469,9 +475,9 @@
+ 
+     dlg = gtk_dialog_new_with_buttons( _("Display Settings"), NULL,
+                                        GTK_DIALOG_MODAL,
+-                                       GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+-                                       GTK_STOCK_APPLY, GTK_RESPONSE_OK,
+-                                       GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL );
++                                       "Save", GTK_RESPONSE_ACCEPT,
++                                       "Apply", GTK_RESPONSE_OK,
++                                       "Cancel", GTK_RESPONSE_CANCEL, NULL );
+     g_signal_connect( dlg, "response", G_CALLBACK(on_response), NULL );
+     gtk_container_set_border_width( GTK_CONTAINER(dlg), 8 );
+     gtk_dialog_set_alternative_button_order( GTK_DIALOG(dlg), GTK_RESPONSE_OK, GTK_RESPONSE_CANCEL, -1 );
+@@ -479,7 +485,12 @@
+     /* Set icon name for main (dlg) window so it displays in the panel. */
+     gtk_window_set_icon_name(GTK_WINDOW(dlg), "display");
+ 
++#if GTK_CHECK_VERSION(3,10,0)
++    btn = gtk_button_new_with_label("About");
++#else
+     btn = gtk_button_new_from_stock( GTK_STOCK_ABOUT );
++#endif
++
+ #if GTK_CHECK_VERSION(2,14,0)
+     gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area( GTK_DIALOG(dlg))), btn, FALSE, TRUE, 0 );
+     gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(gtk_dialog_get_action_area( GTK_DIALOG(dlg))), btn, TRUE );
+@@ -499,7 +510,11 @@
+     // If this is a laptop and there is an external monitor, offer quick options
+     if( LVDS && g_slist_length( monitors ) == 2 )
+     {
++#if GTK_CHECK_VERSION(3,0,0)
++        vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
++#else
+         vbox = gtk_vbox_new( FALSE, 4 );
++#endif
+         gtk_container_set_border_width( GTK_CONTAINER(vbox), 8 );
+ 
+         btn = gtk_button_new_with_label( _("Show the same screen on both laptop LCD and external monitor") );
+@@ -520,8 +535,11 @@
+     {
+         gtk_notebook_set_show_tabs( GTK_NOTEBOOK(notebook), FALSE );
+     }
+-
++#if GTK_CHECK_VERSION(3,0,0)
++    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
++#else
+     vbox = gtk_vbox_new( FALSE, 4 );
++#endif
+     gtk_container_set_border_width( GTK_CONTAINER(vbox), 8 );
+     gtk_notebook_append_page( GTK_NOTEBOOK(notebook), vbox, gtk_label_new(_("Advanced")) );
+ 
+@@ -540,8 +558,11 @@
+ 
+         frame = gtk_frame_new( get_human_readable_name(m) );
+         gtk_box_pack_start( GTK_BOX(vbox), frame, FALSE, TRUE, 2 );
+-
+-        hbox = gtk_hbox_new( FALSE, 4 );
++#if GTK_CHECK_VERSION(3,0,0)
++        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
++#else
++        hbox = gtk_vbox_new( FALSE, 4 );
++#endif
+         gtk_container_set_border_width( GTK_CONTAINER(hbox), 4 );
+         gtk_container_add( GTK_CONTAINER(frame), hbox );
+ 
