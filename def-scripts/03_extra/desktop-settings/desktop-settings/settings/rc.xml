@@ -248,7 +248,7 @@
     </keybind>
     <keybind key="W-f">
       <action name="Execute">
-        <command>spacefm</command>
+        <command>spacefm -r</command>
         <startupnotify>
           <enabled>yes</enabled>
           <name>File Manager</name>

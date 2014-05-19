@@ -141,7 +141,7 @@
   </item>
   <item label="File Manager" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/system-file-manager.png">
     <action name="Execute">
-      <command>spacefm</command>
+      <command>spacefm -r</command>
     </action>
   </item>
   <item label="Web Browser" icon="/usr/share/icons/Faenza-Mini-Blue/apps/96/web-browser.png">
