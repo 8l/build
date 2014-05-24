@@ -52,16 +52,17 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "pref",       action_pref       },
-    { "about",      action_about      },
-    { "quit",       action_quit       },
-    { "new-tab",    action_new_tab    },
-    { "close-tab",  action_close_tab  },
-    { "next-tab",   action_next_tab   },
-    { "prev-tab",   action_prev_tab   },
-    { "copy",       action_copy       },
-    { "paste",      action_paste      },
-    { "select-all", action_select_all },
+    { "pref",        action_pref        },
+    { "about",       action_about       },
+    { "quit",        action_quit        },
+    { "new-tab",     action_new_tab     },
+    { "close-tab",   action_close_tab   },
+    { "next-tab",    action_next_tab    },
+    { "prev-tab",    action_prev_tab    },
+    { "copy",        action_copy        },
+    { "paste",       action_paste       },
+    { "select-all",  action_select_all  },
+    { "full-screen", action_full_screen },
   };
 
   private Program()
@@ -95,6 +96,7 @@ private class Program : Gtk.Application
     add_accelerator("<Control><Shift>C", "app.copy", null);
     add_accelerator("<Control><Shift>V", "app.paste", null);
     add_accelerator("<Control><Shift>A", "app.select-all", null);
+    add_accelerator("F11", "app.full-screen", null);
 
     settings = new GLib.Settings(APP_ID_PREF);
     width = settings.get_int("width");
@@ -419,6 +421,10 @@ private class Program : Gtk.Application
     {
       action_quit();
     }
+    if (notebook.get_n_pages() == 1)
+    {
+      notebook.set_show_tabs(false);
+    }
   }
 
   private void action_prev_tab()
@@ -457,6 +463,18 @@ private class Program : Gtk.Application
     term.select_all();
   }
 
+  private void action_full_screen()
+  {
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
+    {
+      window.unfullscreen();
+    }
+    else
+    {
+      window.fullscreen();
+    }
+  }
+
   private void action_about()
   {
     var about = new Gtk.AboutDialog();
@@ -485,7 +503,7 @@ private class Program : Gtk.Application
   private void action_quit()
   {
     save_settings();
-    this.quit();
+    quit();
   }
 
   private static int main (string[] args)
