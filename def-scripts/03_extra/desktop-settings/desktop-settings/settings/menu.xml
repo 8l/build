@@ -52,6 +52,11 @@
         <command>desktop-ctrl conky theme gotham</command>
       </action>
     </item>
+    <item label="SimplyX">
+      <action name="Execute">
+        <command>desktop-ctrl conky theme simplyx</command>
+      </action>
+    </item>
   </menu>
   <menu id="alphaos-openbox-tint2" label="Tint2 panel">
     <item label="Edit config file">
