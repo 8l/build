@@ -77,6 +77,9 @@ case "$1" in
       gotham)
       ln -sf /usr/share/conky/conky_gotham $HOME/.conkyrc
       conky_restart_function;;
+      simplyx)
+      ln -sf /usr/share/conky/conky_simplyx $HOME/.conkyrc
+      conky_restart_function;;
     esac
   esac
 esac
