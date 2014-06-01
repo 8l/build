@@ -43,12 +43,12 @@ DISK $alignc ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /}%
 ${fs_bar /}
 
 
-PROCESSES: $processes ($running_processes running)
-${top_mem name 1}${alignr}${top mem 1} %
-${top_mem name 2}${alignr}${top mem 2} %
-${top_mem name 3}${alignr}${top mem 3} %
-${top_mem name 4}${alignr}${top mem 4} %
-${top_mem name 5}${alignr}${top mem 5} %
+PROCESSES: ${alignr}$processes  ($running_processes running)
+${top_mem name 1}${alignr}${top cpu 1} %
+${top_mem name 2}${alignr}${top cpu 2} %
+${top_mem name 3}${alignr}${top cpu 3} %
+${top_mem name 4}${alignr}${top cpu 4} %
+${top_mem name 5}${alignr}${top cpu 5} %
 
 
 NETWORK:
