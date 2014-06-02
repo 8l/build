@@ -34,8 +34,8 @@
     -GtkToolButton-icon-spacing: 6;
     -GtkToolItemGroup-expander-size: 8;
     -GtkTreeView-expander-size: 8;
-    -GtkWindow-resize-grip-height: 20;
-    -GtkWindow-resize-grip-width: 20;
+    -GtkWindow-resize-grip-height: 12;
+    -GtkWindow-resize-grip-width: 12;
     -WnckTasklist-fade-overlay-rect: 0;
 
     /* legacy only */

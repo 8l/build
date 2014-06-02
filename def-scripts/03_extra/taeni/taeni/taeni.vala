@@ -123,6 +123,7 @@ private class Program : Gtk.Application
     notebook.expand = true;
     notebook.set_scrollable(true);
     notebook.set_show_tabs(false);
+    notebook.set_can_focus(false);
 
     var grid = new Gtk.Grid();
     grid.attach(notebook, 0, 1, 1, 1);
@@ -176,6 +177,8 @@ private class Program : Gtk.Application
     term.set_vexpand(true);
     term.set_hexpand(true);
     term.set_word_chars("-A-Za-z0-9,./?%&#_~:@+");
+    term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
+    term.set_cursor_shape(Vte.TerminalCursorShape.UNDERLINE);
     term.child_exited.connect(action_quit);
     term.button_press_event.connect(terminal_button_press);
     
@@ -191,33 +194,25 @@ private class Program : Gtk.Application
     var scrollbar = new Gtk.Scrollbar(Gtk.Orientation.VERTICAL, term.vadjustment);
 
     var tab_label = new Gtk.Label("");
+    tab_label.width_request = 205;
 
     var tab_button_close = new Gtk.Button.from_icon_name("window-close-symbolic", Gtk.IconSize.MENU);
     tab_button_close.set_relief(Gtk.ReliefStyle.NONE);
 
-    var empty_label = new Gtk.Label("");
-    empty_label.hexpand = true;
-
-    var tab_grid = new Gtk.Grid();
-    tab_grid.attach(tab_label, 0, 0, 1, 1);
-    tab_grid.attach(empty_label, 1, 0, 1, 1);
-    tab_grid.attach(tab_button_close, 2, 0, 1, 1);
-    tab_grid.hexpand = true;
-    tab_grid.show_all();
+    var tab_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+    tab_box.pack_start(tab_label, false, false, 0);
+    tab_box.pack_end(tab_button_close, false, false, 0);
+    tab_box.show_all();
 
     var page_grid = new Gtk.Grid();
     page_grid.attach(term, 0, 0, 1, 1);
-    page_grid.attach(scrollbar, 1, 0, 1, 1);
+    page_grid.attach(scrollbar, 1, 0, 1, 2);
     page_grid.show_all();
 
     tab_button_close.clicked.connect(() =>
     {
       int page_num = notebook.page_num(page_grid);
       notebook.remove_page(page_num);
-      if (notebook.get_n_pages() == 0)
-      {
-        action_quit();
-      }
       if (notebook.get_n_pages() == 1)
       {
         notebook.set_show_tabs(false);
@@ -237,19 +232,17 @@ private class Program : Gtk.Application
       tab_label.set_text(dir_short);
     });
 
-    notebook.append_page(page_grid, tab_grid);
-    notebook.show_all();
-    notebook.set_current_page(notebook.get_n_pages() - 1);
+    notebook.append_page(page_grid, tab_box);
     if (notebook.get_n_pages() > 1)
     {
       notebook.set_show_tabs(true);
     }
+    notebook.set_tab_reorderable(page_grid, true);
+    notebook.set_current_page(notebook.get_n_pages() - 1);
     
-    term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
-    term.set_cursor_shape(Vte.TerminalCursorShape.UNDERLINE);
+    set_color_from_string(terminal_bgcolor, terminal_fgcolor);
     term.set_font_from_string(terminal_font);
     term.grab_focus();
-    set_color_from_string(terminal_bgcolor, terminal_fgcolor);
   }
 
   // Context menu

@@ -22,6 +22,7 @@ start_notification() {
   while [ "$(pidof simple-radio)" ]; do
   
     if [ -f $OUTPUT ]; then
+      
       TITLE=$(cat $OUTPUT 2>/dev/null | grep "Demuxer info title changed to" | sed 's|\[lavf\] Demuxer info title changed to ||g' | tail -1)
       NAME=$(cat $OUTPUT 2>/dev/null | grep "name:"| sed 's| name: ||g')
 
@@ -37,6 +38,8 @@ start_notification() {
       TITLE="$NEW_TITLE"
       NAME="$NEW_NAME"
     
+    else
+      break
     fi
   done
 }
