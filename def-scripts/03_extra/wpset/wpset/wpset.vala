@@ -25,6 +25,7 @@ private class Program : Gtk.Application
   
   Gtk.ApplicationWindow window;
   GLib.Settings settings;
+  Gtk.MenuButton menubutton;
   Gdk.Pixbuf pixbuf;
   Gtk.ListStore liststore;
   Gtk.TreeView view;
@@ -35,8 +36,11 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about", action_about },
-    { "quit",  action_quit  }
+    { "about",     action_about     },
+    { "quit",      action_quit      },
+    { "add",       action_add       },
+    { "reset",     action_reset     },
+    { "show-menu", action_show_menu }
   };
 
   private Program()
@@ -54,6 +58,8 @@ private class Program : Gtk.Application
     menu.append(_("Quit"),      "app.quit");
     
     set_app_menu(menu);
+    
+    add_accelerator("F10", "app.show-menu", null);
 
     settings = new GLib.Settings("org.alphaos.wpset.preferences");
     images_dir = settings.get_strv("images-dir");
@@ -75,21 +81,15 @@ private class Program : Gtk.Application
     {
       list_images(images_dir[i]);
     }
-
-    var menuitem_add = new Gtk.MenuItem.with_label(_("Add folder"));
-    menuitem_add.activate.connect(action_add);
-
-    var menuitem_reset = new Gtk.MenuItem.with_label(_("Reset list"));
-    menuitem_reset.activate.connect(action_reset);
-
-    var gear_menu = new Gtk.Menu();
-    gear_menu.append(menuitem_add);
-    gear_menu.append(menuitem_reset);
-    gear_menu.show_all();
     
-    var menubutton = new Gtk.MenuButton();
+    var gear_menu = new Menu();
+    gear_menu.append(_("Add folder"), "app.add");
+    gear_menu.append(_("Reset list"), "app.reset");
+
+    menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(gear_menu);
+    menubutton.set_use_popover(true);
+    menubutton.set_menu_model(gear_menu);
     menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
     
     var headerbar = new Gtk.HeaderBar();
@@ -162,21 +162,6 @@ private class Program : Gtk.Application
       }
     }
   }
-  
-  private void action_add()
-  {
-    var dialog = new Gtk.FileChooserDialog(_("Add folder"), window, Gtk.FileChooserAction.SELECT_FOLDER,
-                                         "gtk-cancel", Gtk.ResponseType.CANCEL,
-                                         "gtk-open", Gtk.ResponseType.ACCEPT);
-    dialog.set_transient_for(window);
-    if (dialog.run() == Gtk.ResponseType.ACCEPT)
-    {
-      images_dir += (dialog as Gtk.FileChooserDialog).get_current_folder();
-      list_images(images_dir[images_dir.length - 1]);
-      settings.set_strv("images-dir", images_dir);
-    }
-    dialog.destroy();
-  }
 
   private void apply_selected_image()
   {
@@ -198,16 +183,6 @@ private class Program : Gtk.Application
       stderr.printf("error: %s\n", error.message);
     }
   }
-  
-  private void action_reset()
-  {
-    liststore.clear();
-    images_dir = {"/usr/share/backgrounds"};
-    list_images(images_dir[0]);
-    view.grab_focus();
-    settings.set_strv("images-dir", images_dir);
-    GLib.Settings.sync();
-  }
 
   // Drag Data
   private void on_drag_data_received(Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) 
@@ -223,6 +198,36 @@ private class Program : Gtk.Application
       GLib.Settings.sync();
     }
     Gtk.drag_finish(drag_context, true, false, time);
+  }
+
+  private void action_add()
+  {
+    var dialog = new Gtk.FileChooserDialog(_("Add folder"), window, Gtk.FileChooserAction.SELECT_FOLDER,
+                                         "gtk-cancel", Gtk.ResponseType.CANCEL,
+                                         "gtk-open", Gtk.ResponseType.ACCEPT);
+    dialog.set_transient_for(window);
+    if (dialog.run() == Gtk.ResponseType.ACCEPT)
+    {
+      images_dir += (dialog as Gtk.FileChooserDialog).get_current_folder();
+      list_images(images_dir[images_dir.length - 1]);
+      settings.set_strv("images-dir", images_dir);
+    }
+    dialog.destroy();
+  }
+  
+  private void action_reset()
+  {
+    liststore.clear();
+    images_dir = {"/usr/share/backgrounds"};
+    list_images(images_dir[0]);
+    view.grab_focus();
+    settings.set_strv("images-dir", images_dir);
+    GLib.Settings.sync();
+  }
+
+  private void action_show_menu()
+  {
+    menubutton.set_active(true);
   }
   
   private void action_about()
