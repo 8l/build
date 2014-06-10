@@ -30,10 +30,7 @@ private class Program : Gtk.Application
   Gtk.Menu context_menu;
   Gtk.ApplicationWindow window;
   Gtk.Notebook notebook;
-  
-  Gtk.Label preferences_font_label;
-  Gtk.Label preferences_bg_label;
-  Gtk.Label preferences_fg_label;
+  Gtk.MenuButton menubutton;
   
   Gtk.FontButton preferences_font_button;
   Gtk.ColorButton preferences_bg_button;
@@ -63,6 +60,7 @@ private class Program : Gtk.Application
     { "paste",       action_paste       },
     { "select-all",  action_select_all  },
     { "full-screen", action_full_screen },
+    { "show-menu",   action_show_menu   }
   };
 
   private Program()
@@ -75,16 +73,16 @@ private class Program : Gtk.Application
   {
     base.startup();
 
-    var menu = new Menu();
+    var menu = new GLib.Menu();
     
-    var section = new Menu();
+    var section = new GLib.Menu();
     section.append(_("Preferences"), "app.pref");
-    menu.append_section (null, section);
+    menu.append_section(null, section);
 
-    section = new Menu();
+    section = new GLib.Menu();
     section.append(_("About"), "app.about");
     section.append(_("Quit"), "app.quit");
-    menu.append_section (null, section);
+    menu.append_section(null, section);
 
     set_app_menu(menu);
     
@@ -97,6 +95,7 @@ private class Program : Gtk.Application
     add_accelerator("<Control><Shift>V", "app.paste", null);
     add_accelerator("<Control><Shift>A", "app.select-all", null);
     add_accelerator("F11", "app.full-screen", null);
+    add_accelerator("F10", "app.show-menu", null);
 
     settings = new GLib.Settings(APP_ID_PREF);
     width = settings.get_int("width");
@@ -105,13 +104,22 @@ private class Program : Gtk.Application
     terminal_fgcolor = settings.get_string("fgcolor");
     terminal_font = settings.get_string("font");
 
-    var gear_menu = new Gtk.Menu();
-    add_popup_menu(gear_menu);
-    gear_menu.show_all();
+    var gear_menu = new GLib.Menu();
+    var section_one = new GLib.Menu();
+    var section_two = new GLib.Menu();
+
+    section_one.append(_("New tab"), "app.new-tab");
+    gear_menu.append_section(null, section_one);
     
-    var menubutton = new Gtk.MenuButton();
+    section_two.append(_("Copy"), "app.copy");
+    section_two.append(_("Paste"), "app.paste");
+    section_two.append(_("Select all"), "app.select-all");
+    gear_menu.append_section(null, section_two);
+
+    menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(gear_menu);
+    menubutton.set_use_popover(true);
+    menubutton.set_menu_model(gear_menu);
     menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
 
     var headerbar = new Gtk.HeaderBar();
@@ -135,7 +143,7 @@ private class Program : Gtk.Application
     window.set_icon_name(ICON);
     window.show_all();
     window.delete_event.connect(() => { action_quit(); return true; });
-
+    
     context_menu = new Gtk.Menu();
     add_popup_menu(context_menu);
   }
@@ -251,6 +259,9 @@ private class Program : Gtk.Application
     var context_new = new Gtk.MenuItem.with_label(_("New tab"));
     context_new.activate.connect(action_new_tab);
 
+    var context_close = new Gtk.MenuItem.with_label(_("Close tab"));
+    context_close.activate.connect(action_close_tab);
+
     var context_separator1 = new Gtk.SeparatorMenuItem();
 
     var context_copy = new Gtk.MenuItem.with_label(_("Copy"));
@@ -259,17 +270,22 @@ private class Program : Gtk.Application
     var context_paste = new Gtk.MenuItem.with_label(_("Paste"));
     context_paste.activate.connect(action_paste);
 
-    var context_separator2 = new Gtk.SeparatorMenuItem();
-
     var context_select_all = new Gtk.MenuItem.with_label(_("Select all"));
     context_select_all.activate.connect(action_select_all);
+    
+    var context_separator2 = new Gtk.SeparatorMenuItem();
+    
+    var context_full_screen = new Gtk.MenuItem.with_label(_("Full screen"));
+    context_full_screen.activate.connect(action_full_screen);
 
     menu.append(context_new);
+    menu.append(context_close);
     menu.append(context_separator1);
     menu.append(context_copy);
     menu.append(context_paste);
-    menu.append(context_separator2);
     menu.append(context_select_all);
+    menu.append(context_separator2);
+    menu.append(context_full_screen);
     menu.show_all();
   }
 
@@ -282,6 +298,7 @@ private class Program : Gtk.Application
     }
     return false;
   }
+
 
   private void set_color_from_string(string back, string text)
   {
@@ -349,10 +366,18 @@ private class Program : Gtk.Application
     settings.set_string("fgcolor", terminal_fgcolor);
   }
 
+  private void save_settings()
+  {
+    window.get_size(out width, out height);
+    settings.set_int("width", width);
+    settings.set_int("height", height);
+    GLib.Settings.sync();
+  }
+
   // Preferences dialog
   private void action_pref()
   {
-    preferences_font_label = new Gtk.Label(_("Font"));
+    var preferences_font_label = new Gtk.Label(_("Font"));
     preferences_font_button = new Gtk.FontButton();
     preferences_font_button.font_name = term.get_font().to_string();
     preferences_font_button.font_set.connect(font_changed);
@@ -362,11 +387,11 @@ private class Program : Gtk.Application
     rgba_bgcolor.parse(terminal_bgcolor);
     rgba_fgcolor.parse(terminal_fgcolor);
 
-    preferences_bg_label = new Gtk.Label(_("Background"));
+    var preferences_bg_label = new Gtk.Label(_("Background"));
     preferences_bg_button = new Gtk.ColorButton.with_rgba(rgba_bgcolor);
     preferences_bg_button.color_set.connect(bg_color_changed);
 
-    preferences_fg_label = new Gtk.Label(_("Foreground"));
+    var preferences_fg_label = new Gtk.Label(_("Foreground"));
     preferences_fg_button = new Gtk.ColorButton.with_rgba(rgba_fgcolor);
     preferences_fg_button.color_set.connect(fg_color_changed);
 
@@ -442,18 +467,21 @@ private class Program : Gtk.Application
   {
     get_current_terminal();
     term.copy_clipboard();
+    term.grab_focus();
   }
 
   private void action_paste()
   {
     get_current_terminal();
     term.paste_clipboard();
+    term.grab_focus();
   }
 
   private void action_select_all()
   {
     get_current_terminal();
     term.select_all();
+    term.grab_focus();
   }
 
   private void action_full_screen()
@@ -465,6 +493,14 @@ private class Program : Gtk.Application
     else
     {
       window.fullscreen();
+    }
+  }
+
+  private void action_show_menu()
+  {
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) == 0)
+    {
+      menubutton.set_active(true);
     }
   }
 
@@ -483,14 +519,6 @@ private class Program : Gtk.Application
     about.license_type = Gtk.License.GPL_3_0;
     about.run();
     about.hide();
-  }
-
-  private void save_settings()
-  {
-    window.get_size(out width, out height);
-    settings.set_int("width", width);
-    settings.set_int("height", height);
-    GLib.Settings.sync();
   }
 
   private void action_quit()
