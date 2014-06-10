@@ -30,8 +30,7 @@ private class Program : Gtk.Application
   Gtk.HeaderBar headerbar;
   Gtk.TreeView treeview;
   Gtk.ListStore liststore;
-  Gtk.Menu context_menu;
-  Gtk.MenuItem context_slideshow;
+  Gtk.MenuButton menubutton;
   Gtk.ScrolledWindow scrolled_window_image;
   Gtk.ScrolledWindow scrolled_window_treeview;
   Gtk.Scale scale;
@@ -68,8 +67,17 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about", action_about },
-    { "quit",  action_quit  }
+    { "about",            action_about            },
+    { "quit",             action_quit             },
+    { "open",             action_open             },
+    { "set-as-wallpaper", action_set_as_wallpaper },
+    { "next-image",       action_next_image       },
+    { "previous-image",   action_previous_image   },
+    { "zoom-in",          action_zoom_in          },
+    { "zoom-out",         action_zoom_out         },
+    { "slideshow",        action_slideshow        },
+    { "edit-with-gimp",   action_edit_with_gimp   },
+    { "show-menu",        action_show_menu        }
   };
 
   private Program()
@@ -87,6 +95,8 @@ private class Program : Gtk.Application
     menu.append(_("Quit"),      "app.quit");
 
     set_app_menu(menu);
+    
+    add_accelerator("F10", "app.show-menu", null);
 
     settings = new GLib.Settings("org.alphaos.voyager.preferences");
     width = settings.get_int("width");
@@ -100,8 +110,8 @@ private class Program : Gtk.Application
     // Buttons
     var button_prev = new Gtk.Button.from_icon_name("go-previous-symbolic", Gtk.IconSize.MENU);
     var button_next = new Gtk.Button.from_icon_name("go-next-symbolic", Gtk.IconSize.MENU);
-    button_prev.clicked.connect(show_previous_image);
-    button_next.clicked.connect(show_next_image);
+    button_prev.clicked.connect(action_previous_image);
+    button_next.clicked.connect(action_next_image);
 
     var prev_next_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
     prev_next_box.pack_start(button_prev);
@@ -117,19 +127,35 @@ private class Program : Gtk.Application
     scale.set_size_request(100, 0);
     scale.value_changed.connect(scale_zoom_level);
 
-    // Context menu
-    context_menu = new Gtk.Menu();
-    add_popup_menu(context_menu);
+    // HeaderBar & MenuButton
+    var gear_menu = new GLib.Menu();
+    var section_one = new GLib.Menu();
+    var section_two = new GLib.Menu();
+    var section_three = new GLib.Menu();
+    var section_four = new GLib.Menu();
+    
+    section_one.append(_("Open"), "app.open");
+    section_one.append(_("Set as Wallpaper"), "app.set-as-wallpaper");
+    gear_menu.append_section(null, section_one);
+    
+    section_two.append(_("Next Image"), "app.next-image");
+    section_two.append(_("Previous Image"), "app.previous-image");
+    gear_menu.append_section(null, section_two);
+    
+    section_three.append(_("Zoom In"), "app.zoom-in");
+    section_three.append(_("Zoom Out"), "app.zoom-out");
+    gear_menu.append_section(null, section_three);
+    
+    section_four.append(_("Slideshow"), "app.slideshow");
+    section_four.append(_("Edit With Gimp"), "app.edit-with-gimp");
+    gear_menu.append_section(null, section_four);
 
-    var gear_menu = new Gtk.Menu();
-    add_popup_menu(gear_menu);
-
-    var menubutton = new Gtk.MenuButton();
+    menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(gear_menu);
-    menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
+    menubutton.set_use_popover(true);
+    menubutton.set_menu_model(gear_menu);
+    menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));    
 
-    // HeaderBar
     headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);
     headerbar.set_title(NAME);
@@ -254,73 +280,6 @@ private class Program : Gtk.Application
     selection.get_selected(out model, out iter);
     model.get(iter, 1, out file);
     load_pixbuf_on_start(file);
-  }
-
-  void show_next_image()
-  {
-    if (file != null)
-    {
-      Gtk.TreeIter iter;
-      Gtk.TreeModel model;
-      var selection = treeview.get_selection();
-      selection.get_selected(out model, out iter);
-      if (model.iter_next(ref iter))
-      {
-        selection.select_iter(iter);
-      }
-      else
-      {
-        model.get_iter_first(out iter);
-        selection.select_iter(iter);
-      }
-      treeview.scroll_to_cell(model.get_path(iter), null, false, 0.0f, 0.0f);
-      show_selected_image();
-    }
-  }
-
-  void show_previous_image()
-  {
-    if (file != null)
-    {
-      Gtk.TreeIter iter;
-      Gtk.TreeModel model;
-      int children;
-      var selection = treeview.get_selection();
-      selection.get_selected(out model, out iter);
-      if (model.iter_previous(ref iter))
-      {
-        selection.select_iter(iter);
-      }
-      else
-      {
-        children = model.iter_n_children(null);
-        model.iter_nth_child(out iter, null, children - 1);
-        selection.select_iter(iter);
-      }
-      treeview.scroll_to_cell(model.get_path(iter), null, false, 0.0f, 0.0f);
-      show_selected_image();
-    }
-  }
-  
-  // Open
-  private void show_open_dialog()
-  {
-    var dialog = new Gtk.FileChooserDialog(_("Open"), window, Gtk.FileChooserAction.OPEN,
-                                        "gtk-cancel", Gtk.ResponseType.CANCEL,
-                                        "gtk-open", Gtk.ResponseType.ACCEPT);
-    dialog.set_transient_for(window);
-    dialog.set_select_multiple(false);
-    if (file != null)
-    {
-      dialog.set_current_folder(Path.get_dirname(file));
-    }
-    if (dialog.run() == Gtk.ResponseType.ACCEPT)
-    {
-      file = dialog.get_filename();
-      load_pixbuf_on_start(file);
-      list_images(Path.get_dirname(file));
-    }
-    dialog.destroy();
   }
 
   // load pixbuf with specified size, if width is smaller than 400px - then load at full size
@@ -460,12 +419,7 @@ private class Program : Gtk.Application
         {
           full_screen_switch();
         }
-      }
-      if (event.button == 3)
-      {
-        context_menu.select_first(false);
-        context_menu.popup(null, null, null, event.button, event.time);
-      }
+      } 
     }
     if (event.button == 1)
     {
@@ -523,72 +477,6 @@ private class Program : Gtk.Application
     return false;
   }
 
-  private void add_popup_menu(Gtk.Menu menu)
-  {
-    var context_open = new Gtk.MenuItem.with_label(_("Open"));
-    context_open.activate.connect(show_open_dialog);
-    context_open.show();
-
-    string? wpset_path = Environment.find_program_in_path("wpset");
-    var context_set_as_wallpaper = new Gtk.MenuItem.with_label(_("Set as Wallpaper"));
-    context_set_as_wallpaper.activate.connect(set_image_as_wallpaper);
-    
-    if (wpset_path != null)
-    {
-      context_set_as_wallpaper.show();
-    }
-
-    var context_separator1 = new Gtk.SeparatorMenuItem();
-    context_separator1.show();
-
-    var context_next = new Gtk.MenuItem.with_label(_("Next Image"));
-    context_next.activate.connect(show_next_image);
-    context_next.show(); 
-
-    var context_previous = new Gtk.MenuItem.with_label(_("Previous Image"));
-    context_previous.activate.connect(show_previous_image);
-    context_previous.show(); 
-
-    var context_separator2 = new Gtk.SeparatorMenuItem();
-    context_separator2.show();
-      
-    var context_zoom_in = new Gtk.MenuItem.with_label(_("Zoom In"));
-    context_zoom_in.activate.connect(() => { zoom_image(true, 0.30, 0.20); });
-    context_zoom_in.show();
-    
-    var context_zoom_out = new Gtk.MenuItem.with_label(_("Zoom Out"));
-    context_zoom_out.activate.connect(() => { zoom_image(false, 0.25, 0.15); });
-    context_zoom_out.show();
-    
-    var context_separator3 = new Gtk.SeparatorMenuItem();
-    context_separator3.show();
-
-    string? gimp_path = Environment.find_program_in_path("gimp");
-    var context_edit_with_gimp = new Gtk.MenuItem.with_label(_("Edit With Gimp"));
-    context_edit_with_gimp.activate.connect(edit_image_with_gimp);
-    if (gimp_path != null)
-    {
-      context_edit_with_gimp.show();
-    }
-    
-    context_slideshow = new Gtk.MenuItem();
-    context_slideshow.set_label(_("Start Slideshow"));
-    context_slideshow.activate.connect(start_stop_slideshow);
-    context_slideshow.show();
-
-    menu.append(context_open);
-    menu.append(context_set_as_wallpaper);
-    menu.append(context_separator1);
-    menu.append(context_next);
-    menu.append(context_previous);
-    menu.append(context_separator2);
-    menu.append(context_zoom_in);
-    menu.append(context_zoom_out);
-    menu.append(context_separator3);
-    menu.append(context_edit_with_gimp);
-    menu.append(context_slideshow);
-  }
-
   private void full_screen_switch()
   {
     scrolled_window_treeview.hide();
@@ -603,58 +491,6 @@ private class Program : Gtk.Application
     scrolled_window_treeview.show();
     window.unfullscreen();
     load_pixbuf(file, saved_pixbuf_width, saved_pixbuf_height);
-  }
-
-  private void edit_image_with_gimp()
-  {
-    if (file != null)
-    {
-      try
-      {
-        Process.spawn_command_line_async("gimp %s".printf(file));
-      }
-      catch(Error error)
-      {
-        stderr.printf("error: %s\n", error.message);
-      }
-    }
-  }
-
-  private void start_stop_slideshow()
-  {
-    if (file != null)
-    {
-      if (slideshow_active == false)
-      {
-        timeout_id = GLib.Timeout.add(slideshow_delay, (GLib.SourceFunc)show_next_image, 0);
-        slideshow_active = true;
-        context_slideshow.set_label(_("Stop Slideshow"));
-      } 
-      else
-      {
-        if (timeout_id > 0)
-        {
-          GLib.Source.remove(timeout_id);
-        }
-        slideshow_active = false;
-        context_slideshow.set_label(_("Start Slideshow"));
-      }
-    }
-  }
-  
-  private void set_image_as_wallpaper()
-  {
-    var gnome_settings = new GLib.Settings("org.gnome.desktop.background");
-    gnome_settings.set_string("picture-uri", file);
-    GLib.Settings.sync();
-    try
-    {
-      Process.spawn_command_line_sync("wpset-shell --set");
-    }
-    catch(Error error)
-    {
-      stderr.printf("error: %s\n", error.message);
-    }
   }
 
   // Keyboard EventKey Press
@@ -683,11 +519,11 @@ private class Program : Gtk.Application
       }
       if(key=="Right" || key=="Down")
       {
-        show_next_image();
+        action_next_image();
       }
       if(key=="Left" || key=="Up")
       {
-        show_previous_image();
+        action_previous_image();
       }
     }
     return false;
@@ -712,6 +548,149 @@ private class Program : Gtk.Application
     settings.set_int("width", width);
     settings.set_int("height", height);
     GLib.Settings.sync();
+  }
+
+  private void action_open()
+  {
+    var dialog = new Gtk.FileChooserDialog(_("Open"), window, Gtk.FileChooserAction.OPEN,
+                                        "gtk-cancel", Gtk.ResponseType.CANCEL,
+                                        "gtk-open", Gtk.ResponseType.ACCEPT);
+    dialog.set_transient_for(window);
+    dialog.set_select_multiple(false);
+    if (file != null)
+    {
+      dialog.set_current_folder(Path.get_dirname(file));
+    }
+    if (dialog.run() == Gtk.ResponseType.ACCEPT)
+    {
+      file = dialog.get_filename();
+      load_pixbuf_on_start(file);
+      list_images(Path.get_dirname(file));
+    }
+    dialog.destroy();
+  }
+
+  private void action_set_as_wallpaper()
+  {
+    if (file != null)
+    {
+      var gnome_settings = new GLib.Settings("org.gnome.desktop.background");
+      gnome_settings.set_string("picture-uri", file);
+      GLib.Settings.sync();
+      try
+      {
+        Process.spawn_command_line_sync("wpset-shell --set");
+      }
+      catch(Error error)
+      {
+        stderr.printf("error: %s\n", error.message);
+      }
+    }
+  }
+
+  private void action_next_image()
+  {
+    if (file != null)
+    {
+      Gtk.TreeIter iter;
+      Gtk.TreeModel model;
+      var selection = treeview.get_selection();
+      selection.get_selected(out model, out iter);
+      if (model.iter_next(ref iter))
+      {
+        selection.select_iter(iter);
+      }
+      else
+      {
+        model.get_iter_first(out iter);
+        selection.select_iter(iter);
+      }
+      treeview.scroll_to_cell(model.get_path(iter), null, false, 0.0f, 0.0f);
+      show_selected_image();
+    }
+  }
+
+  private void action_previous_image()
+  {
+    if (file != null)
+    {
+      Gtk.TreeIter iter;
+      Gtk.TreeModel model;
+      int children;
+      var selection = treeview.get_selection();
+      selection.get_selected(out model, out iter);
+      if (model.iter_previous(ref iter))
+      {
+        selection.select_iter(iter);
+      }
+      else
+      {
+        children = model.iter_n_children(null);
+        model.iter_nth_child(out iter, null, children - 1);
+        selection.select_iter(iter);
+      }
+      treeview.scroll_to_cell(model.get_path(iter), null, false, 0.0f, 0.0f);
+      show_selected_image();
+    }
+  }
+
+  private void action_zoom_in()
+  {
+    if (file != null)
+    {
+      zoom_image(true, 0.30, 0.20);
+    }
+  }
+
+  private void action_zoom_out()
+  {
+    if (file != null)
+    {
+      zoom_image(false, 0.25, 0.15);
+    }
+  }
+
+  private void action_slideshow()
+  {
+    if (file != null)
+    {
+      if (slideshow_active == false)
+      {
+        timeout_id = GLib.Timeout.add(slideshow_delay, (GLib.SourceFunc)action_next_image, 0);
+        slideshow_active = true;
+      } 
+      else
+      {
+        if (timeout_id > 0)
+        {
+          GLib.Source.remove(timeout_id);
+        }
+        slideshow_active = false;
+      }
+    }
+  }
+
+  private void action_edit_with_gimp()
+  {
+    if (file != null)
+    {
+      try
+      {
+        Process.spawn_command_line_async("gimp %s".printf(file));
+      }
+      catch(Error error)
+      {
+        stderr.printf("error: %s\n", error.message);
+      }
+    }
+  }
+
+  private void action_show_menu()
+  {
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) == 0)
+    {
+      menubutton.set_active(true);
+    }
   }
   
   private void action_about()

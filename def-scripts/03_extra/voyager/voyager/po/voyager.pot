@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-15 18:56+0200\n"
+"POT-Creation-Date: 2014-06-10 19:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: voyager.vala:86
+#: voyager.vala:94
 msgid "About"
 msgstr ""
 
-#: voyager.vala:567
+#: voyager.vala:150
 msgid "Edit With Gimp"
 msgstr ""
 
@@ -29,42 +29,38 @@ msgstr ""
 msgid "Image browser in Vala and Gtk+3"
 msgstr ""
 
-#: voyager.vala:150
+#: voyager.vala:176
 msgid "Name"
 msgstr ""
 
-#: voyager.vala:544
+#: voyager.vala:141
 msgid "Next Image"
 msgstr ""
 
-#: voyager.vala:308 voyager.vala:528
+#: voyager.vala:137 voyager.vala:555
 msgid "Open"
 msgstr ""
 
-#: voyager.vala:548
+#: voyager.vala:142
 msgid "Previous Image"
 msgstr ""
 
-#: voyager.vala:87
+#: voyager.vala:95
 msgid "Quit"
 msgstr ""
 
-#: voyager.vala:533
+#: voyager.vala:138
 msgid "Set as Wallpaper"
 msgstr ""
 
-#: voyager.vala:575 voyager.vala:640
-msgid "Start Slideshow"
+#: voyager.vala:149
+msgid "Slideshow"
 msgstr ""
 
-#: voyager.vala:631
-msgid "Stop Slideshow"
-msgstr ""
-
-#: voyager.vala:555
+#: voyager.vala:145
 msgid "Zoom In"
 msgstr ""
 
-#: voyager.vala:559
+#: voyager.vala:146
 msgid "Zoom Out"
 msgstr ""
