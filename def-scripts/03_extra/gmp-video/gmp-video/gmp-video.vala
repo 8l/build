@@ -32,11 +32,11 @@ private class Program : Gtk.Application
   Gtk.Button button_rewind;
   Gtk.Button button_forward;
   Gtk.Button button_stop;
+  Gtk.MenuButton menubutton;
   Gtk.HeaderBar headerbar;
   Gtk.VolumeButton button_volume;
   Gtk.DrawingArea drawing_area;
   Gtk.Grid buttons_grid;
-  Gtk.Menu context_menu;
   Gtk.ApplicationWindow window;
   private const Gtk.TargetEntry[] targets = { {"text/uri-list", 0, 0} };
   
@@ -58,13 +58,37 @@ private class Program : Gtk.Application
     { "quit",               action_quit               },
     { "open-file",          action_open_file          },
     { "open-url",           action_open_url           },
+    { "subtitle-select",    action_subtitle_select    },
+    { "subtitle-plus",      action_subtitle_plus      },
+    { "subtitle-minus",     action_subtitle_minus     },
+    { "aspect-auto",        action_aspect_auto        },
+    { "aspect-43",          action_aspect_43          },
+    { "aspect-169",         action_aspect_169         },
+    { "aspect-54",          action_aspect_54          },
+    { "aspect-11",          action_aspect_11          },
+    { "speed-auto",         action_speed_auto         },
+    { "speed-018",          action_speed_018          },
+    { "speed-030",          action_speed_030          },
+    { "speed-050",          action_speed_050          },
+    { "speed-075",          action_speed_075          },
+    { "speed-150",          action_speed_150          },
+    { "speed-200",          action_speed_200          },
+    { "speed-300",          action_speed_300          },
+    { "speed-400",          action_speed_400          },
+    { "zoom-auto",          action_zoom_auto          },
+    { "zoom-010",           action_zoom_010           },
+    { "zoom-025",           action_zoom_025           },
+    { "zoom-033",           action_zoom_033           },
+    { "zoom-050",           action_zoom_050           },
+    { "zoom-double",        action_zoom_double        },
     { "full-screen-exit",   action_full_screen_exit   },
     { "full-screen-toggle", action_full_screen_toggle },
     { "pause",              action_pause              },
     { "seek-plus-15",       action_seek_plus_15       },
     { "seek-minus-15",      action_seek_minus_15      },
     { "seek-plus-120",      action_seek_plus_120      },
-    { "seek-minus-120",     action_seek_minus_120     }
+    { "seek-minus-120",     action_seek_minus_120     },
+    { "show-menu",          action_show_menu          }
   };
 
   private Program()
@@ -77,7 +101,7 @@ private class Program : Gtk.Application
   {
     base.startup();
 
-    var menu = new Menu();
+    var menu = new GLib.Menu();
     menu.append(_("About"),     "app.about");
     menu.append(_("Quit"),      "app.quit");
 
@@ -87,6 +111,7 @@ private class Program : Gtk.Application
     add_accelerator("<Control>U", "app.open-url", null);
     add_accelerator("Escape", "app.full-screen-exit", null);
     add_accelerator("F11", "app.full-screen-toggle", null);
+    add_accelerator("F10", "app.show-menu", null);
     add_accelerator("space", "app.pause", null);
     add_accelerator("Right", "app.seek-plus-15", null);
     add_accelerator("Left", "app.seek-minus-15", null);
@@ -100,6 +125,49 @@ private class Program : Gtk.Application
     subtitle_color = settings.get_string("subtitle-color");
     subtitle_scale = settings.get_double("subtitle-scale");
     subtitle_fuzziness = settings.get_string("subtitle-fuzziness");
+    
+    var gear_menu = new GLib.Menu();
+    var submenu_open = new GLib.Menu();
+    var submenu_subtitle = new GLib.Menu();
+    var submenu_aspect = new GLib.Menu();
+    var submenu_speed = new GLib.Menu();
+    var submenu_zoom = new GLib.Menu();
+    
+    gear_menu.append_submenu(_("Open"), submenu_open);
+    gear_menu.append_submenu(_("Subtitle"), submenu_subtitle);
+    gear_menu.append_submenu(_("Aspect ratio"), submenu_aspect);
+    gear_menu.append_submenu(_("Speed"), submenu_speed);
+    gear_menu.append_submenu(_("Zoom"), submenu_zoom);
+    
+    submenu_open.append(_("File"), "app.open-file");
+    submenu_open.append(_("URL"), "app.open-url");
+    
+    submenu_subtitle.append(_("Select file"), "app.subtitle-select");
+    submenu_subtitle.append(_("Increase size"), "app.subtitle-plus");
+    submenu_subtitle.append(_("Decrease size"), "app.subtitle-minus");
+    
+    submenu_aspect.append(_("Auto"), "app.aspect-auto");
+    submenu_aspect.append("4:3", "app.aspect-43");
+    submenu_aspect.append("16:9", "app.aspect-169");
+    submenu_aspect.append("5:4", "app.aspect-54");
+    submenu_aspect.append("1:1", "app.aspect-11");
+    
+    submenu_speed.append(_("Auto"), "app.speed-auto");
+    submenu_speed.append("0.18", "app.speed-018");
+    submenu_speed.append("0.30", "app.speed-030");
+    submenu_speed.append("0.50", "app.speed-050");
+    submenu_speed.append("0.75", "app.speed-075");
+    submenu_speed.append("1.50", "app.speed-150");
+    submenu_speed.append("2.00", "app.speed-200");
+    submenu_speed.append("3.00", "app.speed-300");
+    submenu_speed.append("4.00", "app.speed-400");
+    
+    submenu_zoom.append(_("Auto"), "app.zoom-auto");
+    submenu_zoom.append(_("Smaller 10%"), "app.zoom-010");
+    submenu_zoom.append(_("Smaller 25%"), "app.zoom-025");
+    submenu_zoom.append(_("Smaller 33%"), "app.zoom-033");
+    submenu_zoom.append(_("Smaller 50%"), "app.zoom-050");
+    submenu_zoom.append(_("Double size"), "app.zoom-double");
 
     string random_number = GLib.Random.int_range(1000, 5000).to_string();
     FIFO = "/tmp/gmp_video_fifo_" + random_number;
@@ -142,14 +210,14 @@ private class Program : Gtk.Application
     var label2 = new Gtk.Label("");
     
     buttons_grid = new Gtk.Grid();
-    buttons_grid.attach(button_restart, 0, 0, 1, 1); 
-    buttons_grid.attach(label1,         1, 0, 2, 1); 
+    buttons_grid.attach(button_restart, 0, 0, 1, 1);
+    buttons_grid.attach(label1,         1, 0, 2, 1);
     buttons_grid.attach(button_pause,   3, 0, 1, 1);
     buttons_grid.attach(button_rewind,  4, 0, 1, 1);
     buttons_grid.attach(button_forward, 5, 0, 1, 1);
-    buttons_grid.attach(button_stop,    6, 0, 1, 1); 
-    buttons_grid.attach(label2,         7, 0, 2, 1); 
-    buttons_grid.attach(button_volume,  9, 0, 1, 1); 
+    buttons_grid.attach(button_stop,    6, 0, 1, 1);
+    buttons_grid.attach(label2,         7, 0, 2, 1);
+    buttons_grid.attach(button_volume,  9, 0, 1, 1);
     
     buttons_grid.set_column_spacing(5);
     buttons_grid.set_border_width(5);
@@ -159,16 +227,11 @@ private class Program : Gtk.Application
     var grid = new Gtk.Grid();
     grid.attach(drawing_area, 0, 0, 1, 1);
     grid.attach(buttons_grid,  0, 1, 1, 1);
-    
-    context_menu = new Gtk.Menu();
-    add_popup_menu(context_menu);
-    
-    var gear_menu = new Gtk.Menu();
-    add_popup_menu(gear_menu);
-    
-    var menubutton = new Gtk.MenuButton();
+
+    menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(gear_menu);
+    menubutton.set_use_popover(true);
+    menubutton.set_menu_model(gear_menu);
     menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
 
     headerbar = new Gtk.HeaderBar();
@@ -226,180 +289,6 @@ private class Program : Gtk.Application
     button_pause.set_always_show_image(true);
   }
   
-  // Context menu
-  private void add_popup_menu(Gtk.Menu menu)
-  {
-    // Top level
-    var menuitem_open = new Gtk.MenuItem.with_label(_("Open"));
-    var menuitem_subtitle = new Gtk.MenuItem.with_label(_("Subtitle"));
-    var menuitem_aspect = new Gtk.MenuItem.with_label(_("Aspect ratio"));
-    var menuitem_speed = new Gtk.MenuItem.with_label(_("Speed"));
-    var menuitem_zoom = new Gtk.MenuItem.with_label(_("Zoom"));
-    
-    // Open submenu
-    var menuitem_open_file = new Gtk.MenuItem.with_label(_("File"));
-    var menuitem_open_url = new Gtk.MenuItem.with_label(_("URL"));
-
-    menuitem_open_file.activate.connect(action_open_file);
-    menuitem_open_url.activate.connect(action_open_url);
-    
-    var menuitem_open_submenu = new Gtk.Menu();
-    menuitem_open_submenu.add(menuitem_open_file);
-    menuitem_open_submenu.add(menuitem_open_url);
-    menuitem_open.set_submenu(menuitem_open_submenu);
-
-    // Subtitles submenu
-    var menuitem_subtitle_select = new Gtk.MenuItem.with_label(_("Select file"));
-    var menuitem_subtitle_increase = new Gtk.MenuItem.with_label(_("Increase size"));
-    var menuitem_subtitle_decrease = new Gtk.MenuItem.with_label(_("Decrease size"));
-    
-    menuitem_subtitle_select.activate.connect(select_subtitle_dialog);
-    menuitem_subtitle_increase.activate.connect(() => { mpv_send_command(FIFO, "add sub-scale +0.5"); });
-    menuitem_subtitle_decrease.activate.connect(() => { mpv_send_command(FIFO, "add sub-scale -0.5"); });
-
-    var menuitem_subtitle_submenu = new Gtk.Menu();
-    menuitem_subtitle_submenu.add(menuitem_subtitle_select);
-    menuitem_subtitle_submenu.add(menuitem_subtitle_increase);
-    menuitem_subtitle_submenu.add(menuitem_subtitle_decrease);
-    menuitem_subtitle.set_submenu(menuitem_subtitle_submenu);
-
-    // Aspect ratio submenu
-    var menuitem_aspect_auto = new Gtk.MenuItem.with_label(_("Auto"));
-    var menuitem_aspect_43 = new Gtk.MenuItem.with_label("4:3");
-    var menuitem_aspect_169 = new Gtk.MenuItem.with_label("16:9");
-    var menuitem_aspect_54 = new Gtk.MenuItem.with_label("5:4");
-    var menuitem_aspect_11 = new Gtk.MenuItem.with_label("1:1");
-    
-    menuitem_aspect_auto.activate.connect(() => { mpv_send_command(FIFO, "set aspect 0"); });
-    menuitem_aspect_43.activate.connect(() => { mpv_send_command(FIFO, "set aspect 1.333333"); });
-    menuitem_aspect_169.activate.connect(() => { mpv_send_command(FIFO, "set aspect 1.777778"); });
-    menuitem_aspect_54.activate.connect(() => { mpv_send_command(FIFO, "set aspect 1.25"); });
-    menuitem_aspect_11.activate.connect(() => { mpv_send_command(FIFO, "set aspect 1"); });
-    
-    var menuitem_aspect_submenu = new Gtk.Menu();
-    menuitem_aspect_submenu.add(menuitem_aspect_auto);
-    menuitem_aspect_submenu.add(menuitem_aspect_43);
-    menuitem_aspect_submenu.add(menuitem_aspect_169);
-    menuitem_aspect_submenu.add(menuitem_aspect_54);
-    menuitem_aspect_submenu.add(menuitem_aspect_11);
-    menuitem_aspect.set_submenu(menuitem_aspect_submenu);
-    
-    // Speed submenu
-    var menuitem_speed_auto = new Gtk.MenuItem.with_label(_("Auto"));
-    var menuitem_speed_18 = new Gtk.MenuItem.with_label("0.18");
-    var menuitem_speed_30 = new Gtk.MenuItem.with_label("0.30");
-    var menuitem_speed_50 = new Gtk.MenuItem.with_label("0.50");
-    var menuitem_speed_75 = new Gtk.MenuItem.with_label("0.75");
-    var menuitem_speed_150 = new Gtk.MenuItem.with_label("1.50");
-    var menuitem_speed_200 = new Gtk.MenuItem.with_label("2.00");
-    var menuitem_speed_300 = new Gtk.MenuItem.with_label("3.00");
-    var menuitem_speed_400 = new Gtk.MenuItem.with_label("4.00");
-
-    menuitem_speed_auto.activate.connect(() => { mpv_send_command(FIFO, "set speed 1.00"); });
-    menuitem_speed_18.activate.connect(() => { mpv_send_command(FIFO, "set speed 0.18"); });
-    menuitem_speed_30.activate.connect(() => { mpv_send_command(FIFO, "set speed 0.30"); });
-    menuitem_speed_50.activate.connect(() => { mpv_send_command(FIFO, "set speed 0.50"); });
-    menuitem_speed_75.activate.connect(() => { mpv_send_command(FIFO, "set speed 0.75"); });
-    menuitem_speed_150.activate.connect(() => { mpv_send_command(FIFO, "set speed 1.50"); });
-    menuitem_speed_200.activate.connect(() => { mpv_send_command(FIFO, "set speed 2.00"); });
-    menuitem_speed_300.activate.connect(() => { mpv_send_command(FIFO, "set speed 3.00"); });
-    menuitem_speed_400.activate.connect(() => { mpv_send_command(FIFO, "set speed 4.00"); });
-    
-    var menuitem_speed_submenu = new Gtk.Menu();
-    menuitem_speed_submenu.add(menuitem_speed_auto);
-    menuitem_speed_submenu.add(menuitem_speed_18);
-    menuitem_speed_submenu.add(menuitem_speed_30);
-    menuitem_speed_submenu.add(menuitem_speed_50);
-    menuitem_speed_submenu.add(menuitem_speed_75);
-    menuitem_speed_submenu.add(menuitem_speed_150);
-    menuitem_speed_submenu.add(menuitem_speed_200);
-    menuitem_speed_submenu.add(menuitem_speed_300);
-    menuitem_speed_submenu.add(menuitem_speed_400);
-    menuitem_speed.set_submenu(menuitem_speed_submenu);
-
-    // Zoom submenu
-    var menuitem_zoom_auto = new Gtk.MenuItem.with_label(_("Auto"));
-    var menuitem_zoom_10 = new Gtk.MenuItem.with_label(_("Smaller 10%"));
-    var menuitem_zoom_25 = new Gtk.MenuItem.with_label(_("Smaller 25%"));
-    var menuitem_zoom_33 = new Gtk.MenuItem.with_label(_("Smaller 33%"));
-    var menuitem_zoom_50 = new Gtk.MenuItem.with_label(_("Smaller 50%"));
-    var menuitem_zoom_2x = new Gtk.MenuItem.with_label(_("Double size"));
-    
-    menuitem_zoom_auto.activate.connect(() => { mpv_send_command(FIFO, "set video-zoom 0"); });
-    menuitem_zoom_10.activate.connect(() => { mpv_send_command(FIFO, "set video-zoom -0.10"); });
-    menuitem_zoom_25.activate.connect(() => { mpv_send_command(FIFO, "set video-zoom -0.25"); });
-    menuitem_zoom_33.activate.connect(() => { mpv_send_command(FIFO, "set video-zoom -0.33"); });
-    menuitem_zoom_50.activate.connect(() => { mpv_send_command(FIFO, "set video-zoom -0.50"); });
-    menuitem_zoom_2x.activate.connect(() => { mpv_send_command(FIFO, "set video-zoom 1.00"); });
-    
-    var menuitem_zoom_submenu = new Gtk.Menu();
-    menuitem_zoom_submenu.add(menuitem_zoom_auto);
-    menuitem_zoom_submenu.add(menuitem_zoom_10);
-    menuitem_zoom_submenu.add(menuitem_zoom_25);
-    menuitem_zoom_submenu.add(menuitem_zoom_33);
-    menuitem_zoom_submenu.add(menuitem_zoom_50);
-    menuitem_zoom_submenu.add(menuitem_zoom_2x);
-    menuitem_zoom.set_submenu(menuitem_zoom_submenu);
-    
-    menu.append(menuitem_open);
-    menu.append(menuitem_subtitle);
-    menu.append(menuitem_aspect);
-    menu.append(menuitem_speed);
-    menu.append(menuitem_zoom);
-    menu.show_all();
-  }
-  
-  private void action_open_file()
-  {
-   var dialog = new Gtk.FileChooserDialog(_("Open file"), window, Gtk.FileChooserAction.OPEN,
-                                        "gtk-cancel", Gtk.ResponseType.CANCEL,
-                                        "gtk-open", Gtk.ResponseType.ACCEPT);
-   var filter = new Gtk.FileFilter();
-   filter.set_filter_name(_("All Media Files"));
-   filter.add_mime_type("audio/*");
-   filter.add_mime_type("video/*");
-   filter.add_mime_type("application/x-matroska");
-   filter.add_mime_type("image/gif");
-   dialog.add_filter(filter);
-   dialog.set_transient_for(window);
-   dialog.set_select_multiple(false);
-   if (file != null)
-   {
-     dialog.set_current_folder(Path.get_dirname(file));
-   }
-   if (dialog.run() == Gtk.ResponseType.ACCEPT)
-   {
-     file = dialog.get_filename();
-     gmp_video_start_playback();
-   }
-   dialog.destroy();
-  }
-
-  private void select_subtitle_dialog()
-  {
-    var dialog = new Gtk.FileChooserDialog(_("Select subtitle"), window, Gtk.FileChooserAction.OPEN,
-                                         "gtk-cancel", Gtk.ResponseType.CANCEL,
-                                         "gtk-open", Gtk.ResponseType.ACCEPT);
-    var filter = new Gtk.FileFilter();
-    filter.set_filter_name("Subtitle Files");
-    filter.add_mime_type("application/x-subrip");
-    filter.add_mime_type("text/x-microdvd");
-    dialog.add_filter(filter);
-    dialog.set_transient_for(window);
-    dialog.set_select_multiple(false);
-    if (file != null)
-    {
-      dialog.set_current_folder(Path.get_dirname(file));
-    }
-    if (dialog.run() == Gtk.ResponseType.ACCEPT)
-    {
-      subtitle_file = dialog.get_filename();
-      mpv_send_command(FIFO, "sub_add \"%s\"".printf(subtitle_file));
-      mpv_send_command(FIFO, "cycle sub 0");
-    }
-    dialog.destroy();
-  }
-  
   private void volume_level_changed()
   {
     double level = button_volume.get_value() * 100;
@@ -409,16 +298,10 @@ private class Program : Gtk.Application
   // Mouse EventButton Press
   private bool mouse_button_press_events(Gdk.EventButton event)
   {
-    if (event.button == 3)
-    {
-      context_menu.select_first(false);
-      context_menu.popup(null, null, null, event.button, event.time);
-    }
-
     if (event.type == Gdk.EventType.2BUTTON_PRESS)
     {
       action_full_screen_toggle();
-    }
+    }   
     return false;
   }
   
@@ -446,6 +329,43 @@ private class Program : Gtk.Application
       gmp_video_start_playback();
     }
     Gtk.drag_finish(drag_context, true, false, time);
+  }
+
+  private void gmp_video_start_playback()
+  {
+    var basename = Path.get_basename(file);
+    mpv_stop_playback(FIFO, OUTPUT);
+    mpv_video_with_subtitles(video_mode, subtitle_color, subtitle_scale, subtitle_fuzziness, xid, FIFO, file, OUTPUT);
+    button_volume.set_value(1.00);
+    headerbar.set_title("%s - %s".printf(NAME, basename));
+    playing = true;
+    button_pause_set_image();
+  }
+
+  private void action_open_file()
+  {
+   var dialog = new Gtk.FileChooserDialog(_("Open file"), window, Gtk.FileChooserAction.OPEN,
+                                        "gtk-cancel", Gtk.ResponseType.CANCEL,
+                                        "gtk-open", Gtk.ResponseType.ACCEPT);
+   var filter = new Gtk.FileFilter();
+   filter.set_filter_name(_("All Media Files"));
+   filter.add_mime_type("audio/*");
+   filter.add_mime_type("video/*");
+   filter.add_mime_type("application/x-matroska");
+   filter.add_mime_type("image/gif");
+   dialog.add_filter(filter);
+   dialog.set_transient_for(window);
+   dialog.set_select_multiple(false);
+   if (file != null)
+   {
+     dialog.set_current_folder(Path.get_dirname(file));
+   }
+   if (dialog.run() == Gtk.ResponseType.ACCEPT)
+   {
+     file = dialog.get_filename();
+     gmp_video_start_playback();
+   }
+   dialog.destroy();
   }
   
   private void action_open_url()
@@ -475,7 +395,7 @@ private class Program : Gtk.Application
     play_url_dialog.add_button(_("Close"), Gtk.ResponseType.CLOSE);
     play_url_dialog.set_default_response(Gtk.ResponseType.OK);
     play_url_dialog.show_all();
-    if (play_url_dialog.run() == Gtk.ResponseType.OK)
+    if (play_url_dialog.run() == Gtk.ResponseType.OK && play_url_entry.get_text() != "")
     {
       file = play_url_entry.get_text();
       gmp_video_start_playback();
@@ -483,15 +403,140 @@ private class Program : Gtk.Application
     play_url_dialog.destroy();
   }
 
-  private void gmp_video_start_playback()
+  private void action_subtitle_select()
   {
-    var basename = Path.get_basename(file);
-    mpv_stop_playback(FIFO, OUTPUT);
-    mpv_video_with_subtitles(video_mode, subtitle_color, subtitle_scale, subtitle_fuzziness, xid, FIFO, file, OUTPUT);
-    button_volume.set_value(1.00);
-    headerbar.set_title("%s - %s".printf(NAME, basename));
-    playing = true;
-    button_pause_set_image();
+    var dialog = new Gtk.FileChooserDialog(_("Select subtitle"), window, Gtk.FileChooserAction.OPEN,
+                                         "gtk-cancel", Gtk.ResponseType.CANCEL,
+                                         "gtk-open", Gtk.ResponseType.ACCEPT);
+    var filter = new Gtk.FileFilter();
+    filter.set_filter_name("Subtitle Files");
+    filter.add_mime_type("application/x-subrip");
+    filter.add_mime_type("text/x-microdvd");
+    dialog.add_filter(filter);
+    dialog.set_transient_for(window);
+    dialog.set_select_multiple(false);
+    if (file != null)
+    {
+      dialog.set_current_folder(Path.get_dirname(file));
+    }
+    if (dialog.run() == Gtk.ResponseType.ACCEPT)
+    {
+      subtitle_file = dialog.get_filename();
+      mpv_send_command(FIFO, "sub_add \"%s\"".printf(subtitle_file));
+      mpv_send_command(FIFO, "cycle sub 0");
+    }
+    dialog.destroy();
+  }
+  
+  private void action_subtitle_plus()
+  {
+    mpv_send_command(FIFO, "add sub-scale +0.5");
+  }
+  
+  private void action_subtitle_minus()
+  {
+    mpv_send_command(FIFO, "add sub-scale -0.5");
+  }
+
+  private void action_aspect_auto()
+  {
+    mpv_send_command(FIFO, "set aspect 0");
+  }
+  
+  private void action_aspect_43()
+  {
+    mpv_send_command(FIFO, "set aspect 1.333333");
+  }
+  
+  private void action_aspect_169()
+  {
+    mpv_send_command(FIFO, "set aspect 1.777778");
+  }
+  
+  private void action_aspect_54()
+  {
+    mpv_send_command(FIFO, "set aspect 1.25");
+  }
+  
+  private void action_aspect_11()
+  {
+    mpv_send_command(FIFO, "set aspect 1");
+  }
+
+  private void action_speed_auto()
+  {
+    mpv_send_command(FIFO, "set speed 1.00");
+  }
+  
+  private void action_speed_018()
+  {
+    mpv_send_command(FIFO, "set speed 0.18");
+  }
+   
+  private void action_speed_030()
+  {
+    mpv_send_command(FIFO, "set speed 0.30");
+  }
+  
+  private void action_speed_050()
+  {
+    mpv_send_command(FIFO, "set speed 0.50");
+  }
+  
+  private void action_speed_075()
+  {
+    mpv_send_command(FIFO, "set speed 0.75");
+  }
+   
+  private void action_speed_150()
+  {
+    mpv_send_command(FIFO, "set speed 1.50");
+  }
+  
+  private void action_speed_200()
+  {
+    mpv_send_command(FIFO, "set speed 2.00");
+  }
+  
+  
+  private void action_speed_300()
+  {
+    mpv_send_command(FIFO, "set speed 3.00");
+  }
+  
+  private void action_speed_400()
+  {
+    mpv_send_command(FIFO, "set speed 4.00");
+  }
+
+  private void action_zoom_auto()
+  {
+    mpv_send_command(FIFO, "set video-zoom 0");
+  }
+  
+  private void action_zoom_010()
+  {
+    mpv_send_command(FIFO, "set video-zoom -0.10");
+  }
+  
+  private void action_zoom_025()
+  {
+    mpv_send_command(FIFO, "set video-zoom -0.25");
+  }
+  
+  private void action_zoom_033()
+  {
+    mpv_send_command(FIFO, "set video-zoom -0.33");
+  }
+   
+  private void action_zoom_050()
+  {
+    mpv_send_command(FIFO, "set video-zoom -0.50");
+  }
+    
+  private void action_zoom_double()
+  {
+    mpv_send_command(FIFO, "set video-zoom 1.00");
   }
 
   private void action_full_screen_exit()
@@ -553,6 +598,14 @@ private class Program : Gtk.Application
   private void action_seek_minus_120()
   {
     mpv_send_command(FIFO, "seek -120");
+  }
+
+  private void action_show_menu()
+  {
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) == 0)
+    {
+      menubutton.set_active(true);
+    }
   }
 
   private void action_about()

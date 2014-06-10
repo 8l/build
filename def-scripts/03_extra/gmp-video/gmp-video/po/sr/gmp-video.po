@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-13 19:30+0200\n"
+"POT-Creation-Date: 2014-06-10 19:36+0200\n"
 "PO-Revision-Date: 2014-01-05 13:18+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -18,31 +18,39 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: gmp-video.vala:71
+#: gmp-video.vala:105
 msgid "About"
 msgstr "O programu"
 
-#: gmp-video.vala:268
+#: gmp-video.vala:351
 msgid "All Media Files"
 msgstr "Audio i video datoteke"
 
-#: gmp-video.vala:201
+#: gmp-video.vala:138
 msgid "Aspect ratio"
 msgstr "Odnos stranica"
 
-#: gmp-video.vala:222
+#: gmp-video.vala:149 gmp-video.vala:155 gmp-video.vala:165
 msgid "Auto"
 msgstr "Auto"
 
-#: gmp-video.vala:461
+#: gmp-video.vala:395
 msgid "Close"
 msgstr "Zatvori"
 
-#: gmp-video.vala:209
+#: gmp-video.vala:147
 msgid "Decrease size"
 msgstr "Smanji"
 
-#: gmp-video.vala:208
+#: gmp-video.vala:170
+msgid "Double size"
+msgstr "Dvostruko"
+
+#: gmp-video.vala:142
+msgid "File"
+msgstr "Datoteka"
+
+#: gmp-video.vala:146
 msgid "Increase size"
 msgstr "Povećaj"
 
@@ -50,38 +58,62 @@ msgstr "Povećaj"
 msgid "Mpv frontend in Vala and GTK3"
 msgstr "Grafički interfejs za MPlayer"
 
-#: gmp-video.vala:198
+#: gmp-video.vala:136
 msgid "Open"
 msgstr "Otvori"
 
-#: gmp-video.vala:440 gmp-video.vala:446
+#: gmp-video.vala:374 gmp-video.vala:380
 msgid "Open URL"
 msgstr "Otvori URL"
 
-#: gmp-video.vala:264
+#: gmp-video.vala:347
 msgid "Open file"
 msgstr "Otvori datoteku"
 
-#: gmp-video.vala:460
+#: gmp-video.vala:394
 msgid "Play"
 msgstr "Pusti"
 
-#: gmp-video.vala:199
-msgid "Play URL"
-msgstr "Pusti URL"
-
-#: gmp-video.vala:72
+#: gmp-video.vala:106
 msgid "Quit"
 msgstr "Odustani"
 
-#: gmp-video.vala:207
+#: gmp-video.vala:145
 msgid "Select file"
 msgstr "Odaberi datoteku"
 
-#: gmp-video.vala:290
+#: gmp-video.vala:408
 msgid "Select subtitle"
 msgstr "Odaberite titlove"
 
-#: gmp-video.vala:200
+#: gmp-video.vala:166
+msgid "Smaller 10%"
+msgstr "Manje za 10%"
+
+#: gmp-video.vala:167
+msgid "Smaller 25%"
+msgstr "Manje za 25%"
+
+#: gmp-video.vala:168
+msgid "Smaller 33%"
+msgstr "Manje za 33%"
+
+#: gmp-video.vala:169
+msgid "Smaller 50%"
+msgstr "Manje za 50%"
+
+#: gmp-video.vala:139
+msgid "Speed"
+msgstr "Brzine"
+
+#: gmp-video.vala:137
 msgid "Subtitle"
 msgstr "Titlovi"
+
+#: gmp-video.vala:143
+msgid "URL"
+msgstr "URL"
+
+#: gmp-video.vala:140
+msgid "Zoom"
+msgstr "Zumiraj"
