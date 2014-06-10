@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-15 18:35+0200\n"
+"POT-Creation-Date: 2014-06-10 19:37+0200\n"
 "PO-Revision-Date: 2014-01-27 16:30+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: playtv.vala:81
+#: playtv.vala:84
 msgid "About"
 msgstr "O programu"
 
-#: playtv.vala:103
+#: playtv.vala:108
 msgid "County"
 msgstr "Država"
 
-#: playtv.vala:119 playtv.vala:287
+#: playtv.vala:125 playtv.vala:290
 msgid "Edit list"
 msgstr "Uredi listu"
 
@@ -34,14 +34,14 @@ msgstr "Uredi listu"
 msgid "GTK3 based interface for watching online TV channels"
 msgstr "Program za gledanje televizije preko interneta"
 
-#: playtv.vala:104
+#: playtv.vala:109
 msgid "Genre"
 msgstr "Žanr"
 
-#: playtv.vala:105
+#: playtv.vala:110
 msgid "Name"
 msgstr "Ime"
 
-#: playtv.vala:82
+#: playtv.vala:85
 msgid "Quit"
 msgstr "Odustani"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-15 18:37+0200\n"
+"POT-Creation-Date: 2014-06-10 19:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: playtv.vala:81
+#: playtv.vala:84
 msgid "About"
 msgstr ""
 
-#: playtv.vala:103
+#: playtv.vala:108
 msgid "County"
 msgstr ""
 
-#: playtv.vala:119 playtv.vala:287
+#: playtv.vala:125 playtv.vala:290
 msgid "Edit list"
 msgstr ""
 
@@ -33,14 +33,14 @@ msgstr ""
 msgid "GTK3 based interface for watching online TV channels"
 msgstr ""
 
-#: playtv.vala:104
+#: playtv.vala:109
 msgid "Genre"
 msgstr ""
 
-#: playtv.vala:105
+#: playtv.vala:110
 msgid "Name"
 msgstr ""
 
-#: playtv.vala:82
+#: playtv.vala:85
 msgid "Quit"
 msgstr ""

@@ -27,6 +27,7 @@ private class Program : Gtk.Application
   
   Gtk.TreeView treeview;
   Gtk.ListStore liststore;
+  Gtk.MenuButton menubutton;
   long xid;
   Gtk.ApplicationWindow window;
   Gtk.DrawingArea drawing_area;
@@ -63,8 +64,10 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about", action_about },
-    { "quit",  action_quit  }
+    { "about",     action_about     },
+    { "quit",      action_quit      },
+    { "edit-list", action_edit_list },
+    { "show-menu", action_show_menu }
   };
 
   private Program()
@@ -82,6 +85,8 @@ private class Program : Gtk.Application
     menu.append(_("Quit"),      "app.quit");
 
     set_app_menu(menu);
+    
+    add_accelerator("F10", "app.show-menu", null);
 
     string random_number = GLib.Random.int_range(1000, 5000).to_string();
     FIFO = "/tmp/tvplay_fifo_" + random_number;
@@ -116,16 +121,13 @@ private class Program : Gtk.Application
     paned.add1(drawing_area);
     paned.add2(scrolled);
 
-    var menuitem_configure = new Gtk.MenuItem.with_label(_("Edit list"));
-    menuitem_configure.activate.connect(action_configure);
-    
-    var gear_menu = new Gtk.Menu();
-    gear_menu.append(menuitem_configure); 
-    gear_menu.show_all();
-    
-    var menubutton = new Gtk.MenuButton();
+    var gear_menu = new Menu();
+    gear_menu.append(_("Edit list"), "app.edit-list");
+
+    menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
-    menubutton.set_popup(gear_menu);
+    menubutton.set_use_popover(true);
+    menubutton.set_menu_model(gear_menu);
     menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
 
     headerbar = new Gtk.HeaderBar();
@@ -255,7 +257,7 @@ private class Program : Gtk.Application
   }
 
   // Configure
-  private void action_configure()
+  private void action_edit_list()
   {
     configure_grid = new Gtk.Grid();
     configure_grid.set_row_spacing(5);
@@ -357,6 +359,14 @@ private class Program : Gtk.Application
   {
     entry_name.width_request = width;
     entry_name.height_request = height;
+  }
+
+  private void action_show_menu()
+  {
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) == 0)
+    {
+      menubutton.set_active(true);
+    }
   }
   
   private void action_about()
