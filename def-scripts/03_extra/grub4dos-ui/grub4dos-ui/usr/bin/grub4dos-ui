@@ -68,14 +68,14 @@ _Notask=$(echo "You chose nothig to do.")
 _Probing=$(echo "Searching. Please wait...")
 _Quit=$(echo "Press 'OK' to quit this program.")
 _List=$(echo "List of detected operating systems")
-_List2=$(echo "You can rewrite each label. Or, erase. Caution: You cannot change their order.")
+_List2=$(echo "You can rewrite each label. Or, erase. \nCaution: You cannot change their order.")
 _Frugal=$(echo "Frugal installed Puppy Linux")
 _Full=$(echo "AlphaOS frugal or other Linux full install")
 _Win=$(echo "Windows")
 _Chain_frame=$(echo 'Bootable partitions')
 _Comfirm=$(echo "Comfirmation")
 _Comfirm1=$(echo "The boot loader(Grub4Dos) will be installed on")
-_Comfirm3=$(echo "Press 'OK' to install. Press 'Cancel' if you do not like to.")
+_Comfirm3=$(echo "Press 'OK' to install.")
 _Floppy=$(echo "Insert floppy disk (all the data will be eraesed).")
 _Formating=$(echo "Formating floppy. Please wait ...")
 _Writing=$(echo "Installing Grub4Dos. Please wait...")
@@ -101,7 +101,7 @@ _Linux_opt_tip=$(echo "You can edit the boot options add to all full installed L
 _MBR_saved=$(echo "Old MBR is saved")
 _Restore_MBR=$(echo "To restore the MBR, type next command on console")
 _Duplicated_W=$(echo "Next puppy directories have same name on multiple partitions. It may confuse the bootup procces. Recommended to press 'Cancel' to quit this program, change the names of the directories, and then restart this program.\\nBut you can continue this program pressing 'OK'.")
-_Win3=$(echo "The first entry is always shown regardless Windows are installed or not. Recommended to keep the entry.")
+_Win3=$(echo "The first entry is always shown regardless Windows \nis installed or not. Recommended to keep the entry.")
 _Missing=$(echo "The Grub4DOS UI seems improperly installed. Missing files")
 _Lacking=$(echo "Some componets are lacking to perform this function")
 _NoSupport=$(echo 'No supported filesystems found in')
@@ -1177,7 +1177,7 @@ if [ "$FLOPPY" != "" ]; then
  MORE="$MORE
  $LOAD_FLOPPY"
 fi
-DIALOG="<window title=\"$_Title - $(echo 'Confirmation')\" resizable=\"false\"><vbox>
+DIALOG="<window title=\"$_Title - $(echo 'Confirmation')\" resizable=\"false\" icon-name=\"grub4dos-ui\"><vbox>
     <frame $_Comfirm>
    <text use-markup=\"true\"><label>\"$_Comfirm1: <b>$WHERETO$MBR$FLOPPY</b>\"</label></text>
    $MORE
@@ -1194,7 +1194,7 @@ eval $($GTKDIALOG -p DIALOG -c | grep '^\w\w*=')
 # floppy
 if [ "$FLOPPY" != "" ]; then
   splash start "$_Formating"
-  ERRMSG="<window title=\"$_Title - Error\"><vbox>
+  ERRMSG="<window title=\"$_Title - Error\" icon-name=\"grub4dos-ui\"><vbox>
    <pixmap icon_size=\"5\">
     <input file stock=\"gtk-dialog-error\"></input>
    </pixmap>
