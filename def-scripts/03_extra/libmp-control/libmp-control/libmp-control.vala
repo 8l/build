@@ -136,6 +136,7 @@ namespace LibmpControl
       {
         chan.write_chars("stop\n".to_utf8(), out bw);
         chan.flush();
+        GLib.Thread.usleep(50000);
         Process.spawn_command_line_sync("rm -f %s".printf(fifo));
         Process.spawn_command_line_sync("rm -f %s".printf(output));
       }

@@ -53,7 +53,7 @@ INITRAMFS_TREE="$PWD/../initramfs"
 HOME="/mnt/home/alphaos"
 NEWISO_DIR="$pkgdir/iso"
 VERSION="15"
-ISO_VERSION="15.0"
+ISO_VERSION="15.1"
 DATE=$(date +"%Y%m%d")
 
 # SB_COMPRESSION="-comp xz -b 524288 -Xbcj x86"
