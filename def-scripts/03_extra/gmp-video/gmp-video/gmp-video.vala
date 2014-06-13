@@ -578,26 +578,32 @@ private class Program : Gtk.Application
       playing = true;
     }
     button_pause_set_image();
+    
+    mpv_send_command(FIFO, "show_progress");
   }
   
   private void action_seek_plus_15()
   {
     mpv_send_command(FIFO, "seek +15");
+    mpv_send_command(FIFO, "show_progress");
   }
   
   private void action_seek_minus_15()
   {
     mpv_send_command(FIFO, "seek -15");
+    mpv_send_command(FIFO, "show_progress");
   }
   
   private void action_seek_plus_120()
   {
     mpv_send_command(FIFO, "seek +120");
+    mpv_send_command(FIFO, "show_progress");
   }
   
   private void action_seek_minus_120()
   {
     mpv_send_command(FIFO, "seek -120");
+    mpv_send_command(FIFO, "show_progress");
   }
 
   private void action_show_menu()
