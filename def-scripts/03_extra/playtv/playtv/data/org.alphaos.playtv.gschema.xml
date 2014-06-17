@@ -6,42 +6,42 @@
       <description>Video output mode</description>
     </key>
     <key name="tv01" type="as">
-      <default>[ 'Serbia', 'General', 'RTS', 'mmsh://rts.videostreaming.rs/rts']</default>
+      <default>[ 'RTS', 'General', 'Serbia', 'mmsh://rts.videostreaming.rs/rts']</default>
       <summary>TV 01</summary>
       <description>TV 01 name and address</description>
     </key>
     <key name="tv02" type="as">
-      <default>[ 'Serbia', 'General', 'Vojvodina1', 'rtsp://212.200.191.85/rtv1' ]</default>
+      <default>[ 'Vojvodina1', 'General', 'Serbia', 'rtsp://212.200.191.85/rtv1' ]</default>
       <summary>TV 02</summary>
       <description>TV 02 name and address</description>
     </key>
     <key name="tv03" type="as">
-      <default>[ 'Germany', 'Music', 'Deluxe', 'rtmp://flash.cdn.deluxemusic.tv/deluxemusic.tv-live/web_850.stream' ]</default>
+      <default>[ 'Deluxe', 'Music', 'Germany', 'rtmp://flash.cdn.deluxemusic.tv/deluxemusic.tv-live/web_850.stream' ]</default>
       <summary>TV 03</summary>
       <description>TV 03 name and address</description>
     </key>
     <key name="tv04" type="as">
-      <default>[ 'Latvia', 'Music', 'Music Baltic', 'rtmp://80.232.172.37/rtplive/vlc.sdp' ]</default>
+      <default>[ 'Music Baltic', 'Music', 'Latvia', 'rtmp://80.232.172.37/rtplive/vlc.sdp' ]</default>
       <summary>TV 07</summary>
       <description>TV 07 name and address</description>
     </key>
     <key name="tv05" type="as">
-      <default>[ 'Greece', 'Music', 'Greek Hits', 'mmsh://wpso.com:200/music' ]</default>
+      <default>[ 'Greek Hits', 'Music', 'Greece', 'mmsh://wpso.com:200/music' ]</default>
       <summary>TV 08</summary>
       <description>TV 08 name and address</description>
     </key>
     <key name="tv06" type="as">
-      <default>[ 'G.Britain', 'News', 'Sky News', 'mms://live1.wm.skynews.servecast.net/skynews_wmlz_live300k']</default>
+      <default>[ 'Sky News', 'News', 'G.Britain', 'mms://live1.wm.skynews.servecast.net/skynews_wmlz_live300k']</default>
       <summary>TV 04</summary>
       <description>TV 04 name and address</description>
     </key>
     <key name="tv07" type="as">
-      <default>[ 'G.Britain', 'News', 'BBC', 'mms://rmv8.bbc.net.uk/news/olmedia/n5ctrl/tvseq/od/bbc2/bb/wm/video/daily_pol_bb.wmv' ]</default>
+      <default>[ 'BBC', 'News', 'G.Britain', 'mms://rmv8.bbc.net.uk/news/olmedia/n5ctrl/tvseq/od/bbc2/bb/wm/video/daily_pol_bb.wmv' ]</default>
       <summary>TV 06</summary>
       <description>TV 06 name and address</description>
     </key>
     <key name="tv08" type="as">
-      <default>[ 'Macedonia', 'News', '24Vesti', 'mmsh://62.162.58.55/24vesti']</default>
+      <default>[ '24Vesti', 'News', 'Macedonia', 'mmsh://62.162.58.55/24vesti']</default>
       <summary>TV 05</summary>
       <description>TV 05 name and address</description>
     </key>

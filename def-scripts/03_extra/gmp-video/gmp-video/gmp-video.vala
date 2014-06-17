@@ -301,7 +301,7 @@ private class Program : Gtk.Application
     if (event.type == Gdk.EventType.2BUTTON_PRESS)
     {
       action_full_screen_toggle();
-    }   
+    }
     return false;
   }
   
@@ -569,6 +569,7 @@ private class Program : Gtk.Application
   private void action_pause()
   {
     mpv_send_command(FIFO, "cycle pause");
+    mpv_send_command(FIFO, "show_progress");
     if (playing == true)
     {
       playing = false;
@@ -578,8 +579,6 @@ private class Program : Gtk.Application
       playing = true;
     }
     button_pause_set_image();
-    
-    mpv_send_command(FIFO, "show_progress");
   }
   
   private void action_seek_plus_15()

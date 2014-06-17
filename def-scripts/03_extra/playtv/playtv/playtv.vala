@@ -24,20 +24,20 @@ private class Program : Gtk.Application
   const string DESCRIPTION = _("GTK3 based interface for watching online TV channels");
   const string ICON = "playtv";
   const string[] AUTHORS = { "Simargl <archpup-at-gmail-dot-com>", null };
-  
-  Gtk.TreeView treeview;
+
+  Gtk.ApplicationWindow window;
+  Gtk.Dialog configure;
+  Gtk.DrawingArea drawing_area;
+  Gtk.Grid configure_grid;
+  Gtk.HeaderBar headerbar;
   Gtk.ListStore liststore;
   Gtk.MenuButton menubutton;
-  long xid;
-  Gtk.ApplicationWindow window;
-  Gtk.DrawingArea drawing_area;
+  Gtk.Revealer revealer;
   Gtk.ScrolledWindow scrolled;
-  Gtk.HeaderBar headerbar;
-  Gtk.Grid configure_grid;
-  Gtk.Dialog configure;
+  Gtk.ToggleButton button_list;
+  Gtk.TreeView treeview;
   GLib.Settings settings;
-  
-  string video_mode;
+
   string[] tv01;
   string[] tv02;
   string[] tv03;
@@ -58,9 +58,11 @@ private class Program : Gtk.Application
   string[] tv18;  
   string[] tv19;  
   string[] tv20;
-  
+
+  string video_mode;
   string FIFO;
   string OUTPUT;
+  long xid;
 
   private const GLib.ActionEntry[] action_entries =
   {
@@ -93,7 +95,7 @@ private class Program : Gtk.Application
     OUTPUT = "/tmp/tvplay_output_" + random_number;    
     
     drawing_area = new Gtk.DrawingArea();
-    drawing_area.set_size_request(520, 410);
+    drawing_area.set_size_request(500, 410);
     drawing_area.add_events(Gdk.EventMask.BUTTON_PRESS_MASK);
     drawing_area.button_press_event.connect(mouse_button_press_events);    
     drawing_area.set_vexpand(true);
@@ -101,25 +103,39 @@ private class Program : Gtk.Application
     
     var cell = new Gtk.CellRendererText();
     liststore = new Gtk.ListStore(4, typeof (string), typeof (string), typeof (string), typeof (string));
+    cell.set("font", "Cantarell 10");
     
     treeview = new Gtk.TreeView();
     treeview.set_model(liststore);
     treeview.row_activated.connect(play_selected);
-    treeview.insert_column_with_attributes (-1, _("County"), cell, "text", 0);
+    treeview.insert_column_with_attributes (-1, _("Name"), cell, "text", 0);
     treeview.insert_column_with_attributes (-1, _("Genre"), cell, "text", 1);
-    treeview.insert_column_with_attributes (-1, _("Name"), cell, "text", 2);
+    treeview.insert_column_with_attributes (-1, _("Country"), cell, "text", 2);
     
     load_settings();   
     load_liststore_items();
+
+    // Buttons
+    button_list = new Gtk.ToggleButton();
+    button_list.valign = Gtk.Align.CENTER;
+    button_list.set_image(new Gtk.Image.from_icon_name("view-list-symbolic", Gtk.IconSize.MENU));
+    button_list.set_active(true);
+    button_list.toggled.connect(action_reveal_list);
     
     scrolled = new Gtk.ScrolledWindow(null, null);
     scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS);
-    scrolled.set_size_request(250, 410);
+    scrolled.set_size_request(230, 410);
     scrolled.add(treeview);
+ 
+    revealer = new Gtk.Revealer();
+    revealer.add(scrolled);
+    revealer.set_transition_duration(300);
+    revealer.set_reveal_child(true);
+    revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT);
     
-    var paned = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
-    paned.add1(drawing_area);
-    paned.add2(scrolled);
+    var grid = new Gtk.Grid();
+    grid.attach(revealer,     0, 0, 1, 1);
+    grid.attach(drawing_area, 1, 0, 1, 1);
 
     var gear_menu = new Menu();
     gear_menu.append(_("Edit list"), "app.edit-list");
@@ -133,13 +149,14 @@ private class Program : Gtk.Application
     headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);
     headerbar.set_title(NAME);
+    headerbar.pack_start(button_list);
     headerbar.pack_end(menubutton);
     
     window = new Gtk.ApplicationWindow(this);
     window.set_icon_name(ICON);
     window.set_titlebar(headerbar);
     window.set_default_size(790, 410);
-    window.add(paned);
+    window.add(grid);
     window.show_all();
     window.delete_event.connect(() => { action_quit(); return true; });
     
@@ -366,6 +383,18 @@ private class Program : Gtk.Application
     if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) == 0)
     {
       menubutton.set_active(true);
+    }
+  }
+
+  private void action_reveal_list()
+  {
+    if (button_list.get_active() == true)
+    {
+      revealer.set_reveal_child(true);
+    }
+    else
+    {
+      revealer.set_reveal_child(false);
     }
   }
   
