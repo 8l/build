@@ -31,9 +31,11 @@ private class Program : Gtk.Application
   Gtk.TreeView treeview;
   Gtk.ListStore liststore;
   Gtk.MenuButton menubutton;
+  Gtk.Revealer revealer;
   Gtk.ScrolledWindow scrolled_window_image;
   Gtk.ScrolledWindow scrolled_window_treeview;
   Gtk.Scale scale;
+  Gtk.ToggleButton button_list;
   GLib.Settings settings;
   int width;
   int height;
@@ -108,6 +110,12 @@ private class Program : Gtk.Application
     image = new Gtk.Image();
 
     // Buttons
+    button_list = new Gtk.ToggleButton();
+    button_list.valign = Gtk.Align.CENTER;
+    button_list.set_image(new Gtk.Image.from_icon_name("view-list-symbolic", Gtk.IconSize.MENU));
+    button_list.set_active(false);
+    button_list.toggled.connect(action_reveal_list);
+
     var button_prev = new Gtk.Button.from_icon_name("go-previous-symbolic", Gtk.IconSize.MENU);
     var button_next = new Gtk.Button.from_icon_name("go-next-symbolic", Gtk.IconSize.MENU);
     button_prev.clicked.connect(action_previous_image);
@@ -159,6 +167,7 @@ private class Program : Gtk.Application
     headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);
     headerbar.set_title(NAME);
+    headerbar.pack_start(button_list);
     headerbar.pack_start(prev_next_box);
     headerbar.pack_end(menubutton);
     headerbar.pack_end(scale);
@@ -174,32 +183,34 @@ private class Program : Gtk.Application
     treeview.set_activate_on_single_click(true);
     treeview.row_activated.connect(show_selected_image);
     treeview.insert_column_with_attributes (-1, _("Name"), cell, "text", 0);
-    
+
     // ScrolledWindow
     scrolled_window_image = new Gtk.ScrolledWindow(null, null);
     scrolled_window_image.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
     scrolled_window_image.expand = true;
-    scrolled_window_image.set_size_request(250, 200);
+    scrolled_window_image.set_size_request(250, 0);
     scrolled_window_image.add(image);
     
     scrolled_window_treeview = new Gtk.ScrolledWindow(null, null);
     scrolled_window_treeview.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-    scrolled_window_treeview.set_size_request(200, 200);
+    scrolled_window_treeview.set_size_request(200, 0);
     scrolled_window_treeview.add(treeview);
-    
-    hadj = scrolled_window_image.get_hadjustment();
-    vadj = scrolled_window_image.get_vadjustment();
 
-    var paned = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
-    paned.add1(scrolled_window_treeview);
-    paned.add2(scrolled_window_image);
+    revealer = new Gtk.Revealer();
+    revealer.add(scrolled_window_treeview);
+    revealer.set_transition_duration(300);
+    revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT);
 
-    Gtk.drag_dest_set(paned, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
-    paned.drag_data_received.connect(on_drag_data_received);
+    var grid = new Gtk.Grid();
+    grid.attach(revealer,              0, 0, 1, 1);
+    grid.attach(scrolled_window_image, 1, 0, 1, 1);
+
+    Gtk.drag_dest_set(grid, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
+    grid.drag_data_received.connect(on_drag_data_received);
 
     // Window
     window = new Gtk.ApplicationWindow(this);
-    window.add(paned);
+    window.add(grid);
     window.set_titlebar(headerbar);
     window.set_default_size(width, height);
     window.set_icon_name(ICON);
@@ -213,6 +224,9 @@ private class Program : Gtk.Application
     scrolled_window_image.button_press_event.connect(mouse_button_press_events);
     scrolled_window_image.motion_notify_event.connect(mouse_motion_events);
     scrolled_window_image.button_release_event.connect(mouse_button_release_events);
+
+    hadj = scrolled_window_image.get_hadjustment();
+    vadj = scrolled_window_image.get_vadjustment();
   }
 
   public override void activate()
@@ -340,7 +354,7 @@ private class Program : Gtk.Application
     }
     else
     {
-      pixbuf_width = scrolled_window_image.get_allocated_width();;
+      pixbuf_width = scrolled_window_image.get_allocated_width();
     }
     load_pixbuf(pixbuf_name, pixbuf_width, pixbuf_height);
   }
@@ -401,6 +415,18 @@ private class Program : Gtk.Application
         zoom_image(false, 0.17, 0.07);
       }
       scale_current_value = scale.get_value();
+    }
+  }
+
+  private void action_reveal_list()
+  {
+    if (button_list.get_active() == true)
+    {
+      revealer.set_reveal_child(true);
+    }
+    else
+    {
+      revealer.set_reveal_child(false);
     }
   }
 
