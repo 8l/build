@@ -69,17 +69,19 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about",            action_about            },
-    { "quit",             action_quit             },
-    { "open",             action_open             },
-    { "set-as-wallpaper", action_set_as_wallpaper },
-    { "next-image",       action_next_image       },
-    { "previous-image",   action_previous_image   },
-    { "zoom-in",          action_zoom_in          },
-    { "zoom-out",         action_zoom_out         },
-    { "slideshow",        action_slideshow        },
-    { "edit-with-gimp",   action_edit_with_gimp   },
-    { "show-menu",        action_show_menu        }
+    { "about",              action_about              },
+    { "quit",               action_quit               },
+    { "open",               action_open               },
+    { "set-as-wallpaper",   action_set_as_wallpaper   },
+    { "next-image",         action_next_image         },
+    { "previous-image",     action_previous_image     },
+    { "zoom-in",            action_zoom_in            },
+    { "zoom-out",           action_zoom_out           },
+    { "slideshow",          action_slideshow          },
+    { "edit-with-gimp",     action_edit_with_gimp     },
+    { "full-screen-toggle", action_full_screen_toggle },
+    { "full-screen-exit",   action_full_screen_exit   },
+    { "show-menu",          action_show_menu          }
   };
 
   private Program()
@@ -98,6 +100,10 @@ private class Program : Gtk.Application
 
     set_app_menu(menu);
     
+    add_accelerator("Right", "app.next-image", null);
+    add_accelerator("Left", "app.previous-image", null);
+    add_accelerator("Escape", "app.full-screen-exit", null);
+    add_accelerator("F11", "app.full-screen-toggle", null);
     add_accelerator("F10", "app.show-menu", null);
 
     settings = new GLib.Settings("org.alphaos.voyager.preferences");
@@ -215,7 +221,6 @@ private class Program : Gtk.Application
     window.set_default_size(width, height);
     window.set_icon_name(ICON);
     window.show_all();
-    window.key_press_event.connect(keyboard_events);
     window.scroll_event.connect(scrolled);
     window.delete_event.connect(() => { save_settings(); quit(); return true; });
     add_window(window);
@@ -328,33 +333,20 @@ private class Program : Gtk.Application
     }
   }
 
-  // load pixbuf with specified size
-  private void load_pixbuf_zoom(string pixbuf_name, int pixbuf_width, int pixbuf_height)
-  {   
-    try
-    {
-      pixbuf_scaled = new Gdk.Pixbuf.from_file_at_size(pixbuf_name, pixbuf_width, pixbuf_width);
-      image.set_from_pixbuf(pixbuf_scaled);
-    }
-    catch(Error error)
-    {
-      stderr.printf("error: %s\n", error.message);
-    }
-  }
-
   // load pixbuf on start
   private void load_pixbuf_on_start(string pixbuf_name)
   {
     int width, height;
     window.get_size(out width, out height);
-    pixbuf_height = 0;
     if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
     {
       pixbuf_width = width;
+      pixbuf_height = height;
     }
     else
     {
       pixbuf_width = scrolled_window_image.get_allocated_width();
+      pixbuf_height = scrolled_window_image.get_allocated_height();
     }
     load_pixbuf(pixbuf_name, pixbuf_width, pixbuf_height);
   }
@@ -368,11 +360,11 @@ private class Program : Gtk.Application
       {
         if (event.direction == Gdk.ScrollDirection.UP)
         { 
-          zoom_image(true, 0.17, 0.07);
+          action_zoom_in();
         }
         if (event.direction == Gdk.ScrollDirection.DOWN)
         {
-          zoom_image(false, 0.17, 0.07);
+          action_zoom_out();
         }
       }
     }
@@ -381,23 +373,45 @@ private class Program : Gtk.Application
 
   private void zoom_image(bool plus, double zoom_larger, double zoom_smaller)
   {
-    double change;
+    double change_width;
+    double change_height;
     double current_pixbuf_width = pixbuf_scaled.get_width();
     double current_pixbuf_height = pixbuf_scaled.get_height();
-    change = current_pixbuf_width * zoom_larger;
+    change_width = current_pixbuf_width * zoom_larger;
+    change_height = current_pixbuf_height * zoom_larger;
+    if (current_pixbuf_width > 400)
+    {
+      change_width = current_pixbuf_width * zoom_smaller;
+    }
+    if (current_pixbuf_height > 300)
+    {
+      change_height = current_pixbuf_width * zoom_smaller;
+    }
     if (plus == true)
     {
-      if (current_pixbuf_width > 640)
+      try
       {
-        change = current_pixbuf_width * zoom_smaller;
+        pixbuf_scaled = new Gdk.Pixbuf.from_file_at_size(file, (int)current_pixbuf_width + (int)change_width, (int)current_pixbuf_height + (int)change_height);
+        image.set_from_pixbuf(pixbuf_scaled);
       }
-      load_pixbuf_zoom(file, (int)current_pixbuf_width + (int)change, (int)current_pixbuf_height + (int)change);
+      catch(Error error)
+      {
+        stderr.printf("error: %s\n", error.message);
+      }
     }
     else
     {
       if (current_pixbuf_width > 15)
       {
-        load_pixbuf_zoom(file, (int)current_pixbuf_width - (int)change, (int)current_pixbuf_height - (int)change);
+        try
+        {
+          pixbuf_scaled = new Gdk.Pixbuf.from_file_at_size(file, (int)current_pixbuf_width - (int)change_width, (int)current_pixbuf_height - (int)change_height);
+          image.set_from_pixbuf(pixbuf_scaled);
+        }
+        catch(Error error)
+        {
+          stderr.printf("error: %s\n", error.message);
+        }
       }
     }
   }
@@ -408,25 +422,13 @@ private class Program : Gtk.Application
     {
       if (scale.get_value() > scale_current_value)
       {
-        zoom_image(true, 0.17, 0.07);
+        action_zoom_in();
       }
       else
       {
-        zoom_image(false, 0.17, 0.07);
+        action_zoom_out();
       }
       scale_current_value = scale.get_value();
-    }
-  }
-
-  private void action_reveal_list()
-  {
-    if (button_list.get_active() == true)
-    {
-      revealer.set_reveal_child(true);
-    }
-    else
-    {
-      revealer.set_reveal_child(false);
     }
   }
 
@@ -439,11 +441,11 @@ private class Program : Gtk.Application
       {
         if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
         {
-          full_screen_exit();
+          action_full_screen_exit();
         }
         else
         {
-          full_screen_switch();
+          action_full_screen_toggle();
         }
       } 
     }
@@ -503,58 +505,6 @@ private class Program : Gtk.Application
     return false;
   }
 
-  private void full_screen_switch()
-  {
-    scrolled_window_treeview.hide();
-    window.fullscreen();
-    saved_pixbuf_width = (int)pixbuf_scaled.get_width();
-    saved_pixbuf_height = (int)pixbuf_scaled.get_height();
-    load_pixbuf(file, screen_width, screen_height);
-  }
-  
-  private void full_screen_exit()
-  {  
-    scrolled_window_treeview.show();
-    window.unfullscreen();
-    load_pixbuf(file, saved_pixbuf_width, saved_pixbuf_height);
-  }
-
-  // Keyboard EventKey Press
-  private bool keyboard_events(Gdk.EventKey event)
-  {
-    if (file != null)
-    {
-      string key = Gdk.keyval_name(event.keyval);
-      if(key=="Escape")
-      {
-        if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
-        {
-          full_screen_exit();
-        }
-      }
-      if(key=="F11")
-      {
-        if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
-        {
-          full_screen_exit();
-        }
-        else
-        {
-          full_screen_switch();
-        }
-      }
-      if(key=="Right" || key=="Down")
-      {
-        action_next_image();
-      }
-      if(key=="Left" || key=="Up")
-      {
-        action_previous_image();
-      }
-    }
-    return false;
-  } 
-
   // Drag Data
   private void on_drag_data_received(Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) 
   {
@@ -574,6 +524,18 @@ private class Program : Gtk.Application
     settings.set_int("width", width);
     settings.set_int("height", height);
     GLib.Settings.sync();
+  }
+
+  private void action_reveal_list()
+  {
+    if (button_list.get_active() == true)
+    {
+      revealer.set_reveal_child(true);
+    }
+    else
+    {
+      revealer.set_reveal_child(false);
+    }
   }
 
   private void action_open()
@@ -664,7 +626,7 @@ private class Program : Gtk.Application
   {
     if (file != null)
     {
-      zoom_image(true, 0.30, 0.20);
+      zoom_image(true, 0.20, 0.05);
     }
   }
 
@@ -672,7 +634,7 @@ private class Program : Gtk.Application
   {
     if (file != null)
     {
-      zoom_image(false, 0.25, 0.15);
+      zoom_image(false, 0.20, 0.05);
     }
   }
 
@@ -711,6 +673,29 @@ private class Program : Gtk.Application
     }
   }
 
+  private void action_full_screen_toggle()
+  {
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
+    {
+      action_full_screen_exit();
+    }
+    else
+    {
+      scrolled_window_treeview.hide();
+      window.fullscreen();
+      saved_pixbuf_width = (int)pixbuf_scaled.get_width();
+      saved_pixbuf_height = (int)pixbuf_scaled.get_height();
+      load_pixbuf(file, screen_width, screen_height);
+    }
+  }
+
+  private void action_full_screen_exit()
+  {
+    scrolled_window_treeview.show();
+    window.unfullscreen();
+    load_pixbuf(file, saved_pixbuf_width, saved_pixbuf_height);
+  }
+
   private void action_show_menu()
   {
     if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) == 0)
@@ -718,7 +703,7 @@ private class Program : Gtk.Application
       menubutton.set_active(true);
     }
   }
-  
+
   private void action_about()
   {
     var about = new Gtk.AboutDialog();

@@ -340,6 +340,7 @@ private class Program : Gtk.Application
     headerbar.set_title("%s - %s".printf(NAME, basename));
     playing = true;
     button_pause_set_image();
+    mpv_send_command(FIFO, "show_progress");
   }
 
   private void action_open_file()
