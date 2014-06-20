@@ -34,7 +34,6 @@ package() {
   install -Dm755 $build/sysvinit-${version_sysvinit}/src/killall5 $destdir/usr/bin/killall5
   install -Dm755 $build/rdate-${version_rdate}/src/rdate $destdir/usr/bin/rdate
   install -Dm755 $build/toybox-$version_toybox/toybox $destdir/usr/bin/toybox
-  ln -s toybox $destdir/usr/bin/pidof
   ln -s toybox $destdir/usr/bin/init
   ln -s toybox $destdir/usr/bin/fstype
 }
