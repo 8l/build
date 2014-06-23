@@ -66,10 +66,13 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about",     action_about     },
-    { "quit",      action_quit      },
-    { "edit-list", action_edit_list },
-    { "show-menu", action_show_menu }
+    { "about",              action_about              },
+    { "quit",               action_quit               },
+    { "edit-list",          action_edit_list          },
+    { "full-screen-toggle", action_full_screen_toggle },
+    { "full-screen-exit",   action_full_screen_exit   },
+    { "pause",              action_pause              },
+    { "show-menu",          action_show_menu          }
   };
 
   private Program()
@@ -89,6 +92,9 @@ private class Program : Gtk.Application
     set_app_menu(menu);
     
     add_accelerator("F10", "app.show-menu", null);
+    add_accelerator("F11", "app.full-screen-toggle", null);
+    add_accelerator("space", "app.pause", null);
+    add_accelerator("Escape", "app.full-screen-exit", null);
 
     string random_number = GLib.Random.int_range(1000, 5000).to_string();
     FIFO = "/tmp/tvplay_fifo_" + random_number;
@@ -121,7 +127,7 @@ private class Program : Gtk.Application
     button_list.set_image(new Gtk.Image.from_icon_name("view-list-symbolic", Gtk.IconSize.MENU));
     button_list.set_active(true);
     button_list.toggled.connect(action_reveal_list);
-    
+
     scrolled = new Gtk.ScrolledWindow(null, null);
     scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS);
     scrolled.set_size_request(230, 410);
@@ -228,8 +234,8 @@ private class Program : Gtk.Application
     {
       liststore.append(out iter);
       liststore.set(iter, 0, list[0], 1, list[1], 2, list[2], 3, list[3]);
-    } 
-  }  
+    }
+  }
   
   void play_selected()
   {
@@ -252,25 +258,25 @@ private class Program : Gtk.Application
   // Mouse EventButton Press
   private bool mouse_button_press_events(Gdk.EventButton event)
   {
-    var invisible_cursor = new Gdk.Cursor(Gdk.CursorType.BLANK_CURSOR);
     if (event.type == Gdk.EventType.2BUTTON_PRESS)
     {
-      if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
-      {
-        window.unfullscreen();
-        Gdk.Window w = window.get_window();
-        w.set_cursor(null);
-        scrolled.show();
-      }
-      else
-      {
-        window.fullscreen();
-        Gdk.Window w = window.get_window();
-        w.set_cursor(invisible_cursor);
-        scrolled.hide();
-      }
+      action_full_screen_toggle();
     }
     return false;
+  }
+
+  private void action_reveal_list()
+  {
+    if (button_list.get_active() == true)
+    {
+      revealer.set_reveal_child(true);
+      treeview.grab_focus();
+    }
+    else
+    {
+      revealer.set_reveal_child(false);
+      drawing_area.grab_focus();
+    }
   }
 
   // Configure
@@ -378,6 +384,38 @@ private class Program : Gtk.Application
     entry_name.height_request = height;
   }
 
+  private void action_full_screen_toggle()
+  {
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
+    {
+      window.unfullscreen();
+      Gdk.Window w = window.get_window();
+      w.set_cursor(null);
+      scrolled.show();
+    }
+    else
+    {
+      window.fullscreen();
+      var invisible_cursor = new Gdk.Cursor(Gdk.CursorType.BLANK_CURSOR);
+      Gdk.Window w = window.get_window();
+      w.set_cursor(invisible_cursor);
+      scrolled.hide();
+    }
+  }
+
+  private void action_full_screen_exit()
+  {
+    window.unfullscreen();
+    Gdk.Window w = window.get_window();
+    w.set_cursor(null);
+    scrolled.show();
+  }
+
+  private void action_pause()
+  {
+    mpv_send_command(FIFO, "cycle pause");
+  }
+
   private void action_show_menu()
   {
     if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) == 0)
@@ -386,18 +424,6 @@ private class Program : Gtk.Application
     }
   }
 
-  private void action_reveal_list()
-  {
-    if (button_list.get_active() == true)
-    {
-      revealer.set_reveal_child(true);
-    }
-    else
-    {
-      revealer.set_reveal_child(false);
-    }
-  }
-  
   private void action_about()
   {
     var about = new Gtk.AboutDialog();
@@ -414,7 +440,7 @@ private class Program : Gtk.Application
     about.run();
     about.hide();
   }
-  
+
   private void action_quit()
   {
     mpv_stop_playback(FIFO, OUTPUT);
