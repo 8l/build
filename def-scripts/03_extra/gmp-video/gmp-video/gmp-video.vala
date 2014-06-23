@@ -84,10 +84,12 @@ private class Program : Gtk.Application
     { "full-screen-exit",   action_full_screen_exit   },
     { "full-screen-toggle", action_full_screen_toggle },
     { "pause",              action_pause              },
-    { "seek-plus-15",       action_seek_plus_15       },
-    { "seek-minus-15",      action_seek_minus_15      },
-    { "seek-plus-120",      action_seek_plus_120      },
-    { "seek-minus-120",     action_seek_minus_120     },
+    { "seek-plus-low",      action_seek_plus_low      },
+    { "seek-minus-low",     action_seek_minus_low     },
+    { "seek-plus-medium",   action_seek_plus_medium   },
+    { "seek-minus-medium",  action_seek_minus_medium  },
+    { "seek-plus-high",     action_seek_plus_high     },
+    { "seek-minus-high",    action_seek_minus_high    },
     { "show-menu",          action_show_menu          }
   };
 
@@ -113,10 +115,10 @@ private class Program : Gtk.Application
     add_accelerator("F11", "app.full-screen-toggle", null);
     add_accelerator("F10", "app.show-menu", null);
     add_accelerator("space", "app.pause", null);
-    add_accelerator("Right", "app.seek-plus-15", null);
-    add_accelerator("Left", "app.seek-minus-15", null);
-    add_accelerator("Page_Up", "app.seek-plus-120", null);
-    add_accelerator("Page_Down", "app.seek-minus-120", null);
+    add_accelerator("Right", "app.seek-plus-low", null);
+    add_accelerator("Left", "app.seek-minus-low", null);
+    add_accelerator("Page_Up", "app.seek-plus-high", null);
+    add_accelerator("Page_Down", "app.seek-minus-high", null);
     
     settings = new GLib.Settings("org.alphaos.gmp-video.preferences");
     drawing_area_width = settings.get_int("drawing-area-width");
@@ -194,8 +196,8 @@ private class Program : Gtk.Application
 
     button_restart.clicked.connect(() => { gmp_video_start_playback(); });
     button_pause.clicked.connect(action_pause);
-    button_rewind.clicked.connect(action_seek_minus_15);
-    button_forward.clicked.connect(action_seek_plus_15);
+    button_rewind.clicked.connect(action_seek_minus_medium);
+    button_forward.clicked.connect(action_seek_plus_medium);
     button_stop.clicked.connect(() => { mpv_stop_playback(FIFO, OUTPUT); headerbar.set_title(NAME); playing = false; button_pause_set_image(); });
     button_volume.value_changed.connect(volume_level_changed);
 
@@ -263,7 +265,7 @@ private class Program : Gtk.Application
     window.present();
     foreach (File f in files)
     {
-      file = f.get_uri();
+      file = f.get_path();
     }
     gmp_video_start_playback();
   }  
@@ -310,11 +312,11 @@ private class Program : Gtk.Application
   {
     if (event.direction == Gdk.ScrollDirection.UP)
     {
-      action_seek_plus_15();
+      action_seek_plus_medium();
     }
     if (event.direction == Gdk.ScrollDirection.DOWN)
     {
-      action_seek_minus_15();
+      action_seek_minus_medium();
     }
     return false;
   }
@@ -324,7 +326,7 @@ private class Program : Gtk.Application
   {
     foreach(string uri in data.get_uris())
     {
-      file = uri.replace("file://", "").replace("file:/", "");
+      file = uri.replace("file://", "");
       file = Uri.unescape_string(file);
       gmp_video_start_playback();
     }
@@ -582,27 +584,39 @@ private class Program : Gtk.Application
     button_pause_set_image();
   }
   
-  private void action_seek_plus_15()
+  private void action_seek_plus_low()
   {
-    mpv_send_command(FIFO, "seek +15");
+    mpv_send_command(FIFO, "seek +10");
     mpv_send_command(FIFO, "show_progress");
   }
   
-  private void action_seek_minus_15()
+  private void action_seek_minus_low()
   {
-    mpv_send_command(FIFO, "seek -15");
+    mpv_send_command(FIFO, "seek -10");
+    mpv_send_command(FIFO, "show_progress");
+  }
+
+  private void action_seek_plus_medium()
+  {
+    mpv_send_command(FIFO, "seek +30");
     mpv_send_command(FIFO, "show_progress");
   }
   
-  private void action_seek_plus_120()
+  private void action_seek_minus_medium()
   {
-    mpv_send_command(FIFO, "seek +120");
+    mpv_send_command(FIFO, "seek -30");
     mpv_send_command(FIFO, "show_progress");
   }
   
-  private void action_seek_minus_120()
+  private void action_seek_plus_high()
   {
-    mpv_send_command(FIFO, "seek -120");
+    mpv_send_command(FIFO, "seek +600");
+    mpv_send_command(FIFO, "show_progress");
+  }
+  
+  private void action_seek_minus_high()
+  {
+    mpv_send_command(FIFO, "seek -600");
     mpv_send_command(FIFO, "show_progress");
   }
 
