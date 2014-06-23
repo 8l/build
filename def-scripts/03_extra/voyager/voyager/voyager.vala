@@ -244,7 +244,7 @@ private class Program : Gtk.Application
     activate();
     foreach (File f in files)
     {
-      file = f.get_uri().replace("file://", "").replace("file:/", "").replace("%20", " ");
+      file = f.get_path();
     }
     load_pixbuf_on_start(file);
     list_images(Path.get_dirname(file));
@@ -256,8 +256,8 @@ private class Program : Gtk.Application
     try
     {
       string output;
-      Environment.set_current_dir(directory.replace("%20", " "));
-      Process.spawn_command_line_sync(" sh -c \"find '%s' -maxdepth 1 -name '*jpg' -o -name '*jpeg' -o -name '*png' -o -name '*bmp' -o -name '*svg' -o -name '*xpm' -o -name '*ico' -o -name '*JPG' -o -name '*JPEG' -o -name '*PNG' -o -name '*BMP' | sort -n\" ".printf(directory.replace("%20", " ")), out output);
+      Environment.set_current_dir(directory);
+      Process.spawn_command_line_sync(" sh -c \"find '%s' -maxdepth 1 -name '*jpg' -o -name '*jpeg' -o -name '*png' -o -name '*bmp' -o -name '*svg' -o -name '*xpm' -o -name '*ico' -o -name '*JPG' -o -name '*JPEG' -o -name '*PNG' -o -name '*BMP' | sort -n\" ".printf(directory), out output);
       images = Regex.split_simple("[\n]", output, GLib.RegexCompileFlags.MULTILINE);
       add_images_to_liststore(images);
     }
@@ -510,7 +510,7 @@ private class Program : Gtk.Application
   {
     foreach(string uri in data.get_uris())
     {
-      file = uri.replace("file://", "").replace("file:/", "");
+      file = uri.replace("file://", "");
       file = Uri.unescape_string(file);
       load_pixbuf_on_start(file);
       list_images(Path.get_dirname(file));

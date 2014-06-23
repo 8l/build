@@ -190,7 +190,7 @@ private class Program : Gtk.Application
     foreach(string uri in data.get_uris())
     {
       string file;
-      file = uri.replace("file://", "").replace("file:/", "");
+      file = uri.replace("file://", "");
       file = Uri.unescape_string(file);
       images_dir += Path.get_dirname(file);
       list_images(images_dir[images_dir.length - 1]);
