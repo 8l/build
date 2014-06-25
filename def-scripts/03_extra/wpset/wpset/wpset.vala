@@ -59,6 +59,8 @@ private class Program : Gtk.Application
     
     set_app_menu(menu);
     
+    add_accelerator("<Shift>A", "app.add", null);
+    add_accelerator("Delete", "app.reset", null);
     add_accelerator("F10", "app.show-menu", null);
 
     settings = new GLib.Settings("org.alphaos.wpset.preferences");
@@ -151,7 +153,7 @@ private class Program : Gtk.Application
         var basename = Path.get_basename(wallpapers[i]);
         try
         {
-          pixbuf = new Gdk.Pixbuf.from_file_at_size(wallpapers[i], 175, 175);
+          pixbuf = new Gdk.Pixbuf.from_file_at_size(wallpapers[i], 170, 170);
         }
         catch(Error error)
         {
@@ -184,6 +186,25 @@ private class Program : Gtk.Application
     }
   }
 
+  private void add_images_from_selected(string directory)
+  {
+    int i;
+    int[] indexes = {};
+    for (i = 0; i < images_dir.length; i++)
+    {
+      if (images_dir[i] == directory)
+      {
+        indexes += i;
+      }
+    }
+    if (indexes.length == 0)
+    {
+      images_dir += directory;
+      list_images(directory);
+      settings.set_strv("images-dir", images_dir);
+    }
+  }
+
   // Drag Data
   private void on_drag_data_received(Gdk.DragContext drag_context, int x, int y, Gtk.SelectionData data, uint info, uint time) 
   {
@@ -192,10 +213,8 @@ private class Program : Gtk.Application
       string file;
       file = uri.replace("file://", "");
       file = Uri.unescape_string(file);
-      images_dir += Path.get_dirname(file);
-      list_images(images_dir[images_dir.length - 1]);
-      settings.set_strv("images-dir", images_dir);
-      GLib.Settings.sync();
+      string dirname = Path.get_dirname(file);
+      add_images_from_selected(dirname);
     }
     Gtk.drag_finish(drag_context, true, false, time);
   }
@@ -208,13 +227,12 @@ private class Program : Gtk.Application
     dialog.set_transient_for(window);
     if (dialog.run() == Gtk.ResponseType.ACCEPT)
     {
-      images_dir += (dialog as Gtk.FileChooserDialog).get_current_folder();
-      list_images(images_dir[images_dir.length - 1]);
-      settings.set_strv("images-dir", images_dir);
+      string dirname = dialog.get_current_folder();
+      add_images_from_selected(dirname);
     }
     dialog.destroy();
   }
-  
+
   private void action_reset()
   {
     liststore.clear();
