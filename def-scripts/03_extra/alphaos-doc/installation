@@ -22,25 +22,21 @@ Since alphaOS is based on Linux Live Kit, it can be installed in conjunction
 with about any other operating system, without the need for an additional 
 disc or separate partition.
 
-How to make a frugal alphaOS installation? For this example I assume, that 
-you want to install alphaOS on partition sda6:
+You can find system installer GUI located as the last icon in the Control 
+Center. It is based on GRUB2 and will guide you through the proccess of 
+installing alphaOS to hard drive or USB flash disk. 
 
-  - First mount that partition and CD, i.e. click on their icons in SpaceFM file manager,
+One thing to remember: if you already have system installed inside alphaos 
+directory on hard disk, installation directory on the USB should be named 
+differently, for example alphaos.usb, and you need to use boot code 
+from=/alphaos.usb. Also, bootcode usbmode should be used always when alphaos 
+is installed to USB drive to reduce number of device writes.
 
-  - Then, copy alphaos directory from CD to the root - top directory - of sda6 partition,
+On first reboot after the installation is finished you will need to make save file 
+(there is a GUI for that also in Control Center). Changes made during that first
+session after you made save file will be saved, so reboot is not required.
 
-  - Start bootloader setup dialog, Grub4DOS UI, from the Control center, 
-
-  - Select you disk, then in options tick search only in this device and press OK. 
-
-Created menu.lst will have these entries:
-
-title AlphaOS (sda6/alphaos)
-  uuid 6a729329-3106-4f49-9dbb-23b9f947bd9c
-  kernel /alphaos/boot/vmlinuz from=/alphaos
-  initrd /alphaos/boot/initrfs.img
-
-The same method can be applied for installation to a USB flash drive. But, in this 
-case frugal installation directory should be named differently, for example alphaos.usb,
-and you must use boot code from=/alphaos.usb. Also, bootcode usbmode should be used 
-always when alphaos is installed to USB drive to reduce number of device writes.
+If you plan to use makesb script for automatic module creation from Arch packages,
+target partition where you make frugal installation needs to be of type ext4,
+or other Linux supported filesystem. Otherwise, just make larger save file and
+install packages with pacman like in regular Arch.

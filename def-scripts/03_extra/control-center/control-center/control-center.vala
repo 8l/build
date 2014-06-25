@@ -74,7 +74,7 @@ private class Program : Gtk.Application
     create_group(_("<b>System</b>"));
     create_entry(_("Task Manager"),    "lxtask",              "utilities-system-monitor",      _("Manage running processes"));
     create_entry(_("Setup Savefile"),  "makepfile.sh",        "application-x-fs4",             _("Savefile creator for alphaOS"));
-    create_entry(_("Grub4DOS"),        "grub4dos-ui",         "grub4dos-ui",                   _("Configure Grub4DOS bootup loader"));
+    create_entry(_("OS Installer"),    "alphainst.sh",        "drive-harddisk-system",         _("Install the system and/or configure Grub2 boot loader"));
 
     var headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);

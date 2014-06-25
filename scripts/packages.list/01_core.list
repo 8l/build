@@ -29,7 +29,9 @@ glib2-2.40.0-1-x86_64.pkg.tar.xz
 glibc-2.19-3-x86_64.pkg.tar.xz
 gmp-6.0.0-1-x86_64.pkg.tar.xz
 gpgme-1.4.3-1-x86_64.pkg.tar.xz
+gptfdisk-0.8.10-1-x86_64.pkg.tar.xz
 grep-2.18-1-x86_64.pkg.tar.xz
+grub-1:2.02.beta2-2-x86_64.pkg.tar.xz
 gzip-1.6-1-x86_64.pkg.tar.xz
 hwids-20130915.1-1-any.pkg.tar.xz
 iana-etc-2.30-4-any.pkg.tar.xz
