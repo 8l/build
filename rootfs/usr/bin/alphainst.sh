@@ -47,6 +47,7 @@
 # -------------------------------
 # read local functions
 . /etc/rc.d/functions
+. /etc/os-release
 # -------------------------------
 # ------------ Init ------------- 
 # -------------------------------
@@ -55,7 +56,6 @@
 # ---------- Variables ----------
 # -------------------------------
 version='0.05'
-alphaOSVersion='15'
 # format: 'package:file-to-test-for another-package:file-tested-with-which-command'
 dependencies='grub:grub-install gptfdisk:sgdisk dosfstools:mkfs.fat'
 
@@ -75,7 +75,7 @@ if [ ! -d "${alphaOSSrcDir}" ]; then
     alphaOSSrcDir='/mnt/home/alphaos'
 fi
 # 4 required files, and empty modules dir
-alphaOSFiles=("/alpha_${alphaOSVersion}.sb" "/extra_${alphaOSVersion}.sb" '/boot/initrfs.img' '/boot/vmlinuz' '/modules/')
+alphaOSFiles=("/alpha_${VERSION}.sb" "/extra_${VERSION}.sb" '/boot/initrfs.img' '/boot/vmlinuz' '/modules/')
 
 # dialog
 dialog="$(which yad)"
@@ -93,7 +93,7 @@ dok="--button=OK:${dokcode}"
 dhomecode=98
 dhome="--button=Home:${dhomecode}"
 dquitcode=99
-dquit="--button=Exit:${dquitcode}"
+dquit="--button=Close:${dquitcode}"
 # -------------------------------
 # ---------- Variables ----------
 # -------------------------------
@@ -366,8 +366,8 @@ installpartcheck || return
 
 # copy alphaOS files
 if [ ! -d "${alphaOSSrcDir}" ]; then
-    echo -e ${BGreen}"==> "${BWhite}"ERROR: could not find alphaOS system files\n          Please copy them manually to ${alphaOSInstPath}"${Color_Off}
-    ${dialog} --image=dialog-error --text="see console output" --button='OK'
+    echo -e ${BGreen}"==> "${BWhite}"ERROR: could not find alphaOS system files.\nPlease copy them manually to ${alphaOSInstPath}"${Color_Off}
+    ${dialog} --image=dialog-error --text="See console output" --button='OK'
     return
 fi
 
@@ -412,7 +412,7 @@ grubbiosinst () {
 installdiskcheck || return
 installpartcheck || return
 
-${dialog} --image="dialog-warning" ${dyes} ${dno} --text="Will now install GRUB for BIOS at ${installDisk} and data files at ${rootPart}\nALL BOOT LOADER DATA ON THIS DISK WILL BE ERASED\n   (probably not so scary ;)\nAre you affirmative you want to continue?"
+${dialog} --image="dialog-warning" ${dyes} ${dno} --text="Will now install GRUB for BIOS at ${installDisk} and data files at ${rootPart}\nALL BOOT LOADER DATA ON THIS DISK WILL BE ERASED\nAre you affirmative you want to continue?"
 if [ ${?} = ${dnocode} ]; then
    return
 fi
@@ -423,7 +423,7 @@ mountpart ${rootPart} ${rootMount}
 
 # need to specify root directory, else GRUB will complain about aufs
 echo -e ${BGreen}"==> "${BWhite}"installing GRUB --target=i386-pc to ${installDisk} and data files to ${rootMount}"${Color_Off}
-grub-install --target=i386-pc --root-directory=${rootMount} --recheck ${installDisk}
+grub-install --target=i386-pc --root-directory=${rootMount} --recheck ${installDisk} --force
 sync
 
 unmountdir ${rootMount}
@@ -501,7 +501,7 @@ sync
 unmountdir ${rootMount}
 unmountdir ${ESPMount}
 
-${dialog} ${dok} --text='remember to configure GRUB :)'
+${dialog} ${dok} --text='Remember to configure GRUB :)'
 }
 
 grubcfg () {
@@ -681,7 +681,7 @@ grubmenu
 }
 
 menu () {
-retChoices=$(${dialog} --text-align="CENTER" --title="System Installer" \
+retChoices=$(${dialog} --text-align="center" --title="System Installer" \
 --text="Welcome!\nYou are expected to have read the alphaOS readmes at Right-click -> Readme. That's about it :)\n" \
 --form --align=right \
 --field="Install to disk:CB" "$(getdisks)" \
