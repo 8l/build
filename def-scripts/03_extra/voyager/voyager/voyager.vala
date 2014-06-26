@@ -69,8 +69,6 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about",              action_about              },
-    { "quit",               action_quit               },
     { "open",               action_open               },
     { "set-as-wallpaper",   action_set_as_wallpaper   },
     { "next-image",         action_next_image         },
@@ -81,7 +79,9 @@ private class Program : Gtk.Application
     { "edit-with-gimp",     action_edit_with_gimp     },
     { "full-screen-toggle", action_full_screen_toggle },
     { "full-screen-exit",   action_full_screen_exit   },
-    { "show-menu",          action_show_menu          }
+    { "show-menu",          action_show_menu          },
+    { "about",              action_about              },
+    { "quit",               action_quit               }
   };
 
   private Program()
@@ -105,6 +105,7 @@ private class Program : Gtk.Application
     add_accelerator("Escape", "app.full-screen-exit", null);
     add_accelerator("F11", "app.full-screen-toggle", null);
     add_accelerator("F10", "app.show-menu", null);
+    add_accelerator("<Control>Q", "app.quit", null);
 
     settings = new GLib.Settings("org.alphaos.voyager.preferences");
     width = settings.get_int("width");

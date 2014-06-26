@@ -36,11 +36,11 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about",     action_about     },
-    { "quit",      action_quit      },
     { "add",       action_add       },
     { "reset",     action_reset     },
-    { "show-menu", action_show_menu }
+    { "show-menu", action_show_menu },
+    { "about",     action_about     },
+    { "quit",      action_quit      }
   };
 
   private Program()
@@ -62,6 +62,7 @@ private class Program : Gtk.Application
     add_accelerator("<Shift>A", "app.add", null);
     add_accelerator("Delete", "app.reset", null);
     add_accelerator("F10", "app.show-menu", null);
+    add_accelerator("<Control>Q", "app.quit", null);
 
     settings = new GLib.Settings("org.alphaos.wpset.preferences");
     images_dir = settings.get_strv("images-dir");

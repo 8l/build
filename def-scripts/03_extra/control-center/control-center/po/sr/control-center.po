@@ -54,10 +54,6 @@ msgstr "Promena rezolucije ekrana"
 msgid "Change your desktop wallpaper"
 msgstr "Program za zamenu pozadine desktopa"
 
-#: control-center.vala:77
-msgid "Configure Grub4DOS bootup loader"
-msgstr "Konfiguracija Grub4DOS programa za pokretanje sistema"
-
 #: control-center.vala:71
 msgid "Configure keyboard, mouse, and other input devices"
 msgstr "Podešavanje tastature, miša i drugih ulaznih uređaja"
@@ -70,13 +66,17 @@ msgstr "Prilagođavanje izgleda i utiska"
 msgid "Display"
 msgstr "Ekran"
 
-#: control-center.vala:77
-msgid "Grub4DOS"
-msgstr "Grub4DOS"
-
 #: control-center.vala:71
 msgid "Input Devices"
 msgstr "Ulazni uređaji"
+
+#: control-center.vala:77
+msgid "Install the system and/or configure Grub2 boot loader"
+msgstr "Instaliraj sistem i podesi Grub2"
+
+#: control-center.vala:77
+msgid "Installer"
+msgstr "Instalacija"
 
 #: control-center.vala:67
 msgid "Kickshaw is a menu editor for Openbox"

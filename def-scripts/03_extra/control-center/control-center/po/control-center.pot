@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-15 18:48+0200\n"
+"POT-Creation-Date: 2014-06-26 07:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,10 +53,6 @@ msgstr ""
 msgid "Change your desktop wallpaper"
 msgstr ""
 
-#: control-center.vala:77
-msgid "Configure Grub4DOS bootup loader"
-msgstr ""
-
 #: control-center.vala:71
 msgid "Configure keyboard, mouse, and other input devices"
 msgstr ""
@@ -69,12 +65,16 @@ msgstr ""
 msgid "Display"
 msgstr ""
 
-#: control-center.vala:77
-msgid "Grub4DOS"
-msgstr ""
-
 #: control-center.vala:71
 msgid "Input Devices"
+msgstr ""
+
+#: control-center.vala:77
+msgid "Install the system and/or configure Grub2 boot loader"
+msgstr ""
+
+#: control-center.vala:77
+msgid "Installer"
 msgstr ""
 
 #: control-center.vala:67

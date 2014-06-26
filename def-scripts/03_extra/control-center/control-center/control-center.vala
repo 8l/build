@@ -51,6 +51,8 @@ private class Program : Gtk.Application
     menu.append(_("Quit"),      "app.quit");
 
     set_app_menu(menu);
+    
+    add_accelerator("<Control>Q", "app.quit", null);
 
     // Grid
     grid = new Gtk.Grid();
@@ -74,7 +76,7 @@ private class Program : Gtk.Application
     create_group(_("<b>System</b>"));
     create_entry(_("Task Manager"),    "lxtask",              "utilities-system-monitor",      _("Manage running processes"));
     create_entry(_("Setup Savefile"),  "makepfile.sh",        "application-x-fs4",             _("Savefile creator for alphaOS"));
-    create_entry(_("OS Installer"),    "alphainst.sh",        "drive-harddisk-system",         _("Install the system and/or configure Grub2 boot loader"));
+    create_entry(_("Installer"),       "alphainst.sh",        "drive-harddisk-system",         _("Install the system and/or configure Grub2 boot loader"));
 
     var headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);

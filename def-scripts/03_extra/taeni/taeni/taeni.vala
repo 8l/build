@@ -50,8 +50,6 @@ private class Program : Gtk.Application
   private const GLib.ActionEntry[] action_entries =
   {
     { "pref",        action_pref        },
-    { "about",       action_about       },
-    { "quit",        action_quit        },
     { "new-tab",     action_new_tab     },
     { "close-tab",   action_close_tab   },
     { "next-tab",    action_next_tab    },
@@ -60,7 +58,9 @@ private class Program : Gtk.Application
     { "paste",       action_paste       },
     { "select-all",  action_select_all  },
     { "full-screen", action_full_screen },
-    { "show-menu",   action_show_menu   }
+    { "show-menu",   action_show_menu   },
+    { "about",       action_about       },
+    { "quit",        action_quit        }
   };
 
   private Program()
@@ -96,6 +96,7 @@ private class Program : Gtk.Application
     add_accelerator("<Control><Shift>A", "app.select-all", null);
     add_accelerator("F11", "app.full-screen", null);
     add_accelerator("F10", "app.show-menu", null);
+    add_accelerator("<Control>Q", "app.quit", null);
 
     settings = new GLib.Settings(APP_ID_PREF);
     width = settings.get_int("width");

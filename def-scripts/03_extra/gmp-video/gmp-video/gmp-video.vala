@@ -54,8 +54,6 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about",              action_about              },
-    { "quit",               action_quit               },
     { "open-file",          action_open_file          },
     { "open-url",           action_open_url           },
     { "subtitle-select",    action_subtitle_select    },
@@ -90,7 +88,9 @@ private class Program : Gtk.Application
     { "seek-minus-medium",  action_seek_minus_medium  },
     { "seek-plus-high",     action_seek_plus_high     },
     { "seek-minus-high",    action_seek_minus_high    },
-    { "show-menu",          action_show_menu          }
+    { "show-menu",          action_show_menu          },
+    { "about",              action_about              },
+    { "quit",               action_quit               }
   };
 
   private Program()
@@ -119,6 +119,7 @@ private class Program : Gtk.Application
     add_accelerator("Left", "app.seek-minus-low", null);
     add_accelerator("Page_Up", "app.seek-plus-high", null);
     add_accelerator("Page_Down", "app.seek-minus-high", null);
+    add_accelerator("<Control>Q", "app.quit", null);
     
     settings = new GLib.Settings("org.alphaos.gmp-video.preferences");
     drawing_area_width = settings.get_int("drawing-area-width");

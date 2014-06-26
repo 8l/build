@@ -66,13 +66,13 @@ private class Program : Gtk.Application
 
   private const GLib.ActionEntry[] action_entries =
   {
-    { "about",              action_about              },
-    { "quit",               action_quit               },
     { "edit-list",          action_edit_list          },
     { "full-screen-toggle", action_full_screen_toggle },
     { "full-screen-exit",   action_full_screen_exit   },
     { "pause",              action_pause              },
-    { "show-menu",          action_show_menu          }
+    { "show-menu",          action_show_menu          },
+    { "about",              action_about              },
+    { "quit",               action_quit               }
   };
 
   private Program()
@@ -95,6 +95,7 @@ private class Program : Gtk.Application
     add_accelerator("F11", "app.full-screen-toggle", null);
     add_accelerator("space", "app.pause", null);
     add_accelerator("Escape", "app.full-screen-exit", null);
+    add_accelerator("<Control>Q", "app.quit", null);
 
     string random_number = GLib.Random.int_range(1000, 5000).to_string();
     FIFO = "/tmp/tvplay_fifo_" + random_number;
