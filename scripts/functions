@@ -428,7 +428,8 @@ makeiso_standard()
   cp $HOME/{$MAIN_SB,$EXTRA_SB} $NEWISO_DIR/tmp/alphaos
   cp $HOME/boot/{initrfs.img,vmlinuz} $NEWISO_DIR/tmp/alphaos/boot
   cp /usr/lib/syslinux/bios/{isolinux.bin,ldlinux.c32,vesamenu.c32,libcom32.c32,libutil.c32} $NEWISO_DIR/tmp/syslinux
-  cp ./isolinux.cfg $NEWISO_DIR/tmp/syslinux
+  cp ./syslinux/isolinux.cfg $NEWISO_DIR/tmp/syslinux
+  cp ./syslinux/bootlogo.png $NEWISO_DIR/tmp/syslinux
   cd $NEWISO_DIR/tmp
   mkisofs -D -R -o alphaos_${ISO_VERSION}-$DATE-$CARCH.iso -b syslinux/isolinux.bin -c syslinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table $NEWISO_DIR/tmp
   isohybrid alphaos_${ISO_VERSION}-$DATE-$CARCH.iso
@@ -445,7 +446,8 @@ makeiso_minimal()
   cp $HOME/$MAIN_SB $NEWISO_DIR/tmp/alphaos
   cp $HOME/boot/{initrfs.img,vmlinuz} $NEWISO_DIR/tmp/alphaos/boot
   cp /usr/lib/syslinux/bios/{isolinux.bin,ldlinux.c32,vesamenu.c32,libcom32.c32,libutil.c32} $NEWISO_DIR/tmp/syslinux
-  cp ./isolinux.cfg $NEWISO_DIR/tmp/syslinux
+  cp ./syslinux/isolinux.cfg $NEWISO_DIR/tmp/syslinux
+  cp ./syslinux/bootlogo.png $NEWISO_DIR/tmp/syslinux
   cd $NEWISO_DIR/tmp
   mkisofs -D -R -o alphaos_${ISO_VERSION}-$DATE-$CARCH_min.iso -b syslinux/isolinux.bin -c syslinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table $NEWISO_DIR/tmp
   isohybrid alphaos_${ISO_VERSION}-$DATE-$CARCH_min.iso
