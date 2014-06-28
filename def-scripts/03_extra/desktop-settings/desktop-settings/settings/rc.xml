@@ -819,9 +819,6 @@
     <application name="abiword" role="topLevelWindow">
       <maximized>yes</maximized>
     </application>
-    <application name="evince">
-      <maximized>yes</maximized>
-    </application>
     <application name="Navigator" class="Firefox">
       <maximized>yes</maximized>
     </application>

@@ -1,17 +1,18 @@
 name="evince"
 version="3.12.1"
+_realver="3.13.3"
 revision="1"
 category="office"
 description="Simply a document viewer"
-source="http://ftp.gnome.org/pub/gnome/sources/$name/${version:0:4}/$name-$version.tar.xz"
+source="http://ftp.gnome.org/pub/gnome/sources/$name/${_realver:0:4}/$name-${_realver}.tar.xz"
 homepage="http://ftp.acc.umu.se/pub/gnome/sources/evince"
 maintainer="simargl <archpup-at-gmail-dot-com>"
 depends="dconf gtk3 poppler hicolor-icon-theme desktop-file-utils gsettings-desktop-schemas"
 makedepends="intltool itstool"
 
 compile() {
-  cd $name-$version
-  sed -i 's/gnome-icon-theme//' configure.ac configure
+  cd $name-${_realver}
+  sed -i 's/adwaita-icon-theme//' configure.ac configure
   sed -i '/NoDisplay/d' ./data/evince.desktop.in.in
   sed -i 's|Name=Document Viewer|Name=Evince|g' ./data/evince.desktop.in.in
   sed -i 's|Categories=GNOME;GTK;Office;Viewer;Graphics;2DGraphics;VectorGraphics;|Categories=Office|g' ./data/evince.desktop.in.in
