@@ -1,5 +1,5 @@
 name="gmp-video"
-version="1.1.5"
+version="1.4.0"
 revision="1"
 category="multimedia"
 description="Mpv frontend in Vala and GTK3"

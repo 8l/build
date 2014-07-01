@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-10 19:36+0200\n"
+"POT-Creation-Date: 2014-07-01 12:44+0200\n"
 "PO-Revision-Date: 2014-01-05 13:18+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -18,102 +18,130 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: gmp-video.vala:105
+#: gmp-video.vala:146
+msgid "+10 seconds"
+msgstr "+10 sekundi"
+
+#: gmp-video.vala:148
+msgid "+30 seconds"
+msgstr "+30 sekundi"
+
+#: gmp-video.vala:150
+msgid "+600 seconds"
+msgstr "+600 sekundi"
+
+#: gmp-video.vala:145
+msgid "-10 seconds"
+msgstr "-10 sekundi"
+
+#: gmp-video.vala:147
+msgid "-30 seconds"
+msgstr "-30 sekundi"
+
+#: gmp-video.vala:149
+msgid "-600 seconds"
+msgstr "-600 sekundi"
+
+#: gmp-video.vala:110
 msgid "About"
 msgstr "O programu"
 
-#: gmp-video.vala:351
+#: gmp-video.vala:580
 msgid "All Media Files"
 msgstr "Audio i video datoteke"
 
-#: gmp-video.vala:138
-msgid "Aspect ratio"
+#: gmp-video.vala:184
+msgid "Aspect Ratio"
 msgstr "Odnos stranica"
 
-#: gmp-video.vala:149 gmp-video.vala:155 gmp-video.vala:165
+#: gmp-video.vala:153 gmp-video.vala:164 gmp-video.vala:171
 msgid "Auto"
 msgstr "Auto"
 
-#: gmp-video.vala:395
+#: gmp-video.vala:617
 msgid "Close"
 msgstr "Zatvori"
 
-#: gmp-video.vala:147
-msgid "Decrease size"
-msgstr "Smanji"
+#: gmp-video.vala:199
+msgid "Decrease Font Size"
+msgstr "Smanji font"
 
-#: gmp-video.vala:170
+#: gmp-video.vala:174
 msgid "Double size"
 msgstr "Dvostruko"
 
-#: gmp-video.vala:142
-msgid "File"
-msgstr "Datoteka"
+#: gmp-video.vala:183
+msgid "Fullscreen"
+msgstr "Ceo ekran"
 
-#: gmp-video.vala:146
-msgid "Increase size"
-msgstr "Povećaj"
+#: gmp-video.vala:200
+msgid "Increase Font Size"
+msgstr "Povećaj font"
+
+#: gmp-video.vala:179
+msgid "Jump To"
+msgstr "Idi na"
 
 #: gmp-video.vala:24
 msgid "Mpv frontend in Vala and GTK3"
 msgstr "Grafički interfejs za MPlayer"
 
-#: gmp-video.vala:136
+#: gmp-video.vala:189
+msgid "Mute"
+msgstr "Isključi"
+
+#: gmp-video.vala:194 gmp-video.vala:576
 msgid "Open"
 msgstr "Otvori"
 
-#: gmp-video.vala:374 gmp-video.vala:380
-msgid "Open URL"
+#: gmp-video.vala:195 gmp-video.vala:603
+msgid "Open From URL"
 msgstr "Otvori URL"
 
-#: gmp-video.vala:347
-msgid "Open file"
-msgstr "Otvori datoteku"
+#: gmp-video.vala:177
+msgid "Pause"
+msgstr "Pauziraj"
 
-#: gmp-video.vala:394
+#: gmp-video.vala:616
 msgid "Play"
 msgstr "Pusti"
 
-#: gmp-video.vala:106
+#: gmp-video.vala:111
 msgid "Quit"
 msgstr "Odustani"
 
-#: gmp-video.vala:145
-msgid "Select file"
-msgstr "Odaberi datoteku"
+#: gmp-video.vala:186
+msgid "Screenshot"
+msgstr "Snimak ekrana"
 
-#: gmp-video.vala:408
-msgid "Select subtitle"
-msgstr "Odaberite titlove"
+#: gmp-video.vala:198 gmp-video.vala:639
+msgid "Select Subtitle"
+msgstr "Odaberi titl"
 
-#: gmp-video.vala:166
-msgid "Smaller 10%"
-msgstr "Manje za 10%"
-
-#: gmp-video.vala:167
+#: gmp-video.vala:172
 msgid "Smaller 25%"
 msgstr "Manje za 25%"
 
-#: gmp-video.vala:168
-msgid "Smaller 33%"
-msgstr "Manje za 33%"
-
-#: gmp-video.vala:169
+#: gmp-video.vala:173
 msgid "Smaller 50%"
 msgstr "Manje za 50%"
 
-#: gmp-video.vala:139
+#: gmp-video.vala:180
 msgid "Speed"
-msgstr "Brzine"
+msgstr "Brzina"
 
-#: gmp-video.vala:137
-msgid "Subtitle"
-msgstr "Titlovi"
+#: gmp-video.vala:178
+msgid "Stop"
+msgstr "Zaustavi"
 
-#: gmp-video.vala:143
-msgid "URL"
-msgstr "URL"
+#: gmp-video.vala:191
+msgid "Volume +"
+msgstr "Jačina +"
 
-#: gmp-video.vala:140
+#: gmp-video.vala:190
+msgid "Volume -"
+msgstr "Jačina -"
+
+#: gmp-video.vala:185
 msgid "Zoom"
 msgstr "Zumiraj"
