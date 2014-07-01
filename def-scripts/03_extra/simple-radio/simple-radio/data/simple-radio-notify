@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 #
 # Copyright (c) alphaOS
 # Written by simargl <archpup-at-gmail-dot-com>
@@ -23,13 +23,13 @@ start_notification() {
   
     if [ -f $OUTPUT ]; then
       
-      TITLE=$(cat $OUTPUT 2>/dev/null | grep "Demuxer info title changed to" | sed 's|\[lavf\] Demuxer info title changed to ||g' | tail -1)
-      NAME=$(cat $OUTPUT 2>/dev/null | grep "name:"| sed 's| name: ||g')
+      TITLE=$(cat $OUTPUT 2>/dev/null | grep "icy-title: " | sed 's| icy-title: ||g' | tail -1)
+      NAME=$(cat $OUTPUT 2>/dev/null | grep "icy-name:"| sed 's| icy-name: ||g' | tail -1)
 
       sleep 2s
       
-      NEW_TITLE=$(cat $OUTPUT 2>/dev/null | grep "Demuxer info title changed to" | sed 's|\[lavf\] Demuxer info title changed to ||g' | tail -1)
-      NEW_NAME=$(cat $OUTPUT 2>/dev/null | grep "name:"| sed 's| name: ||g')
+      NEW_TITLE=$(cat $OUTPUT 2>/dev/null | grep "icy-title: " | sed 's| icy-title: ||g' | tail -1)
+      NEW_NAME=$(cat $OUTPUT 2>/dev/null | grep "icy-name:"| sed 's| icy-name: ||g' | tail -1)
       
       if [ "$NEW_TITLE" != "$TITLE" ]; then
         notify-send -i simple-radio-notification "$NEW_TITLE" "$NEW_NAME"
@@ -39,15 +39,15 @@ start_notification() {
       NAME="$NEW_NAME"
     
     else
-      break
+      sleep 2s
     fi
   done
 }
 
 send_notification() {
   if [ -f $OUTPUT ]; then
-    TITLE=$(cat $OUTPUT 2>/dev/null | grep "Demuxer info title changed to" | sed 's|\[lavf\] Demuxer info title changed to ||g' | tail -1)
-    NAME=$(cat $OUTPUT 2>/dev/null | grep "name:"| sed 's| name: ||g')
+    TITLE=$(cat $OUTPUT 2>/dev/null | grep "icy-title: " | sed 's| icy-title: ||g' | tail -1)
+    NAME=$(cat $OUTPUT 2>/dev/null | grep "icy-name:"| sed 's| icy-name: ||g' | tail -1)
     notify-send -i simple-radio-notification "$TITLE" "$NAME"
   fi
 }

@@ -246,30 +246,30 @@
         <desktop>yes</desktop>
       </action>
     </keybind>
-    <keybind key="W-f">
+    <keybind key="C-A-Delete">
       <action name="Execute">
-        <command>spacefm -r</command>
+        <command>lxtask</command>
         <startupnotify>
           <enabled>yes</enabled>
-          <name>File Manager</name>
+          <name>LXTask</name>
         </startupnotify>
       </action>
     </keybind>
-    <keybind key="W-t">
+    <keybind key="W-a">
       <action name="Execute">
-        <command>taeni</command>
+        <command>taeni -e alsamixer</command>
         <startupnotify>
           <enabled>yes</enabled>
-          <name>Terminal</name>
+          <name>Alsa Mixer</name>
         </startupnotify>
       </action>
     </keybind>
-    <keybind key="W-w">
+    <keybind key="W-c">
       <action name="Execute">
-        <command>web-browser</command>
+        <command>control-center</command>
         <startupnotify>
           <enabled>yes</enabled>
-          <name>Web Browser</name>
+          <name>Control Center</name>
         </startupnotify>
       </action>
     </keybind>
@@ -282,6 +282,24 @@
         </startupnotify>
       </action>
     </keybind>
+    <keybind key="W-f">
+      <action name="Execute">
+        <command>spacefm -r</command>
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>File Manager</name>
+        </startupnotify>
+      </action>
+    </keybind>
+    <keybind key="W-g">
+      <action name="Execute">
+        <command>gmp-video</command>
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>GMP Video</name>
+        </startupnotify>
+      </action>
+    </keybind>
     <keybind key="W-m">
       <action name="Execute">
         <command>deadbeef</command>
@@ -291,21 +309,21 @@
         </startupnotify>
       </action>
     </keybind>
-    <keybind key="W-v">
+    <keybind key="W-o">
       <action name="Execute">
-        <command>taeni -e alsamixer</command>
+        <command>obconf</command>
         <startupnotify>
           <enabled>yes</enabled>
-          <name>Volume</name>
+          <name>OBConf</name>
         </startupnotify>
       </action>
     </keybind>
-    <keybind key="W-s">
+    <keybind key="W-p">
       <action name="Execute">
-        <command>sfs_load</command>
+        <command>playtv</command>
         <startupnotify>
           <enabled>yes</enabled>
-          <name>SFS Loader</name>
+          <name>PlayTV</name>
         </startupnotify>
       </action>
     </keybind>
@@ -315,6 +333,33 @@
         <startupnotify>
           <enabled>yes</enabled>
           <name>Radio</name>
+        </startupnotify>
+      </action>
+    </keybind>
+    <keybind key="W-t">
+      <action name="Execute">
+        <command>taeni</command>
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>Terminal</name>
+        </startupnotify>
+      </action>
+    </keybind>
+    <keybind key="W-v">
+      <action name="Execute">
+        <command>voyager</command>
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>Voyager</name>
+        </startupnotify>
+      </action>
+    </keybind>    
+    <keybind key="W-w">
+      <action name="Execute">
+        <command>web-browser</command>
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>Web Browser</name>
         </startupnotify>
       </action>
     </keybind>

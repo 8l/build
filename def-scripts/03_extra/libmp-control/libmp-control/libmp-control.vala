@@ -70,7 +70,7 @@ namespace LibmpControl
     try
     {
       Process.spawn_command_line_sync("mkfifo '%s'".printf(fifo));
-      Process.spawn_command_line_async("sh -c 'mpv -vo %s -ass --sub-text-color \"%s\" --sub-scale %lf --autosub-match %s -wid %lu --no-mouse-movements -quiet -input file=%s \"%s\" > %s'".printf(video, subtitle_color, subtitle_scale, subtitle_fuzziness, xwindow_id, fifo, name, output));
+      Process.spawn_command_line_async("sh -c 'mpv -vo %s --sub-ass --sub-text-color \"%s\" --sub-scale %lf --sub-auto %s -wid %lu --no-input-cursor -quiet -input file=%s \"%s\" > %s'".printf(video, subtitle_color, subtitle_scale, subtitle_fuzziness, xwindow_id, fifo, name, output));
       try
       {
         chan= new IOChannel.file("%s".printf(fifo), "r+");
@@ -92,7 +92,7 @@ namespace LibmpControl
     try
     {
       Process.spawn_command_line_sync("mkfifo '%s'".printf(fifo));
-      Process.spawn_command_line_async("sh -c 'mpv -vo %s -wid %lu --no-mouse-movements -quiet -input file=%s \"%s\" > %s'".printf(video, xwindow_id, fifo, name, output));
+      Process.spawn_command_line_async("sh -c 'mpv -vo %s -wid %lu --no-input-cursor -quiet -input file=%s \"%s\" > %s'".printf(video, xwindow_id, fifo, name, output));
       try
       {
         chan= new IOChannel.file("%s".printf(fifo), "r+");
@@ -116,6 +116,7 @@ namespace LibmpControl
     {
       try
       {
+        chan.write_chars("%s\n".printf("show_progress").to_utf8(), out bw);
         chan.write_chars("%s\n".printf(command).to_utf8(), out bw);
         chan.flush();
       }

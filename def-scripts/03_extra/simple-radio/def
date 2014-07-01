@@ -1,5 +1,5 @@
 name="simple-radio"
-version="1.8.0"
+version="1.9.0"
 revision="1"
 category="multimedia"
 description="Play radio streams with mpv"

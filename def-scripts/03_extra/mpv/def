@@ -1,0 +1,21 @@
+name="mpv"
+version="0.3.7"
+revision="1"
+_realver="0.4.0"
+_realrev="3"
+category="multimedia"
+description="Video player based on MPlayer/mplayer2"
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-${_realver}-${_realrev}-$CARCH.pkg.tar.xz"
+homepage="http://mpv.io"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends=""
+makedepends=""
+
+compile() {
+  mkdir -p $destdir/{etc,usr}
+}
+
+package(){
+  cp -a etc/* $destdir/etc
+  cp -a usr/* $destdir/usr
+}
