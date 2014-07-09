@@ -11,6 +11,7 @@ makedepends="intltool"
 
 compile() {
   cd $name-$version
+  patch -Np1 -i $startdir/list_width.patch
   ./autogen.sh
   ./configure \
     --prefix=/usr
