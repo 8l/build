@@ -1,0 +1,124 @@
+name="mesa"
+version="10.1.0"
+revision="5"
+category="system"
+description="System for rendering interactive 3D graphics"
+source="ftp://ftp.freedesktop.org/pub/mesa/${version:0:4}/MesaLib-$version.tar.bz2"
+homepage="http://mesa3d.sourceforge.net"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends=""
+makedepends="python2 libxml2 libx11 glproto libdrm dri2proto libxxf86vm libxdamage"
+replaces="khrplatform-devel libegl libgbm libglapi libgles osmesa"
+conflict="khrplatform-devel libegl libgbm libglapi libgles osmesa"
+provides="khrplatform-devel libegl libgbm libglapi libgles osmesa"
+
+compile() {
+  cd Mesa-$version
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-dri-driverdir=/usr/lib/xorg/modules/dri \
+    --with-dri-drivers="i915,i965,r200,radeon,nouveau" \
+    --with-gallium-drivers="nouveau" \
+    --with-egl-platforms="x11,drm,wayland" \
+    --enable-egl \
+    --enable-shared-glapi \
+    --enable-gbm \
+    --enable-glx-tls \
+    --enable-dri \
+    --enable-glx \
+    --enable-osmesa \
+    --enable-gles1 \
+    --enable-gles2 \
+    --enable-texture-float \
+    --enable-xa
+  make
+}
+
+mesa_add_pacman_entries() {
+  # mesa-libgl
+  mkdir -p $destdir/var/lib/pacman/local/mesa-libgl-$version-$revision
+  touch $destdir/var/lib/pacman/local/mesa-libgl-$version-$revision/{desc,files}
+  echo "%NAME%
+mesa-libgl
+
+%VERSION%
+$version-$revision
+
+%DESC%
+Mesa 3-D graphics library
+
+%URL%
+http://mesa3d.sourceforge.net
+
+%PACKAGER%
+simargl <archpup-at-gmail-dot-com>
+
+%REPLACES%
+libgl
+
+%PROVIDES%
+libgl" > $destdir/var/lib/pacman/local/mesa-libgl-$version-$revision/desc
+
+  # ati-dri
+  mkdir -p $destdir/var/lib/pacman/local/ati-dri-$version-$revision
+  touch $destdir/var/lib/pacman/local/ati-dri-$version-$revision/{desc,files}
+  echo "%NAME%
+ati-dri
+
+%VERSION%
+$version-$revision
+
+%DESC%
+Mesa drivers for AMD/ATI Radeon
+
+%URL%
+http://mesa3d.sourceforge.net
+
+%PACKAGER%
+simargl <archpup-at-gmail-dot-com>" > $destdir/var/lib/pacman/local/ati-dri-$version-$revision/desc
+
+  # intel-dri
+  mkdir -p $destdir/var/lib/pacman/local/intel-dri-$version-$revision
+  touch $destdir/var/lib/pacman/local/intel-dri-$version-$revision/{desc,files}  
+  echo "%NAME%
+intel-dri
+
+%VERSION%
+$version-$revision
+
+%DESC%
+Mesa drivers for Intel
+
+%URL%
+http://mesa3d.sourceforge.net
+
+%PACKAGER%
+simargl <archpup-at-gmail-dot-com>" > $destdir/var/lib/pacman/local/intel-dri-$version-$revision/desc
+
+  # nouveau-dri
+  mkdir -p $destdir/var/lib/pacman/local/nouveau-dri-$version-$revision
+  touch $destdir/var/lib/pacman/local/nouveau-dri-$version-$revision/{desc,files}  
+  echo "%NAME%
+nouveau-dri
+
+%VERSION%
+$version-$revision
+
+%DESC%
+Mesa drivers for Nouveau
+
+%URL%
+http://mesa3d.sourceforge.net
+
+%PACKAGER%
+simargl <archpup-at-gmail-dot-com>" > $destdir/var/lib/pacman/local/nouveau-dri-$version-$revision/desc
+}
+
+package() {
+  make DESTDIR=$destdir install
+  mkdir -p $destdir/usr/lib/xorg/modules/extensions
+  ln -s libglx.xorg $destdir/usr/lib/xorg/modules/extensions/libglx.so
+  mesa_add_pacman_entries
+}

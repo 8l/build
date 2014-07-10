@@ -1,0 +1,12 @@
+diff -urN connman-ui-r20.e4a8ddc/src/left-menu.c connman-ui-r20.e4a8ddc.new/src/left-menu.c
+--- connman-ui-r20.e4a8ddc/src/left-menu.c	2014-01-10 14:12:39.000000000 +0100
++++ connman-ui-r20.e4a8ddc.new/src/left-menu.c	2014-07-09 20:16:35.863989420 +0200
+@@ -110,6 +110,8 @@
+ 	connman_service_refresh_services_list(get_services_cb,
+ 							scanning_cb, user_data);
+ 
++	gtk_widget_set_size_request(cui_left_menu, -1, 150);
++
+ 	gtk_menu_popup(cui_left_menu, NULL, NULL, NULL, NULL, 1, 0);
+ }
+ 

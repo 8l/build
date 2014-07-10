@@ -1,0 +1,225 @@
+diff -rupN src/config.c tint2/src/config.c
+--- src/config.c	2012-04-15 01:43:23.000000000 -0400
++++ tint2/src/config.c	2012-04-15 01:44:55.800473356 -0400
+@@ -112,6 +112,16 @@ int get_task_status(char* status)
+ 		return TASK_ICONIFIED;
+ 	if (strcmp(status, "urgent") == 0)
+ 		return TASK_URGENT;
++	//BEGIN taskhover effect
++	if (strcmp(status, "normalhovered") == 0)
++		return TASK_NORMAL_HOVERED;
++	if (strcmp(status, "activehovered") == 0)
++		return TASK_ACTIVE_HOVERED;
++	if (strcmp(status, "urgenthovered") == 0)
++		return TASK_URGENT_HOVERED;
++	if (strcmp(status, "iconifiedhovered") == 0)
++		return TASK_ICONIFIED_HOVERED;
++	//END
+ 	return TASK_NORMAL;
+ }
+ 
+diff -rupN src/panel.c tint2/src/panel.c
+--- src/panel.c	2012-04-15 01:43:23.000000000 -0400
++++ tint2/src/panel.c	2012-04-15 01:54:53.933825236 -0400
+@@ -198,7 +198,10 @@ void init_panel()
+ 		unsigned long mask = CWEventMask|CWColormap|CWBackPixel|CWBorderPixel;
+ 		p->main_win = XCreateWindow(server.dsp, server.root_win, p->posx, p->posy, p->area.width, p->area.height, 0, server.depth, InputOutput, server.visual, mask, &att);
+ 
+-		long event_mask = ExposureMask|ButtonPressMask|ButtonReleaseMask|ButtonMotionMask;
++		//BEGIN taskbar hover effect
++		// PointerMotionMask|LeaveWindowMask are for the task hover effect
++		long event_mask = ExposureMask|ButtonPressMask|ButtonReleaseMask|ButtonMotionMask|PointerMotionMask|LeaveWindowMask;
++		//END taskbar hover effect
+ 		if (p->g_task.tooltip_enabled || p->clock.area._get_tooltip_text || (launcher_enabled && launcher_tooltip_enabled))
+ 			event_mask |= PointerMotionMask|LeaveWindowMask;
+ 		if (panel_autohide)
+diff -rupN src/taskbar/task.c tint2/src/taskbar/task.c
+--- src/taskbar/task.c	2012-04-15 01:43:23.000000000 -0400
++++ tint2/src/taskbar/task.c	2012-04-15 01:44:55.803806689 -0400
+@@ -62,6 +62,9 @@ Task *add_task (Window win)
+ 	new_tsk.desktop = window_get_desktop (win);
+ 	new_tsk.area.panel = &panel1[monitor];
+ 	new_tsk.current_state = window_is_iconified(win) ? TASK_ICONIFIED : TASK_NORMAL;
++	//BEGIN task hover effect
++	new_tsk.hovered_effect = 0;
++	//END task hover effect
+ 
+ 	// allocate only one title and one icon
+ 	// even with task_on_all_desktop and with task_on_all_panel
+@@ -91,6 +94,9 @@ Task *add_task (Window win)
+ 		new_tsk2->win = new_tsk.win;
+ 		new_tsk2->desktop = new_tsk.desktop;
+ 		new_tsk2->current_state = -1;  // to update the current state later in set_task_state...
++		//BEGIN task hover effect
++		new_tsk2->hovered_effect = 0;
++		//END task hover effect
+ 		if (new_tsk2->desktop == ALLDESKTOP && server.desktop != j) {
+ 			// hide ALLDESKTOP task on non-current desktop
+ 			new_tsk2->area.on_screen = 0;
+@@ -484,6 +490,20 @@ void set_task_state(Task *tsk, int state
+ {
+ 	if (tsk == 0 || state < 0 || state >= TASK_STATE_COUNT)
+ 		return;
++	
++	//BEGIN task hover effect
++	if (!tsk->hovered_effect) {
++		if (state == TASK_NORMAL_HOVERED) state = TASK_NORMAL;
++		if (state == TASK_ACTIVE_HOVERED) state = TASK_ACTIVE;
++		if (state == TASK_ICONIFIED_HOVERED) state = TASK_ICONIFIED;
++		if (state == TASK_URGENT_HOVERED) state = TASK_URGENT;
++	} else {
++		if (state == TASK_NORMAL) state = TASK_NORMAL_HOVERED;
++		if (state == TASK_ACTIVE) state = TASK_ACTIVE_HOVERED;
++		if (state == TASK_ICONIFIED) state = TASK_ICONIFIED_HOVERED;
++		if (state == TASK_URGENT) state = TASK_URGENT_HOVERED;
++	}
++	//END task hover effect
+ 
+ 	if (tsk->current_state != state) {
+ 		GPtrArray* task_group = task_get_tasks(tsk->win);
+@@ -496,7 +516,9 @@ void set_task_state(Task *tsk, int state
+ 				tsk1->area.pix = tsk1->state_pix[state];
+ 				if (tsk1->state_pix[state] == 0)
+ 					tsk1->area.redraw = 1;
+-				if (state == TASK_ACTIVE && g_slist_find(urgent_list, tsk1))
++				//BEGIN task hover effect
++				if ((state == TASK_ACTIVE || state == TASK_ACTIVE_HOVERED) && g_slist_find(urgent_list, tsk1))
++				//END task hover effect
+ 					del_urgent(tsk1);
+ 			}
+ 			panel_refresh = 1;
+@@ -516,6 +538,24 @@ void set_task_redraw(Task* tsk)
+ 	tsk->area.redraw = 1;
+ }
+ 
++//BEGIN task hover effect
++void update_task_hovered(gpointer key, gpointer value, gpointer user_data)
++{
++	Task *task = task_get_task(*(Window*)key);
++	Task *task_hovered = (Task*)user_data;
++	if (task) {
++		if (task->hovered_effect && task != task_hovered) {
++			task->hovered_effect = 0;
++			set_task_state(task, task->current_state);
++			set_task_redraw(task);
++		} else if (!task->hovered_effect && task == task_hovered) {
++			task->hovered_effect = 1;
++			set_task_state(task, task->current_state);
++			set_task_redraw(task);
++		}
++	}
++}
++//END task hover effect
+ 
+ void blink_urgent(void* arg)
+ {
+diff -rupN src/taskbar/task.h tint2/src/taskbar/task.h
+--- src/taskbar/task.h	2012-04-15 01:43:23.000000000 -0400
++++ tint2/src/taskbar/task.h	2012-04-15 01:44:55.803806689 -0400
+@@ -14,7 +14,9 @@
+ #include "timer.h"
+ 
+ 
+-enum { TASK_NORMAL, TASK_ACTIVE, TASK_ICONIFIED, TASK_URGENT, TASK_STATE_COUNT };
++//BEGIN task hover effect
++enum { TASK_NORMAL, TASK_ACTIVE, TASK_ICONIFIED, TASK_URGENT, TASK_NORMAL_HOVERED, TASK_ACTIVE_HOVERED, TASK_ICONIFIED_HOVERED, TASK_URGENT_HOVERED, TASK_STATE_COUNT };
++//END taskhover effect
+ extern timeout* urgent_timeout;
+ extern GSList* urgent_list;
+ 
+@@ -63,6 +65,9 @@ typedef struct {
+ 	unsigned int icon_height;
+ 	char *title;
+ 	int urgent_tick;
++	//BEGIN task hover effect
++	int hovered_effect;
++	//END task hover effect
+ } Task;
+ 
+ 
+@@ -84,5 +89,9 @@ Task *prev_task (Task *tsk);
+ void add_urgent(Task *tsk);
+ void del_urgent(Task *tsk);
+ 
++//BEGIN task hover effect
++void update_task_hovered(gpointer key, gpointer value, gpointer user_data);
++//END task hover effect
++
+ #endif
+ 
+diff -rupN src/taskbar/taskbar.c tint2/src/taskbar/taskbar.c
+--- src/taskbar/taskbar.c	2012-04-15 01:43:23.000000000 -0400
++++ tint2/src/taskbar/taskbar.c	2012-04-15 01:44:55.800473356 -0400
+@@ -173,6 +173,28 @@ void init_taskbar_panel(void *p)
+ 		panel->g_task.saturation[TASK_URGENT] = panel->g_task.saturation[TASK_ACTIVE];
+ 		panel->g_task.brightness[TASK_URGENT] = panel->g_task.brightness[TASK_ACTIVE];
+ 	}
++	//BEGIN task hover effect
++	if ((panel->g_task.config_asb_mask & (1<<TASK_NORMAL_HOVERED)) == 0) {
++		panel->g_task.alpha[TASK_NORMAL_HOVERED] = panel->g_task.alpha[TASK_NORMAL];
++		panel->g_task.saturation[TASK_NORMAL_HOVERED] = panel->g_task.saturation[TASK_NORMAL];
++		panel->g_task.brightness[TASK_NORMAL_HOVERED] = panel->g_task.brightness[TASK_NORMAL];
++	}
++	if ((panel->g_task.config_asb_mask & (1<<TASK_ACTIVE_HOVERED)) == 0) {
++		panel->g_task.alpha[TASK_ACTIVE_HOVERED] = panel->g_task.alpha[TASK_NORMAL_HOVERED];
++		panel->g_task.saturation[TASK_ACTIVE_HOVERED] = panel->g_task.saturation[TASK_NORMAL_HOVERED];
++		panel->g_task.brightness[TASK_ACTIVE_HOVERED] = panel->g_task.brightness[TASK_NORMAL_HOVERED];
++	}
++	if ((panel->g_task.config_asb_mask & (1<<TASK_URGENT_HOVERED)) == 0) {
++		panel->g_task.alpha[TASK_URGENT_HOVERED] = panel->g_task.alpha[TASK_URGENT];
++		panel->g_task.saturation[TASK_URGENT_HOVERED] = panel->g_task.saturation[TASK_URGENT];
++		panel->g_task.brightness[TASK_URGENT_HOVERED] = panel->g_task.brightness[TASK_URGENT];
++	}
++	if ((panel->g_task.config_asb_mask & (1<<TASK_ICONIFIED_HOVERED)) == 0) {
++		panel->g_task.alpha[TASK_ICONIFIED_HOVERED] = panel->g_task.alpha[TASK_NORMAL_HOVERED];
++		panel->g_task.saturation[TASK_ICONIFIED_HOVERED] = panel->g_task.saturation[TASK_NORMAL_HOVERED];
++		panel->g_task.brightness[TASK_ICONIFIED_HOVERED] = panel->g_task.brightness[TASK_NORMAL_HOVERED];
++	}
++	//END task hover effect
+ 	if ((panel->g_task.config_font_mask & (1<<TASK_NORMAL)) == 0) panel->g_task.font[TASK_NORMAL] = (Color){{0, 0, 0}, 0};
+ 	if ((panel->g_task.config_font_mask & (1<<TASK_ACTIVE)) == 0) panel->g_task.font[TASK_ACTIVE] = panel->g_task.font[TASK_NORMAL];
+ 	if ((panel->g_task.config_font_mask & (1<<TASK_ICONIFIED)) == 0) panel->g_task.font[TASK_ICONIFIED] = panel->g_task.font[TASK_NORMAL];
+@@ -181,6 +203,16 @@ void init_taskbar_panel(void *p)
+ 	if ((panel->g_task.config_background_mask & (1<<TASK_ACTIVE)) == 0) panel->g_task.background[TASK_ACTIVE] = panel->g_task.background[TASK_NORMAL];
+ 	if ((panel->g_task.config_background_mask & (1<<TASK_ICONIFIED)) == 0) panel->g_task.background[TASK_ICONIFIED] = panel->g_task.background[TASK_NORMAL];
+ 	if ((panel->g_task.config_background_mask & (1<<TASK_URGENT)) == 0) panel->g_task.background[TASK_URGENT] = panel->g_task.background[TASK_ACTIVE];
++	//BEGIN task hover effect
++	if ((panel->g_task.config_font_mask & (1<<TASK_NORMAL_HOVERED)) == 0) panel->g_task.font[TASK_NORMAL_HOVERED] = panel->g_task.font[TASK_NORMAL];
++	if ((panel->g_task.config_font_mask & (1<<TASK_ACTIVE_HOVERED)) == 0) panel->g_task.font[TASK_ACTIVE_HOVERED] = panel->g_task.font[TASK_NORMAL_HOVERED];
++	if ((panel->g_task.config_font_mask & (1<<TASK_ICONIFIED_HOVERED)) == 0) panel->g_task.font[TASK_ICONIFIED_HOVERED] = panel->g_task.font[TASK_NORMAL_HOVERED];
++	if ((panel->g_task.config_font_mask & (1<<TASK_URGENT_HOVERED)) == 0) panel->g_task.font[TASK_URGENT_HOVERED] = panel->g_task.font[TASK_URGENT];
++	if ((panel->g_task.config_background_mask & (1<<TASK_NORMAL_HOVERED)) == 0) panel->g_task.background[TASK_NORMAL_HOVERED] = panel->g_task.background[TASK_NORMAL];
++	if ((panel->g_task.config_background_mask & (1<<TASK_ACTIVE_HOVERED)) == 0) panel->g_task.background[TASK_ACTIVE_HOVERED] = panel->g_task.background[TASK_NORMAL_HOVERED];
++	if ((panel->g_task.config_background_mask & (1<<TASK_ICONIFIED_HOVERED)) == 0) panel->g_task.background[TASK_ICONIFIED_HOVERED] = panel->g_task.background[TASK_NORMAL_HOVERED];
++	if ((panel->g_task.config_background_mask & (1<<TASK_URGENT_HOVERED)) == 0) panel->g_task.background[TASK_URGENT_HOVERED] = panel->g_task.background[TASK_URGENT];
++	//END task hover effect
+ 
+ 	if (panel_horizontal) {
+ 		panel->g_task.area.posy = panel->g_taskbar.area.posy + panel->g_taskbar.background[TASKBAR_NORMAL]->border.width + panel->g_taskbar.area.paddingy;
+diff -rupN src/tint.c tint2/src/tint.c
+--- src/tint.c	2012-04-15 01:43:23.000000000 -0400
++++ tint2/src/tint.c	2012-04-15 01:44:55.803806689 -0400
+@@ -875,7 +875,11 @@ start:
+ 						unsigned int button_mask = Button1Mask | Button2Mask | Button3Mask | Button4Mask | Button5Mask;
+ 						if (e.xmotion.state & button_mask)
+ 							event_button_motion_notify (&e);
+-
++						//BEGIN task hover effect
++						Task *task_hovered = click_task(panel, e.xmotion.x, e.xmotion.y);
++						if (win_to_task_table)
++							g_hash_table_foreach(win_to_task_table, update_task_hovered, task_hovered);
++						//END task hover effect
+ 						Panel* panel = get_panel(e.xmotion.window);
+ 						Area* area = click_area(panel, e.xmotion.x, e.xmotion.y);
+ 						if (area->_get_tooltip_text)
+@@ -886,6 +890,10 @@ start:
+ 					}
+ 
+ 					case LeaveNotify:
++						//BEGIN task hover effect
++						if (win_to_task_table)
++							g_hash_table_foreach(win_to_task_table, update_task_hovered, 0);
++						//END task hover effect
+ 						tooltip_trigger_hide();
+ 						break;
+ 

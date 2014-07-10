@@ -1,0 +1,24 @@
+name="mpv"
+version="0.3.7"
+revision="1"
+_realver="0.4.0"
+_realrev="3"
+_armdate="2014/06/30"
+category="multimedia"
+description="Video player based on MPlayer/mplayer2"
+source="http://seblu.net/a/arm/$_armdate/community/os/$CARCH/$name-${_realver}-${_realrev}-$CARCH.pkg.tar.xz"
+homepage="http://mpv.io"
+maintainer="Bartłomiej Piotrowski <bpiotrowski@archlinux.org>"
+depends="portaudio ffmpeg lcms2 libdvdread libcdio-paranoia libquvi libgl \
+libxinerama mpg123 libxv libxkbcommon libva lirc-utils wayland \
+desktop-file-utils hicolor-icon-theme xdg-utils lua libdvdnav"
+makedepends=""
+
+compile() {
+  cd $build
+  for file in .INSTALL .PKGINFO .MTREE; do if [ -d $build/$file ]; then rm $build/$file; fi; done
+}
+
+package() {
+  cp -a $build/* $destdir
+}

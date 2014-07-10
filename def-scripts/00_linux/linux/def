@@ -1,0 +1,90 @@
+name="linux"
+version="3.14.1"
+_realver="3.14.1"
+revision="1"
+category="system"
+description="The linux kernel and modules"
+source="http://www.kernel.org/pub/linux/kernel/v3.x/linux-${_realver}.tar.xz \
+http://sourceforge.net/projects/alphaos/files/sources/aufs-standalone-${_realver:0:4}.tar.xz"
+homepage="http://www.kernel.org"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="coreutils"
+makedepends=""
+config="config-3.14"
+replaces="kernel26"
+conflict="kernel26"
+provides="kernel26"
+
+apply_aufs_patches() {
+  echo "Adding Aufs to the kernel sources"
+  echo "Adding Aufs to the kernel sources"
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-kbuild.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-base.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-mmap.patch
+  patch -p1 < $build/aufs-standalone-${_realver:0:4}/aufs3-standalone.patch
+  cp -va $build/aufs-standalone-${_realver:0:4}/Documentation .
+  cp -va $build/aufs-standalone-${_realver:0:4}/fs .
+  cp -va $build/aufs-standalone-${_realver:0:4}/include/uapi/linux/aufs_type.h include/uapi/linux
+  echo "Reduce swappiness, to make the kernel perform less swapping"
+  sed -i s/'int vm_swappiness = 60;'/'int vm_swappiness = 30;'/ mm/vmscan.c
+  echo "Reducing the number of consoles"
+  sed -i s/'#define MAX_CMDLINECONSOLES 8'/'#define MAX_CMDLINECONSOLES 5'/ kernel/printk/printk.c
+  echo "Reducing the verbosity level"
+  sed -i s/'#define DEFAULT_CONSOLE_LOGLEVEL 7 \/\* anything MORE serious than KERN_DEBUG \*\/'/'#define DEFAULT_CONSOLE_LOGLEVEL 3 \/\* anything MORE serious than KERN_ERR \*\/'/ kernel/printk/printk.c
+}
+compile() {
+  cd linux-${_realver}
+  apply_aufs_patches
+  tar -xf $startdir/$config.tar.xz -C $build
+  make clean
+  make mrproper
+  find . -name '*.orig' -delete
+  find . -name '*.rej' -delete
+  find . -name '*~' -delete
+  cp -f $build/$config .config
+  #make menuconfig
+  make bzImage modules
+}
+
+package() {
+  mkdir -p $destdir/{lib/modules,lib/firmware,etc/modules,usr}
+  make INSTALL_MOD_PATH=$destdir modules_install
+  
+  # remove the firmware
+  rm -rf $destdir/lib/firmware
+  
+  # move module tree /lib -> /usr/lib
+  mv $destdir/lib $destdir/usr
+  
+  touch $destdir/etc/modules/firmware.dep.${_realver}-ALPHAOS
+  mkdir -p $pkgdir/linux-${_realver}/boot
+  cp arch/x86/boot/bzImage $pkgdir/linux-${_realver}/boot/vmlinuz
+  cp .config $destdir/etc/modules/config-${_realver}
+  cp System.map $pkgdir/linux-${_realver}/boot
+  cd $pkgdir
+  tar -cJf boot-${_realver}.tar.xz linux-${_realver}
+  cd $build/linux-${_realver}
+  
+  echo "Creating a kernel source bundle"
+  make clean
+  make prepare  
+  mkdir -p $pkgdir/linux/usr/src
+  mv $build/linux-${_realver} $pkgdir/linux/usr/src
+  ln -s /usr/src/linux-${_realver} $pkgdir/linux/usr/src/linux
+  mkdir -p $pkgdir/linux/var/lib/pacman/local/linux-headers-$version-$revision
+  touch $pkgdir/linux/var/lib/pacman/local/linux-headers-$version-$revision/{desc,files}
+  echo "%REPLACES%
+kernel26-headers
+
+%CONFLICTS%
+kernel26-headers
+
+%PROVIDES%
+kernel26-headers
+">$pkgdir/linux/var/lib/pacman/local/linux-headers-$version-$revision/desc
+  cd $pkgdir 
+  mksquashfs linux linux_${_realver}_src.sb -comp xz -b 524288
+  rm -rf $pkgdir/{linux,linux-${_realver}}
+  ln -sf /usr/src/linux $destdir/usr/lib/modules/${_realver}-ALPHAOS/build
+  ln -sf /usr/src/linux $destdir/usr/lib/modules/${_realver}-ALPHAOS/source
+}

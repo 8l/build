@@ -1,0 +1,27 @@
+name="lxtask"
+version="0.1.4"
+revision="5"
+category="utilities"
+description="Task manager of the LXDE Desktop"
+source="http://downloads.sourceforge.net/sourceforge/lxde/$name-$version.tar.gz"
+homepage="http://lxde.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3"
+makedepends="pkgconfig intltool"
+
+compile() {
+  cd $name-$version
+  patch -Np1 -i $startdir/logo-icon.patch
+  patch -Np1 -i $startdir/fix-integer-overflow.patch
+  patch -Np1 -i $startdir/fix-sort-by-user.patch
+  patch -Np1 -i $startdir/fix-cpu-count.patch
+  ./configure \
+    --sysconfdir=/etc \
+    --prefix=/usr \
+    --enable-gtk3
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+}

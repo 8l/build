@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Taeni
+Comment=Terminal emulator based on GTK+ and VTE
+Exec=taeni
+Icon=utilities-terminal
+Terminal=false
+Categories=Application;Utility;TerminalEmulator;
+StartupNotify=true

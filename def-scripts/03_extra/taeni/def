@@ -1,0 +1,19 @@
+name="taeni"
+version="1.7.0"
+revision="1"
+category="utilities"
+description="Terminal emulator based on GTK3 and VTE"
+source=""
+homepage="http://alphaos.tuxfamily.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="vte3"
+makedepends="vala"
+
+compile() {
+  mv $startdir/$name $build
+}
+
+package() {
+  cd $name
+  make DESTDIR=$destdir install
+}

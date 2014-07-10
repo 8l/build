@@ -1,0 +1,99 @@
+--- packer	2013-12-09 22:49:57.440819655 +0100
++++ packer.new	2013-12-09 22:49:18.209821476 +0100
+@@ -27,6 +27,8 @@
+ RPCURL="https://aur.archlinux.org/rpc.php?type"
+ PKGURL="https://aur.archlinux.org"
+ 
++[ ! -L /etc/ssl/certs/0b759015.0 ] && update-ca-certificates
++
+ if [[ -t 1 && ! $COLOR = "NO" ]]; then
+   COLOR1='\e[1;39m'
+   COLOR2='\e[1;32m'
+@@ -153,6 +155,7 @@
+       fi
+       if existsinpacman "$dep"; then
+         pacmandeps+=("$dep")
++	  
+       elif existsinaur "$dep"; then
+         if [[ $aurdeps ]]; then
+           aurdeps=("$dep" "${aurdeps[@]}")
+@@ -332,18 +335,21 @@
+   fi
+ 
+   [[ $? -ne 0 ]] && echo "The build failed." && return 1
++  
+   if  [[ $2 = dependency ]]; then
+-    runasroot $PACMAN ${PACOPTS[@]} --asdeps -U $pkgname-*$PKGEXT
++    runasroot $PACMAN ${PACOPTS[@]} -U $pkgname-*$PKGEXT --asdeps --noconfirm
+   elif [[ $2 = explicit ]]; then
+-    runasroot $PACMAN ${PACOPTS[@]} -U $pkgname-*$PKGEXT
++    runasroot $PACMAN ${PACOPTS[@]} -U $pkgname-*$PKGEXT --noconfirm
+   fi
+ }
+ 
+ # Goes through all of the install tests and execution ($@ is packages to be installed)
+ installhandling() {
++	
+   packageargs=("$@")
+   getignoredpackages
+   sourcemakepkgconf
++  
+   # Figure out all of the packages that need to be installed
+   for package in "${packageargs[@]}"; do
+     # Determine whether package is in pacman repos
+@@ -352,6 +358,8 @@
+     elif ! [[ $auronly ]] && existsinpacmangroup "$package"; then
+       pacmanpackages+=("$package")
+     elif existsinaur "$package"; then
++      
++      #OBS! HERE RESOLVE DEPENDENCIES IN PKGBUILD OF AUR
+       if finddeps "$package"; then
+         # here is where dep dupes are created
+         aurpackages+=("$package")
+@@ -394,7 +402,11 @@
+  
+   # First install the explicit pacman packages, let pacman prompt
+   if [[ $pacmanpackages ]]; then
++  if [[ ! $buildonly ]]; then
+     runasroot $PACMAN "${PACOPTS[@]}" -S -- "${pacmanpackages[@]}"
++  else
++    runasroot $PACMAN "${PACOPTS[@]}" -Sw -- "${pacmanpackages[@]}"
++  fi
+   fi
+   if [[ -z $aurtargets ]]; then
+     exit
+@@ -454,11 +466,23 @@
+   for package in "${aurtargets[@]}"; do
+     scrapeaurdeps "$package"
+     if pacman -T "${dependencies[@]}" &>/dev/null; then
+-      aurinstall "$package" "explicit"
++        aurinstall "$package" "explicit"
+     else
+       echo "Dependencies for \`$package' are not met, not building..."
+     fi
+   done
++  
++  # Uninstall if buildonly flag set
++  if [[ $buildonly ]]; then
++    if [[ $aurdepends ]]; then runasroot $PACMAN "${PACOPTS[@]}" -Rs "${aurdepends[@]}" --noconfirm; fi
++    if [[ $aurtargets ]]; then runasroot $PACMAN "${PACOPTS[@]}" -Rs "${aurtargets[@]}" --noconfirm; fi
++    if [[ $pacmandepends ]]; then
++      for i in "${pacmandepends[@]}"; do
++        runasroot $PACMAN "${PACOPTS[@]}" -Rs "${i[@]}" --noconfirm
++      done
++    fi
++    return 0
++  fi
+ }
+ 
+ run_quick_check() {
+@@ -524,7 +548,8 @@
+     '--quickcheck') quickcheck='1' ;;
+     '--devel') devel='1' ;;
+     '--skipinteg') MAKEPKGOPTS="--skipinteg" ;;
+-    '--preview') preview='1' ;;
++    '--preview') preview='1' ;;   
++    '--buildonly') buildonly=true ;;   
+     '--') shift ; packageargs+=("$@") ; break ;;
+     -*) echo "packer: Option \`$1' is not valid." ; exit 5 ;;
+     *) packageargs+=("$1") ;;

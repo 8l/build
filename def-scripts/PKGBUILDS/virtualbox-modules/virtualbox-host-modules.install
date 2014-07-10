@@ -1,0 +1,23 @@
+_depmod() {
+  depmod $(uname -r)
+}
+
+_modprobe() {
+  modprobe vboxdrv
+}
+
+post_install() {
+  _depmod
+  _modprobe
+}
+
+post_upgrade() {
+  _depmod
+  _modprobe
+}
+
+post_remove() {
+  _depmod
+}
+
+# vim:set ts=2 sw=2 et:

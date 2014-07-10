@@ -1,0 +1,25 @@
+name="obconf"
+version="2.0.4"
+_realver="2.0.5_git20130908"
+revision="1"
+category="utility"
+description="A GTK3 based configuration tool for the Openbox windowmanager"
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-${_realver}.tar.xz"
+homepage="http://openbox.org/wiki/ObConf:About"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="openbox gtk3 desktop-file-utils libsm"
+makedepends=""
+
+compile() {
+  cd $name-${_realver}
+  patch -Np1 -i $startdir/version-fix.patch
+  ./bootstrap
+  ./configure \
+    --prefix=/usr
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  rm -r $destdir/usr/share/{applications,locale,mime,mimelnk,pixmaps}
+}

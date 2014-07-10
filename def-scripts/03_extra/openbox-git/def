@@ -1,0 +1,31 @@
+name="openbox-git"
+version="3.5.2+f866c03"
+revision="1"
+category="utilities"
+description="A window manager for the X11 windowing system"
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-$version.tar.xz"
+homepage="http://openbox.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="libsm libxcursor libxinerama libxml2 libxrandr pango startup-notification"
+makedepends="docbook-to-man git"
+provides="openbox"
+conflict="openbox"
+
+compile() {
+  cd $name/
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --with-x \
+    --enable-startup-notification \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/openbox \
+    --disable-static
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  rm -r $destdir/usr/share/applications
+  rm -r $destdir/usr/share/themes/{Natura,Orang,Clearlooks-3.4,Clearlooks-Olive,Mikachu,Syscrash,Artwiz-boxed,Onyx,Onyx-Citrus,Bear2}
+}

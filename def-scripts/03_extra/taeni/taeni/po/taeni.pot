@@ -1,0 +1,70 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-06-10 19:38+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: taeni.vala:83
+msgid "About"
+msgstr ""
+
+#: taeni.vala:390
+msgid "Background"
+msgstr ""
+
+#: taeni.vala:262
+msgid "Close tab"
+msgstr ""
+
+#: taeni.vala:114 taeni.vala:267
+msgid "Copy"
+msgstr ""
+
+#: taeni.vala:380
+msgid "Font"
+msgstr ""
+
+#: taeni.vala:394
+msgid "Foreground"
+msgstr ""
+
+#: taeni.vala:278
+msgid "Full screen"
+msgstr ""
+
+#: taeni.vala:111 taeni.vala:259
+msgid "New tab"
+msgstr ""
+
+#: taeni.vala:115 taeni.vala:270
+msgid "Paste"
+msgstr ""
+
+#: taeni.vala:79 taeni.vala:416
+msgid "Preferences"
+msgstr ""
+
+#: taeni.vala:84
+msgid "Quit"
+msgstr ""
+
+#: taeni.vala:116 taeni.vala:273
+msgid "Select all"
+msgstr ""
+
+#: taeni.vala:22
+msgid "Terminal emulator based on GTK+ and VTE"
+msgstr ""

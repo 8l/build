@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+
+/etc/rc.d/hwclock start &
+wpset-shell --init &
+setxkbmap us -option terminate:ctrl_alt_bksp &
+mpg123 -q /usr/share/audio/login.mp3 &
+volumeicon &
+
+sleep 1
+tint2 &
+
+sleep 1
+numlockx off &
+xset b off &
+
+sleep 1
+conky &
+
+sleep 2
+connman-ui-gtk &
+
+sleep 15
+rdate -s tick.greyware.com
+exit

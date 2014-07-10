@@ -1,0 +1,19 @@
+name="libmp-control"
+version="0.0.1"
+revision="1"
+category="development"
+description="Library and Vala bindings to work with mpv slave mode"
+source=""
+homepage="http://alphaos.tuxfamily.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends=""
+makedepends="vala"
+
+compile() {
+  mv $startdir/$name $build
+}
+
+package() {
+  cd $name
+  make DESTDIR=$destdir install
+}

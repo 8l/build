@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+description="logger daemon"
+
+case $1 in
+
+  start)
+    metalog &
+    ;;
+  
+  stop)
+    killall metalog
+    ;;
+  
+esac

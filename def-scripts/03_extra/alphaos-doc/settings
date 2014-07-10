@@ -1,0 +1,44 @@
+* Setup timezone, change keyboard layout and locale settings
+  In order to keep time properly, you need to select your timezone 
+  so that your system knows where it is located. The timezone under 
+  Linux is set by a symbolic link from /etc/localtime to a file in the 
+  /usr/share/zoneinfo directory that corresponds with what timezone you 
+  are in. Example: ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime.
+  Please avoid the /usr/share/zoneinfo/Etc/GMT* timezones as their names 
+  do not indicate the expected zones. For instance, GMT-8 is in fact GMT+8.
+  
+  To set and customize all keyboard layout settings in the X you can use the 
+  setxkbmap command in /root/.start. The list of predefined options can be 
+  found right on the system, in: /usr/share/X11/xkb/rules/base.lst
+  
+  Before a locale can be used on the system, it has to be enabled first.
+  To enable a locale, uncomment the name of the locale in the file /etc/locale.gen. 
+  This file contains all the available locales that can be used on the system. 
+  Revert the process to disable a locale. After the necessary locales are enabled, 
+  the system needs to be updated with the new locales: locale-gen. Now open 
+  /etc/rc.conf and change to suitable system language (french in this example) 
+  LOCALE="fr_FR.UTF-8"
+
+* User accounts
+  By default, alphaOS has two user accounts: one is root with password toor, 
+  and other is alpha with password alpha. Home directory for restricted user 
+  alpha is /home/alpha. Once the system finishes booting, you will be 
+  logged in as root, and to start some application as unprivileged user, 
+  first open terminal and substitute user root with alpha, i.e. type: su alpha.
+  
+* How to log in as user alpha?
+  First as root open file /etc/rc.conf and replace X_AUTOLOGIN="yes" with
+  X_AUTOLOGIN="no", save that file and click Logout. Now, when in tty1 type:
+  su alpha, and then alphaosx. This way you will start new openbox session as
+  regular user alpha with restricted permissions, meaning you can start and
+  use any of already installed programs and have read-write access only to 
+  your home folder /home/alpha.
+
+* Xorg autostart
+  Xorg will start automatically on every boot. If you want to prevent
+  this and log into a virtual console at the end of the boot process,
+  open file /etc/rc.conf and change X_AUTOLOGIN="yes" to X_AUTOLOGIN="no",
+  or use noxorg boot parameter. To start Xorg window system, use alphaosx.
+  Environment variable WINDOW_MANAGER is defined in /root/.xinitrc, and 
+  used to start specific window manager. Also, you can edit file /root/.start 
+  to launch any applications you want to run at startup.

@@ -1,0 +1,9 @@
+<schemalist>
+  <schema id="org.alphaos.wpset.preferences" path="/org/alphaos/wpset/preferences/">
+    <key name="images-dir" type="as">
+      <default>[ '/usr/share/backgrounds' ]</default>
+      <summary>Default wallpaper's directory</summary>
+      <description>Default wallpaper's directory</description>
+    </key>
+  </schema>
+</schemalist>

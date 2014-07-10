@@ -1,0 +1,146 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-01 12:45+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: gmp-video.vala:146
+msgid "+10 seconds"
+msgstr ""
+
+#: gmp-video.vala:148
+msgid "+30 seconds"
+msgstr ""
+
+#: gmp-video.vala:150
+msgid "+600 seconds"
+msgstr ""
+
+#: gmp-video.vala:145
+msgid "-10 seconds"
+msgstr ""
+
+#: gmp-video.vala:147
+msgid "-30 seconds"
+msgstr ""
+
+#: gmp-video.vala:149
+msgid "-600 seconds"
+msgstr ""
+
+#: gmp-video.vala:110
+msgid "About"
+msgstr ""
+
+#: gmp-video.vala:580
+msgid "All Media Files"
+msgstr ""
+
+#: gmp-video.vala:184
+msgid "Aspect Ratio"
+msgstr ""
+
+#: gmp-video.vala:153 gmp-video.vala:164 gmp-video.vala:171
+msgid "Auto"
+msgstr ""
+
+#: gmp-video.vala:617
+msgid "Close"
+msgstr ""
+
+#: gmp-video.vala:199
+msgid "Decrease Font Size"
+msgstr ""
+
+#: gmp-video.vala:174
+msgid "Double size"
+msgstr ""
+
+#: gmp-video.vala:183
+msgid "Fullscreen"
+msgstr ""
+
+#: gmp-video.vala:200
+msgid "Increase Font Size"
+msgstr ""
+
+#: gmp-video.vala:179
+msgid "Jump To"
+msgstr ""
+
+#: gmp-video.vala:24
+msgid "Mpv frontend in Vala and GTK3"
+msgstr ""
+
+#: gmp-video.vala:189
+msgid "Mute"
+msgstr ""
+
+#: gmp-video.vala:194 gmp-video.vala:576
+msgid "Open"
+msgstr ""
+
+#: gmp-video.vala:195 gmp-video.vala:603
+msgid "Open From URL"
+msgstr ""
+
+#: gmp-video.vala:177
+msgid "Pause"
+msgstr ""
+
+#: gmp-video.vala:616
+msgid "Play"
+msgstr ""
+
+#: gmp-video.vala:111
+msgid "Quit"
+msgstr ""
+
+#: gmp-video.vala:186
+msgid "Screenshot"
+msgstr ""
+
+#: gmp-video.vala:198 gmp-video.vala:639
+msgid "Select Subtitle"
+msgstr ""
+
+#: gmp-video.vala:172
+msgid "Smaller 25%"
+msgstr ""
+
+#: gmp-video.vala:173
+msgid "Smaller 50%"
+msgstr ""
+
+#: gmp-video.vala:180
+msgid "Speed"
+msgstr ""
+
+#: gmp-video.vala:178
+msgid "Stop"
+msgstr ""
+
+#: gmp-video.vala:191
+msgid "Volume +"
+msgstr ""
+
+#: gmp-video.vala:190
+msgid "Volume -"
+msgstr ""
+
+#: gmp-video.vala:185
+msgid "Zoom"
+msgstr ""

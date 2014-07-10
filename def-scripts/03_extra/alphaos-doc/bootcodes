@@ -1,0 +1,49 @@
+  Kernel boot parameters are text strings which are interpreted by the system 
+  to change specific behaviors and enable or disable certain features. 
+  
+  Kernel parameters can be set either temporarily by editing the boot menu when 
+  it shows up, or by modifying the boot loader's configuration file, menu.lst.
+  
+  Kernel boot parameters:
+  
+    - are case-sensitive,
+
+    - are sometimes just a simple word ("toram")
+
+    - sometimes have an = sign with various possible values ("from=/alphaos/")
+
+    - sometimes include punctuation ("i8042.noloop") 
+  
+  > List of official Linux Live bootcodes:
+  
+    Bootcode                 acpi=off
+    Meaning                  Disable ACPI
+
+    Bootcode                 from=/alphaos/ or from=/Downloads/alphaos.iso
+    Meaning                  Load alphaOS data from specified directory or 
+                             even from an ISO file (search all drives for it)
+    
+    Bootcode                 toram
+    Meaning                  Activate Copy to RAM feature
+    
+    Bootcode                 debug
+    Meaning                  Enable alphaOS startup debugging
+  
+  > alphaOS specific bootcodes:
+  
+    Bootcode                 fresh
+    Meaning                  Always fresh, skip savefile activating
+    
+    Bootcode                 noxorg
+    Meaning                  Disable Xorg autostart
+    
+    Bootcode                 fsck
+    Meaning                  Force checking filesystem on savefile
+    
+    Bootcode                 usbmode
+    Meaning                  Save session only before reboot, or on user request, 
+                             to decrease number of writes to the USB drive
+    
+    Bootcode                 resize (e.g. resize=50, resize=200, ...)
+    Meaning                  Increase savefile size during the boot process,
+                             for the given number of Megabytes

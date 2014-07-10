@@ -1,0 +1,37 @@
+diff -urN openbox-menu-86e1c4b/Makefile openbox-menu-86e1c4b.new/Makefile
+--- openbox-menu-86e1c4b/Makefile	2013-10-17 11:24:28.000000000 +0200
++++ openbox-menu-86e1c4b.new/Makefile	2013-11-13 18:06:53.283295752 +0100
+@@ -1,5 +1,5 @@
+-LIBS= `pkg-config --libs glib-2.0 gtk+-2.0 libmenu-cache`
+-CFLAGS+= -g -Wall `pkg-config --cflags glib-2.0 gtk+-2.0 libmenu-cache`
++LIBS= `pkg-config --libs glib-2.0 gtk+-3.0 libmenu-cache`
++CFLAGS+= -g -Wall `pkg-config --cflags glib-2.0 gtk+-3.0 libmenu-cache`
+ CC=gcc
+ #-DG_DISABLE_DEPRECATED
+ 
+diff -urN openbox-menu-86e1c4b/menu.c openbox-menu-86e1c4b.new/menu.c
+--- openbox-menu-86e1c4b/menu.c	2013-10-17 11:24:28.000000000 +0200
++++ openbox-menu-86e1c4b.new/menu.c	2013-11-13 18:06:27.719962816 +0100
+@@ -189,18 +189,18 @@
+ 		 */
+ 		tmp_name = strndup (name, strrchr (name, '.') - name);
+ 	#ifdef WITH_SVG
+-		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 16, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
++		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 32, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+ 	#else
+-		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 16, GTK_ICON_LOOKUP_NO_SVG | GTK_ICON_LOOKUP_GENERIC_FALLBACK);
++		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 32, GTK_ICON_LOOKUP_NO_SVG | GTK_ICON_LOOKUP_GENERIC_FALLBACK);
+ 	#endif
+ 		g_free (tmp_name);
+ 	}
+ 
+ 	if (!icon_info) /* 2nd fallback */
+-		icon_info = gtk_icon_theme_lookup_icon (icon_theme, "empty", 16, GTK_ICON_LOOKUP_NO_SVG);
++		icon_info = gtk_icon_theme_lookup_icon (icon_theme, "empty", 32, GTK_ICON_LOOKUP_NO_SVG);
+ 
+ 	icon = g_strdup (gtk_icon_info_get_filename (icon_info));
+-	gtk_icon_info_free (icon_info);
++	g_object_unref (icon_info);
+ 
+ 	return icon;
+ }

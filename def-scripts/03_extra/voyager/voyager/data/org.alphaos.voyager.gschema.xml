@@ -1,0 +1,19 @@
+<schemalist>
+  <schema id="org.alphaos.voyager.preferences" path="/org/alphaos/voyager/preferences/">
+    <key name="width" type="i">
+      <default>780</default>
+      <summary>Width</summary>
+      <description>Main window width</description>
+    </key>
+    <key name="height" type="i">
+      <default>550</default>
+      <summary>Heigth</summary>
+      <description>Main window heigth</description>
+    </key>  
+    <key name="slideshow-delay" type="u">
+      <default>2000</default>
+      <summary>Slideshow delay</summary>
+      <description>Slideshow delay</description>
+    </key>
+  </schema>
+</schemalist>

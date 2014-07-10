@@ -1,0 +1,24 @@
+name="yad"
+version="0.26.1"
+revision="1"
+category="development"
+description="Display graphical dialogs from shell scripts or command line"
+source="http://sourceforge.net/projects/yad-dialog/files/yad-$version.tar.xz"
+homepage="http://code.google.com/p/yad"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="bash gtk3 gettext intltool"
+makedepends=""
+
+compile() {
+  cd $name-$version
+  ./configure \
+    --prefix=/usr \
+    --with-gtk=gtk3
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  for i in 16x16 24x24 32x32 96x96 128x128; do
+  rm -rf $destdir/usr/share/icons/hicolor/$i; done
+}

@@ -1,0 +1,35 @@
+pkgname=awf-git
+_pkgname=awf
+pkgver=v1.2.1.r18.gfe18bc9
+pkgrel=2
+pkgdesc="A theme preview application for gtk2 and gtk3"
+arch=(i686 x86_64)
+url="https://github.com/valr/awf"
+license=('GPL')
+depends=('gtk2' 'gtk3' 'hicolor-icon-theme')
+makedepends=('git')
+source=("$pkgname"::'git+https://github.com/valr/awf.git')
+md5sums=('SKIP')
+install=awf.install
+
+pkgver() {
+  cd "$srcdir/$pkgname"
+  git describe --long | sed -E 's/([^-]*-g)/r\1/;s/-/./g'
+}
+
+build() {
+  cd "$srcdir/$pkgname"
+  sed -i 's|Categories=Application;GTK|Categories=Utility;|g' "$srcdir"/awf-git/awf.desktop
+  sed -i 's|Exec=awf-gtk2|Exec=awf-gtk3|g' "$srcdir"/awf-git/awf.desktop
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+
+  make DESTDIR="$pkgdir" install
+  install -D -m644 "$srcdir/$pkgname/COPYING" "$pkgdir/usr/share/licenses/$_pkgname/COPYING"
+  rm -rf "$pkgdir"/usr/share/icons/hicolor/{16x16,22x22,24x24,32x32,48x48,128x128,scalable}
+}

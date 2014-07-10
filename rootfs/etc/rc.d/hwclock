@@ -1,0 +1,33 @@
+#!/usr/bin/bash
+
+. /etc/rc.conf
+
+case $HARDWARECLOCK in
+
+  UTC)
+    HWCLOCK_PARAMS="--utc"
+    ;;
+    
+  localtime)
+    HWCLOCK_PARAMS="--localtime"
+    ;;
+    
+  *)
+    HWCLOCK_PARAMS=""
+    ;;
+  
+esac
+
+case "$1" in
+
+  start)
+    hwclock --adjust $HWCLOCK_PARAMS
+    hwclock --hctosys
+    ;;  
+  
+  stop)
+    hwclock --adjust $HWCLOCK_PARAMS
+    hwclock --systohc
+    ;;
+    
+esac

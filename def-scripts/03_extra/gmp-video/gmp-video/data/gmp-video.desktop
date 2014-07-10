@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=GMP Video
+Comment=MPlayer frontend in Vala and GTK3
+Exec=gmp-video %F
+Icon=gmp-video
+Terminal=false
+Categories=GTK;AudioVideo;Video;Player;
+MimeType=video/avi;video/mp4;video/flv;video/x-flv;video/mpeg;video/quicktime;video/vnd.rn-realvideo;video/x-matroska;video/x-ms-asf;video/x-msvideo;video/x-ms-wmv;video/x-ogm;video/x-theora;video/webm;application/x-matroska;image/gif;
+StartupNotify=true

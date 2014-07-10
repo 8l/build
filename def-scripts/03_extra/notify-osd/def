@@ -1,0 +1,28 @@
+name="notify-osd"
+version="0.9.34"
+_realver="0.9.35+13.10.20130917.1-0ubuntu1-leolik~ppa0"
+revision="1"
+category="development"
+description="Canonicals on-screen-display notification agent, implementing the freedesktop.org Desktop Notifications Specification with semi-transparent click-through bubbles"
+source="http://ppa.launchpad.net/leolik/leolik/ubuntu/pool/main/n/${name}/${name}_${_realver}.tar.gz"
+homepage="https://launchpad.net/notify-osd"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="libwnck3 dbus-glib dconf gsettings-desktop-schemas"
+makedepends="libnotify"
+
+compile() {
+  cd ${name}-*
+  ./autogen.sh \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libexecdir=/usr/lib/notify-osd \
+    --disable-static \
+    --disable-schemas-compile
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  rm -r $destdir/usr/share/notify-osd
+}

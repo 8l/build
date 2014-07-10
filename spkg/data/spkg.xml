@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-spkg">
+         <comment>spkg package</comment>
+         <comment xml:lang="en">spkg package</comment>
+	 <sub-class-of type="application/x-bzip"/>
+         <glob pattern="*.spkg"/>
+  </mime-type>
+</mime-info>

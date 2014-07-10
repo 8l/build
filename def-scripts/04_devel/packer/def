@@ -1,0 +1,19 @@
+name="packer"
+version="20131001"
+revision="1"
+category="development"
+description="Bash wrapper for pacman and aur"
+source=""
+homepage="http://github.com/keenerd/packer"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="grep sed bash curl pacman jshon"
+makedepends="git"
+
+compile() {
+  cp $startdir/$name $build
+  patch -Np0 -i $startdir/build_only.patch
+}
+
+package() { 
+  install -Dm755 packer $destdir/usr/bin/packer
+}

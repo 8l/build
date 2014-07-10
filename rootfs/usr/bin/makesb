@@ -1,0 +1,122 @@
+#!/usr/bin/bash
+# 
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+. /etc/rc.d/functions
+
+# DISCOVER PARTITION AND FRUGAL INSTALLATION DIRECTORY
+
+SYSTEM_DIR="/mnt/live/memory/data"
+SAVEFILE_PARTITION=$(mount | grep $SYSTEM_DIR | grep -v -e squashfs -e iso9660 | cut -d" " -f1)
+
+if [ "$SAVEFILE_PARTITION" == "/dev/sr0" ]; then
+  echo -e $BRed"==> "$BWhite"Read-only filesystem!"$Color_Off
+  exit 1
+fi
+
+cmdline_value()
+{
+   cat /proc/cmdline | egrep -o "(^|[[:space:]])$1=[^[:space:]]+" | tr -d " " | cut -d "=" -f 2- | tail -n 1
+}
+
+FROM="$(cmdline_value from)"
+
+if [ "$FROM" != "" ]; then
+  BUNDLES_DIR="$SYSTEM_DIR$FROM/modules"
+else
+  for DIRECTORY in $(find $SYSTEM_DIR -maxdepth 1 -mindepth 1 -type d | grep -v lost+found ); do
+    if [ -f $DIRECTORY/boot/vmlinuz -a -f $DIRECTORY/alpha*sb ]; then
+      BUNDLES_DIR="$DIRECTORY/modules"
+    fi
+  done
+fi
+
+if [[ $1 == "-Ss" ]]; then
+  
+  if [ -x /usr/bin/packer ]; then
+    packer -Ss "$@"
+  else
+    shift 1
+    if [[ "$@" != "" ]]; then
+      pacman -Ss "$@"
+    else
+      echo "Must specify a package."
+    fi
+  fi
+  
+else
+
+  LIST="$@"
+  BUNDLE=$(for i in "$LIST"; do echo $(echo $i | sed 's| |_|g'); done)
+
+  if [[ ! "$BUNDLE" ]]; then
+    echo -e $BRed"==> "$BWhite"You should specify package name!"$Color_Off
+    exit 1
+  fi
+
+  if [ ! -f /var/lib/pacman/sync/community.db ]; then 
+    pacman -Syu
+  fi
+
+  echo -e $BGreen"==> "$BWhite"Cleaning packages cache"$Color_Off
+  rm /var/cache/pacman/pkg/* 2>/dev/null
+  find /tmp/packerbuild* 2>/dev/null \( -name "*.pkg.tar.xz" -o -name "*.pkg.tar.gz" \) -type f -print0 | xargs -0 -I {} rm {}
+
+  echo -e $BGreen"==> "$BWhite"Downloading $LIST"$Color_Off
+
+  if [ -x /usr/bin/packer ]; then
+    packer -S $LIST --buildonly
+  else
+    pacman -Sw $LIST
+  fi
+  
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  rm -r "$BUNDLES_DIR/$BUNDLE" 2>/dev/null
+  mkdir -p "$BUNDLES_DIR/$BUNDLE"
+  mv /var/cache/pacman/pkg/*.pkg.tar.*z "$BUNDLES_DIR/$BUNDLE" 2>/dev/null
+  find /tmp/packerbuild* 2>/dev/null \( -name "*.pkg.tar.xz" -o -name "*.pkg.tar.gz" \) -type f -print0 | xargs -0 -I {} mv {} "$BUNDLES_DIR/$BUNDLE"
+
+  if [ $(ls -1A $BUNDLES_DIR/$BUNDLE | wc -l) -eq 0 ]; then
+      rmdir "$BUNDLES_DIR/$BUNDLE"
+      exit 1
+    else
+      echo -e $BGreen"==> "$BWhite"Packages moved to $BUNDLES_DIR/$BUNDLE"$Color_Off
+  fi
+
+  echo -e $BGreen"==> "$BWhite"Running script arch2sb $BUNDLE"$Color_Off
+  cd "$BUNDLES_DIR/$BUNDLE"
+  arch2sb $BUNDLE
+
+  if [ -f $BUNDLES_DIR/$BUNDLE/*.sb ]; then 
+    find $BUNDLES_DIR/$BUNDLE -name "*.sb" -type f -print0 | xargs -0 -I {} mv --backup=numbered {} "$BUNDLES_DIR"
+    rm -r $BUNDLES_DIR/$BUNDLE
+  fi
+  
+  echo -en $BGreen"==> "$BWhite"Do you want to load $BUNDLE.sb? [Y/n] "$Color_Off
+  read choice
+  case "$choice" in
+    n|N)
+      exit 0;;
+    *)
+      cd $BUNDLES_DIR
+      bundle -a $BUNDLE.sb ;;
+  esac
+  
+fi

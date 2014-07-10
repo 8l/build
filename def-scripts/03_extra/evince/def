@@ -1,0 +1,49 @@
+name="evince"
+version="3.12.1"
+_realver="3.13.3"
+revision="1"
+category="office"
+description="Simply a document viewer"
+source="http://ftp.gnome.org/pub/gnome/sources/$name/${_realver:0:4}/$name-${_realver}.tar.xz"
+homepage="http://ftp.acc.umu.se/pub/gnome/sources/evince"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="dconf gtk3 poppler hicolor-icon-theme desktop-file-utils gsettings-desktop-schemas"
+makedepends="intltool itstool"
+
+compile() {
+  cd $name-${_realver}
+  sed -i 's/adwaita-icon-theme//' configure.ac configure
+  sed -i '/NoDisplay/d' ./data/evince.desktop.in.in
+  sed -i 's|Name=Document Viewer|Name=Evince|g' ./data/evince.desktop.in.in
+  sed -i 's|Categories=GNOME;GTK;Office;Viewer;Graphics;2DGraphics;VectorGraphics;|Categories=Office|g' ./data/evince.desktop.in.in
+  patch -Np0 -i $startdir/disable_help_evince_3.6.1.patch
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/evince \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-previewer \
+    --without-keyring \
+    --disable-maintainer-mode \
+    --disable-schemas-compile \
+    --disable-debug \
+    --disable-tests \
+    --disable-nautilus \
+    --disable-thumbnailer \
+    --disable-introspection \
+    --disable-t1lib \
+    --disable-comics \
+    --disable-gtk-doc \
+    --disable-ps \
+    --disable-djvu \
+    --disable-dvi \
+    --disable-xps \
+    --disable-tiff \
+    --disable-static
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  rm -rf $destdir/usr/share/applications/evince-previewer.desktop
+}

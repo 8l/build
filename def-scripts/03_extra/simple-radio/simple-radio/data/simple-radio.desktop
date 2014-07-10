@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Simple Radio
+Comment=Simple radio player
+Exec=simple-radio
+Categories=AudioVideo;Player;GTK;
+Terminal=false
+Type=Application
+Icon=simple-radio-play

@@ -1,0 +1,79 @@
+<schemalist>
+  <schema id="org.alphaos.simple-radio.preferences" path="/org/alphaos/simple-radio/preferences/">
+    <key name="radio01" type="as">
+      <default>[ 'ChartHits.FM', 'http://95.141.24.98:80/' ]</default>
+      <summary>Radio 01</summary>
+      <description>Radio 01 name and address</description>
+    </key>
+    <key name="radio02" type="as">
+      <default>[ 'Antena ZG', 'http://173.192.137.34:8050/' ]</default>
+      <summary>Radio 02</summary>
+      <description>Radio 02 name and address</description>
+    </key>    
+    <key name="radio03" type="as">
+      <default>[ 'Naxi Cafe', 'http://naxidigital128.kbcnet.rs:8020/' ]</default>
+      <summary>Radio 03</summary>
+      <description>Radio 03 name and address</description>
+    </key>    
+    <key name="radio04" type="as">
+      <default>[ 'RSG Radio', 'http://83.170.115.203:8090/' ]</default>
+      <summary>Radio 04</summary>
+      <description>Radio 04 name and address</description>
+    </key>    
+    <key name="radio05" type="as">
+      <default>[ 'Smooth Jazz', 'http://173.244.199.249:80/' ]</default>
+      <summary>Radio 05</summary>
+      <description>Radio 05 name and address</description>
+    </key>
+    <key name="radio06" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 06</summary>
+      <description>Radio 06 name and address</description>
+    </key>    
+    <key name="radio07" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 07</summary>
+      <description>Radio 07 name and address</description>
+    </key>    
+    <key name="radio08" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 08</summary>
+      <description>Radio 08 name and address</description>
+    </key>
+    <key name="radio09" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 09</summary>
+      <description>Radio 09 name and address</description>
+    </key>
+    <key name="radio10" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 10</summary>
+      <description>Radio 10 name and address</description>
+    </key>
+    <key name="radio11" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 11</summary>
+      <description>Radio 11 name and address</description>
+    </key>    
+    <key name="radio12" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 12</summary>
+      <description>Radio 12 name and address</description>
+    </key>    
+     <key name="radio13" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 13</summary>
+      <description>Radio 13 name and address</description>
+    </key>   
+    <key name="radio14" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 14</summary>
+      <description>Radio 14 name and address</description>
+    </key>    
+    <key name="radio15" type="as">
+      <default>[ '', '' ]</default>
+      <summary>Radio 15</summary>
+      <description>Radio 15 name and address</description>
+    </key>
+  </schema>
+</schemalist>

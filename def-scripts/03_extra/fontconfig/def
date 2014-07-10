@@ -1,0 +1,36 @@
+name="fontconfig"
+version="2.11.1"
+_realver="2.11.0"
+revision="1"
+category="development"
+description="A library for configuring and customizing font access"
+source="http://www.fontconfig.org/release/$name-${_realver}.tar.bz2
+https://launchpad.net/ubuntu/+archive/primary/+files/fontconfig_2.11.0-0ubuntu1.debian.tar.gz"
+homepage="http://www.fontconfig.org/release"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="expat freetype2"
+makedepends=""
+
+compile() {
+  cd $name-${_realver}
+  for patch in $(cat $build/debian/patches/series | grep -v '#') ; do    
+    patch -Np1 -i $build/debian/patches/$patch
+  done
+  patch -u conf.d/53-monospace-lcd-filter.conf $startdir/53-monospace-lcd-filter.patch
+  libtoolize -f
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-templatedir=/etc/fonts/conf.avail \
+    --with-xmldir=/etc/fonts \
+    --localstatedir=/var \
+    --disable-static \
+    --with-default-fonts=/usr/share/fonts \
+    --with-add-fonts=/usr/share/fonts
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+}

@@ -1,0 +1,18 @@
+name="faenza-mini-blue"
+version="1.0"
+revision="1"
+category="graphics"
+description="Icon theme made as mix of Faenza and OSX icon themes"
+source="http://sourceforge.net/projects/alphaos/files/sources/$name-$version.tar.xz"
+homepage="http://alphaos.tuxfamily.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends=""
+makedepends=""
+
+compile() {
+  mkdir -p $destdir/usr/share/icons/Faenza-Mini-Blue
+}
+
+package(){
+  mv $name-$version/* $destdir/usr/share/icons/Faenza-Mini-Blue
+}

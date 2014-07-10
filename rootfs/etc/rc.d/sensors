@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+description="hardware sensors"
+
+case $1 in
+
+  start)
+    modprobe smsc47b397 >/dev/null
+    ;;
+  
+  stop)
+    rmmod smsc47b397 >/dev/null
+    ;;
+  
+esac

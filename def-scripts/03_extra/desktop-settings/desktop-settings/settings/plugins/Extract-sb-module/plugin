@@ -1,0 +1,16 @@
+# SpaceFM Plugin File
+
+# THIS FILE IS NOT DESIGNED TO BE EDITED
+
+[Plugin]
+config_version-s=23
+cstm_7130683f-x=0
+cstm_7130683f-y=
+cstm_7130683f-label=Extract sb module
+cstm_7130683f-icon=application-x-sb
+cstm_7130683f-cxt=0%%%%%0%%%%%0%%%%%0%%%%%application/x-sb
+cstm_7130683f-line=unsquashfs %f
+cstm_7130683f-task=1
+cstm_7130683f-keep=1
+cstm_7130683f-scroll=1
+

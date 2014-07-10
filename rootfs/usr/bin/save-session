@@ -1,0 +1,56 @@
+#!/usr/bin/bash
+# 
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+. /etc/rc.d/functions
+
+SAVEFILE_MNT="/mnt/live/memory/bundles/changes.fs4"
+
+saving_session()
+{
+  cp -afu /mnt/live/memory/changes/{bin,etc,home,lib,opt,root,sbin,usr,var} $SAVEFILE_MNT 2>/dev/null
+
+  cd $SAVEFILE_MNT
+  find . -name .wh..wh..opq -exec sh -c 'F="{}"; rm -rf "./${F%/*}"' \;                         #clean up whited out dirs (Marv)
+  find . -name .wh.\* ! -name .wh..wh..opq -exec sh -c 'F="{}"; rm -rf "./${F/\/.wh.//}"' \;    #clean up whited out files
+  find . -name .wh.\* ! -name .wh..wh..opq -exec sh -c 'F="{}"; rm -rf "./$F"' \;               #clean up whiteouts themselves
+  sync
+  sleep 3
+}
+
+if [ -f /tmp/savefile.txt ]; then 
+  . /tmp/savefile.txt
+  if [ ! -d $SAVEFILE_MNT ] ; then
+    mkdir $SAVEFILE_MNT
+  fi
+  
+  if [ -f $SAVEFILE ] ; then
+    mount $SAVEFILE $SAVEFILE_MNT
+    rmdir "$SAVEFILE_MNT/lost+found" 2>/dev/null
+    echo -en $Green"* "$Color_Off"Saving session..." >/dev/console
+    
+    saving_session
+    exit 0
+  fi
+fi
+
+if grep -q usbmode /proc/cmdline; then
+  if [ -d $SAVEFILE_MNT ]; then 
+    echo -en $Green"* "$Color_Off"Saving session..." >/dev/console
+    saving_session
+  fi
+fi

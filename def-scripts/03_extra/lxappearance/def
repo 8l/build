@@ -1,0 +1,26 @@
+name="lxappearance"
+version="0.5.5"
+_realver="0.5.5"
+revision="1"
+category="utilities"
+description="Feature-rich GTK+ theme switcher of the LXDE Desktop"
+source="http://sourceforge.net/projects/lxde/files/$name-${_realver}.tar.xz"
+homepage="http://lxde.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3 dbus-glib"
+makedepends="intltool"
+
+compile() {
+  cd $name-${_realver}
+  patch -Np1 -i $startdir/logo-icon.patch
+  ./configure LIBS="-lgthread-2.0" \
+    --sysconfdir=/etc \
+    --prefix=/usr \
+    --enable-dbus \
+    --enable-gtk3
+  make 
+}
+
+package() {
+  make DESTDIR=$destdir install 
+}

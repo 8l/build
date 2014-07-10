@@ -1,0 +1,95 @@
+#!/usr/bin/bash
+# 
+# Copyright (c) alphaOS
+# Written by simargl <archpup-at-gmail-dot-com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+. /etc/rc.d/functions
+
+BUNDLE="$1"
+
+mkdir $PWD/{tmp,install}
+
+echo -e $BGreen"==> "$BWhite"Extracting"$Color_Off
+for i in $(ls *.pkg.tar.xz *.pkg.tar.gz 2>/dev/null); do
+  echo -en $BBlue"  -> "$Color_Off$i
+  bsdtar -xf $i -C $PWD/tmp
+  echo
+  name=$(cat $PWD/tmp/.PKGINFO | grep pkgname | sed 's|pkgname = ||g')
+  names="$names"_"$name"
+  aver=$(cat $PWD/tmp/.PKGINFO | grep pkgver | sed 's|pkgver = ||g')
+  version=$(echo $aver | sed 's/-[^-]*$//')
+  revision=${aver##*-}
+  category="development"
+  description=$(cat $PWD/tmp/.PKGINFO | grep pkgdesc | sed 's|pkgdesc = ||g')
+  cat $PWD/tmp/.PKGINFO | grep depend | grep -v optdepend | sed 's|depend = ||g' > /tmp/deps
+  cat $PWD/tmp/.PKGINFO | grep "replaces =" | sed 's|replaces = ||g' > /tmp/replaces
+  cat $PWD/tmp/.PKGINFO | grep "conflict =" | sed 's|conflict = ||g' > /tmp/conflict
+  cat $PWD/tmp/.PKGINFO | grep "provides =" | sed 's|provides = ||g' > /tmp/provides
+  depends=$(for i in $(cat /tmp/deps); do echo -n $i" ";done)
+  makedepends=""
+  source="http://seblu.net/a/arm/$date/$repo/os/i686/$i"
+  homepage=$(cat $PWD/tmp/.PKGINFO | grep url | sed 's|url = ||g')
+  maintainer=$(cat $PWD/tmp/.PKGINFO | grep packager | sed 's|packager = ||g')
+  replaces=$(for i in $(cat /tmp/replaces); do echo -n $i" ";done)
+  conflict=$(for i in $(cat /tmp/conflict); do echo -n $i" ";done)
+  provides=$(for i in $(cat /tmp/provides); do echo -n $i" ";done)
+  mkdir -p install/var/lib/pacman/local/$name-$version-$revision
+  touch install/var/lib/pacman/local/$name-$version-$revision/{desc,files}  
+  file="install/var/lib/pacman/local/$name-$version-$revision/desc"
+  echo "%NAME%">$file
+  echo "$name">>$file
+  echo "">>$file
+  echo "%VERSION%">>$file
+  echo "$version-$revision">>$file
+  echo "">>$file  
+  echo "%DESC%">>$file
+  echo "$description">>$file
+  echo "">>$file   
+  echo "%URL%">>$file
+  echo "$homepage">>$file
+  echo "">>$file
+  echo "%PACKAGER%">>$file
+  echo "$maintainer">>$file
+  echo "">>$file 
+  if [ "$replaces" ]; then
+    echo "%REPLACES%">>$file
+    for i in $replaces; do echo "$i" >>$file; done
+    echo "">>$file 
+  fi
+  if [ "$conflict" ]; then
+    echo "%CONFLICTS%">>$file
+    for i in $conflict; do echo "$i" >>$file; done
+    echo "">>$file 
+  fi
+  if [ "$provides" ]; then
+    echo "%PROVIDES%">>$file
+    for i in $provides; do echo "$i" >>$file; done
+    echo "">>$file
+  fi
+done
+echo
+
+cp -afx $PWD/tmp/* $PWD/install
+
+if [ $(ls -1A $PWD/install | wc -l) -eq 0 ]; then
+  echo "Empty directory" && rm -rf $PWD/{tmp,install} && exit
+fi
+
+if [[ ! $BUNDLE ]]; then BUNDLE="`echo -n "$names" | sed 's/^_*//g'`"; fi
+
+echo -e $BGreen"==> "$BWhite"Creating bundle $BUNDLE.sb "$Color_Off
+mksquashfs install $BUNDLE.sb -comp gzip -b 524288
+rm -rf $PWD/{tmp,install}

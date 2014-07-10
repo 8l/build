@@ -1,0 +1,25 @@
+name="lxrandr"
+version="0.1.2"
+revision="3"
+category="utilities"
+description="Monitor configuration tool"
+source="http://downloads.sourceforge.net/sourceforge/lxde/$name-$version.tar.gz"
+homepage="http://lxde.org/"
+maintainer="simargl <archpup-at-gmail-dot-com>"
+depends="gtk3 xorg-xrandr"
+makedepends="pkgconfig intltool"
+
+compile() {
+  cd $name-$version
+  patch -Np1 -i $startdir/logo-icon.patch
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --enable-gtk3
+  make
+}
+
+package() {
+  make DESTDIR=$destdir install
+  rm -r $destdir/usr/share/applications/lxrandr.desktop
+}

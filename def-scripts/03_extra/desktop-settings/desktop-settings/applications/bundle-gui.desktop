@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Bundle GUI
+Comment=Text editor with syntax highlighting
+Exec=bundle-gui %F
+Icon=application-x-sb
+Terminal=false
+Categories=GTK;System;
+MimeType=application/x-sb;
+StartupNotify=false
+NoDisplay=true
