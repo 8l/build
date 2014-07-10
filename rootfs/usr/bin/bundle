@@ -71,7 +71,7 @@ check_if_activated()
 check_if_system_bundle()
 {
   for bundles in alpha* extra*; do
-    if [[ "$BUNDLE" =~ $bundles ]]; then
+    if [[ "$BUNDLE" =~ "$bundles" ]]; then
       echo -e $BRed"==> "$BWhite"System bundle '"$BUNDLE"' cannot be deactivated!"$Color_Off
       exit 1
     fi
