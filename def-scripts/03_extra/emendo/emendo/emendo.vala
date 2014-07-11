@@ -214,7 +214,7 @@ private class Program : Gtk.Window
     menubutton = new Gtk.MenuButton();
     menubutton.valign = Gtk.Align.CENTER;
     menubutton.set_popup(menu);
-    menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
+    menubutton.set_image(new Gtk.Image.from_icon_name("system-run-symbolic", Gtk.IconSize.MENU));
 
     // HeaderBar
     headerbar_main = new Gtk.HeaderBar();

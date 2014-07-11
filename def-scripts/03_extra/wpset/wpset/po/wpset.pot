@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-10 19:38+0200\n"
+"POT-Creation-Date: 2014-07-11 17:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: wpset.vala:86 wpset.vala:205
+#: wpset.vala:89 wpset.vala:225
 msgid "Add folder"
 msgstr ""
 
@@ -33,6 +33,6 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: wpset.vala:87
+#: wpset.vala:90
 msgid "Reset list"
 msgstr ""

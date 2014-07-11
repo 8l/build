@@ -121,7 +121,7 @@ private class Program : Gtk.Application
     menubutton.valign = Gtk.Align.CENTER;
     menubutton.set_use_popover(true);
     menubutton.set_menu_model(gear_menu);
-    menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));
+    menubutton.set_image(new Gtk.Image.from_icon_name("system-run-symbolic", Gtk.IconSize.MENU));
 
     var headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);

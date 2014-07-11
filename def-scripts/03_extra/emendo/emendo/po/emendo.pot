@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-06 18:45+0100\n"
+"POT-Creation-Date: 2014-07-11 17:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,172 +17,176 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: emendo.vala:177
+#: emendo.vala:197
 msgid "About"
 msgstr ""
 
-#: emendo.vala:419 emendo.vala:1079
+#: emendo.vala:430 emendo.vala:1096
 msgid "Cancel"
 msgstr ""
 
-#: emendo.vala:581
+#: emendo.vala:599
 msgid "Case sensitive"
 msgstr ""
 
-#: emendo.vala:603
+#: emendo.vala:621
 msgid "Close"
 msgstr ""
 
-#: emendo.vala:847
+#: emendo.vala:858
 msgid "Color scheme"
 msgstr ""
 
-#: emendo.vala:956
+#: emendo.vala:961
 msgid "Editor"
 msgstr ""
 
-#: emendo.vala:841
+#: emendo.vala:857
 msgid "Editor font"
 msgstr ""
 
-#: emendo.vala:896
+#: emendo.vala:865
 msgid "Enable text wrapping"
 msgstr ""
 
-#: emendo.vala:385
+#: emendo.vala:403
 msgid "Error"
 msgstr ""
 
-#: emendo.vala:387
+#: emendo.vala:398
 #, c-format
 msgid ""
 "Error saving file %s.\n"
 "The file on disk may now be truncated!"
 msgstr ""
 
-#: emendo.vala:560
+#: emendo.vala:586
 msgid "Find & Replace"
 msgstr ""
 
-#: emendo.vala:604
+#: emendo.vala:622
 msgid "Find and Replace"
 msgstr ""
 
-#: emendo.vala:154
+#: emendo.vala:160
 msgid "Find the entered text in the current file"
 msgstr ""
 
-#: emendo.vala:884
+#: emendo.vala:863
 msgid "Highlight current line"
 msgstr ""
 
-#: emendo.vala:866
+#: emendo.vala:860
 msgid "Indent width"
 msgstr ""
 
-#: emendo.vala:905
+#: emendo.vala:866
 msgid "Insert spaces instead of tabs"
 msgstr ""
 
-#: emendo.vala:860
+#: emendo.vala:859
 msgid "Margin width"
 msgstr ""
 
-#: emendo.vala:112
+#: emendo.vala:118
 msgid "New"
 msgstr ""
 
-#: emendo.vala:1080
+#: emendo.vala:1097
 msgid "No"
 msgstr ""
 
-#: emendo.vala:389
+#: emendo.vala:400
 msgid "OK"
 msgstr ""
 
-#: emendo.vala:157
+#: emendo.vala:163
 msgid "Open"
 msgstr ""
 
-#: emendo.vala:310
+#: emendo.vala:325
 msgid "Open File..."
 msgstr ""
 
-#: emendo.vala:173
+#: emendo.vala:193
 msgid "Preferences"
 msgstr ""
 
-#: emendo.vala:1076
+#: emendo.vala:1101
 msgid "Question"
 msgstr ""
 
-#: emendo.vala:139
+#: emendo.vala:177
+msgid "Recent"
+msgstr ""
+
+#: emendo.vala:145
 msgid "Redo your last action"
 msgstr ""
 
-#: emendo.vala:578
+#: emendo.vala:596
 msgid "Repace with:"
 msgstr ""
 
-#: emendo.vala:165
+#: emendo.vala:185
 msgid "Replace"
 msgstr ""
 
-#: emendo.vala:584
+#: emendo.vala:602
 msgid "Replace all at once"
 msgstr ""
 
-#: emendo.vala:118 emendo.vala:420
+#: emendo.vala:124 emendo.vala:431
 msgid "Save"
 msgstr ""
 
-#: emendo.vala:161 emendo.vala:388
+#: emendo.vala:181 emendo.vala:399
 msgid "Save As"
 msgstr ""
 
-#: emendo.vala:418
+#: emendo.vala:429
 msgid "Save file"
 msgstr ""
 
-#: emendo.vala:570
+#: emendo.vala:589
 msgid "Search for:"
 msgstr ""
 
-#: emendo.vala:169 emendo.vala:684
+#: emendo.vala:189 emendo.vala:700
 msgid "Select Color"
 msgstr ""
 
-#: emendo.vala:878
+#: emendo.vala:862
 msgid "Show line numbers"
 msgstr ""
 
-#: emendo.vala:890
+#: emendo.vala:864
 msgid "Show margin on right"
 msgstr ""
 
-#: emendo.vala:872
+#: emendo.vala:861
 msgid "Tab width"
 msgstr ""
 
-#: emendo.vala:25
+#: emendo.vala:23
 msgid "Text editor with syntax highlighting"
 msgstr ""
 
-#: emendo.vala:1078
+#: emendo.vala:1095
 #, c-format
 msgid ""
 "The file '%s' is not saved.\n"
 "Do you want to save it before closing?"
 msgstr ""
 
-#: emendo.vala:132
+#: emendo.vala:138
 msgid "Undo your last action"
 msgstr ""
 
-#: emendo.vala:957
+#: emendo.vala:962
 msgid "View"
 msgstr ""
 
-#: emendo.vala:1081
+#: emendo.vala:1098
 msgid "Yes"
 msgstr ""

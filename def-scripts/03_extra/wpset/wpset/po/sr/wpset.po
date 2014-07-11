@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 001\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-10 19:38+0200\n"
+"POT-Creation-Date: 2014-07-11 17:11+0200\n"
 "PO-Revision-Date: 2014-01-15 20:45+0100\n"
 "Last-Translator: root <root@alphaos>\n"
 "Language-Team: Serbian\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "About"
 msgstr "O programu"
 
-#: wpset.vala:86 wpset.vala:205
+#: wpset.vala:89 wpset.vala:225
 msgid "Add folder"
 msgstr "Dodaj fasciklu"
 
@@ -34,6 +34,6 @@ msgstr "Program za menjanje pozadine ekrana"
 msgid "Quit"
 msgstr "Odustani"
 
-#: wpset.vala:87
+#: wpset.vala:90
 msgid "Reset list"
 msgstr "Podrazumevana lista"

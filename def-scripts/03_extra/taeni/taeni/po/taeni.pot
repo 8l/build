@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-10 19:38+0200\n"
+"POT-Creation-Date: 2014-07-11 17:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,39 +21,39 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: taeni.vala:390
+#: taeni.vala:391
 msgid "Background"
 msgstr ""
 
-#: taeni.vala:262
+#: taeni.vala:263
 msgid "Close tab"
 msgstr ""
 
-#: taeni.vala:114 taeni.vala:267
+#: taeni.vala:115 taeni.vala:268
 msgid "Copy"
 msgstr ""
 
-#: taeni.vala:380
+#: taeni.vala:381
 msgid "Font"
 msgstr ""
 
-#: taeni.vala:394
+#: taeni.vala:395
 msgid "Foreground"
 msgstr ""
 
-#: taeni.vala:278
+#: taeni.vala:279
 msgid "Full screen"
 msgstr ""
 
-#: taeni.vala:111 taeni.vala:259
+#: taeni.vala:112 taeni.vala:260
 msgid "New tab"
 msgstr ""
 
-#: taeni.vala:115 taeni.vala:270
+#: taeni.vala:116 taeni.vala:271
 msgid "Paste"
 msgstr ""
 
-#: taeni.vala:79 taeni.vala:416
+#: taeni.vala:79 taeni.vala:417
 msgid "Preferences"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: taeni.vala:116 taeni.vala:273
+#: taeni.vala:117 taeni.vala:274
 msgid "Select all"
 msgstr ""
 
