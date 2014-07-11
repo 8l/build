@@ -11,6 +11,7 @@ makedepends=""
 
 compile() {
   cd $name-$version
+  patch -Np0 -i $startdir/fix-missing-buttons.patch
   ./configure \
     --prefix=/usr \
     --with-gtk=gtk3

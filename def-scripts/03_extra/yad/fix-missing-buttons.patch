@@ -1,0 +1,18 @@
+Index: src/main.c
+===================================================================
+--- src/main.c	(revision 771)
++++ src/main.c	(working copy)
+@@ -381,12 +381,10 @@
+               GtkWidget *btn;
+               YadButton *b = (YadButton *) tmp->data;
+ 
+-              btn = gtk_button_new ();
+-              gtk_container_add (GTK_CONTAINER (btn), get_label (b->name, 2));
++              btn = gtk_dialog_add_button (dlg, b->name, b->response);
+               gtk_button_set_alignment (GTK_BUTTON (btn), 0.5, 0.5);
+               g_object_set_data (G_OBJECT (btn), "resp", GINT_TO_POINTER (b->response));
+               g_signal_connect (G_OBJECT (btn), "clicked", G_CALLBACK (btn_cb), b->cmd);
+-              gtk_box_pack_start (GTK_BOX (bbox), btn, FALSE, FALSE, 0);
+ 
+               tmp = tmp->next;
+             }

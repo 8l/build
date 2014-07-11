@@ -82,7 +82,7 @@ dialog="$(which yad)"
 # YAD
 dtitle='--title=alphainst.sh'
 # need to run fixed, as YAD behaves weirdly, adding lots of newlines.
-dsettings='--center --fixed --borders=8 --always-print-result --selectable-labels --window-icon=drive-harddisk-system'
+dsettings='--center --fixed --borders=8 --always-print-result --selectable-labels --window-icon=drive-harddisk'
 dialog="${dialog} ${dtitle} ${dsettings}"
 dyescode=90
 dyes="--button=Yes:${dyescode}"
