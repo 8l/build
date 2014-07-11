@@ -1,0 +1,100 @@
+#!/usr/bin/bash
+
+# Settings
+NAME="My-Numix"
+GRIP="12"
+GTK2RC="Numix/gtk-2.0/gtkrc"
+GTK3RC="Numix/gtk-3.0/gtk.css"
+BOX3RC="Numix//openbox-3/themerc"
+
+# Light
+BG_COLOR="#CECECE"
+FG_COLOR="#363636"
+BASE_COLOR="#F7F7F7"
+SELECTED_BG_COLOR="#7496C8"
+SELECTED_FG_COLOR="#FFFFFF"
+BORDER_COLOR="#828282"
+
+# Dark
+
+
+# Download
+cd /tmp
+if [ -d Numix.orig ]; then
+  cp -a Numix.orig Numix
+else
+  git clone https://github.com/shimmerproject/Numix Numix.orig
+  cp -a Numix.orig Numix
+fi
+rm -r Numix/{CREDITS,LICENSE,README.md,index.theme,metacity-1,unity,xfwm4,xfce-notify-4.0,.git,.gitignore}
+rm -r Numix/{gtk-3.0/apps,gtk-3.0/gtk-dark.css,gtk-3.0/settings.ini}
+
+# Gtk2
+sed -i "s|GtkWindow::resize-grip-height = 0|GtkWindow::resize-grip-height = "${GRIP}"|g" $GTK2RC
+sed -i "s|GtkWindow::resize-grip-width = 0|GtkWindow::resize-grip-width = "${GRIP}"|g" $GTK2RC
+
+sed -i "s|bg_color:#dedede|bg_color:"${BG_COLOR}"|g" $GTK2RC
+sed -i "s|fg_color:#555555|fg_color:"${FG_COLOR}"|g" $GTK2RC
+sed -i "s|base_color:#f9f9f9|base_color:"${BASE_COLOR}"|g" $GTK2RC
+sed -i "s|text_color:#333333|text_color:"${FG_COLOR}"|g" $GTK2RC
+sed -i "s|selected_bg_color:#d64937|selected_bg_color:"${SELECTED_BG_COLOR}"|g" $GTK2RC
+sed -i "s|selected_fg_color:#f9f9f9|selected_fg_color:"${SELECTED_FG_COLOR}"|g" $GTK2RC
+sed -i "s|tooltip_bg_color:#2d2d2d|tooltip_bg_color:"${BASE_COLOR}"|g" $GTK2RC
+sed -i "s|tooltip_fg_color:#dedede|tooltip_fg_color:"${FG_COLOR}"|g" $GTK2RC
+sed -i "s|menubar_bg_color:#2d2d2d|menubar_bg_color:"${BG_COLOR}"|g" $GTK2RC
+sed -i "s|menubar_fg_color:#dcdcdc|menubar_fg_color:"${FG_COLOR}"|g" $GTK2RC
+sed -i "s|menu_bg_color:#2d2d2d|menu_bg_color:"${BASE_COLOR}"|g" $GTK2RC
+sed -i "s|menu_fg_color:#dcdcdc|menu_fg_color:"${FG_COLOR}"|g" $GTK2RC
+sed -i "s|link_color:#fc6f5d|link_color:"${SELECTED_BG_COLOR}"|g" $GTK2RC
+
+# Gtk3
+sed -i "s|GtkWindow-resize-grip-height: 0;|GtkWindow-resize-grip-height: "${GRIP}";|g" Numix/gtk-3.0/gtk-widgets.css
+sed -i "s|GtkWindow-resize-grip-width: 0;|GtkWindow-resize-grip-width: "${GRIP}";|g" Numix/gtk-3.0/gtk-widgets.css
+
+sed -i 's|@import url("apps/gnome-applications.css");||g' $GTK3RC
+sed -i 's|@import url("apps/granite-widgets.css");||g' $GTK3RC
+sed -i 's|@import url("apps/unity.css");||g' $GTK3RC
+sed -i 's|@import url("apps/xfce.css");||g' $GTK3RC
+sed -i 's|@import url("apps/nemo.css");||g' $GTK3RC
+sed -i 's|@import url("apps/synaptic.css");||g' $GTK3RC
+sed -i 's|@import url("apps/lightdm-gtk-greeter.css");||g' $GTK3RC
+
+sed -i "s|bg_color #dedede;|bg_color "${BG_COLOR}";|g" $GTK3RC
+sed -i "s|fg_color #555555;|fg_color "${FG_COLOR}";|g" $GTK3RC
+sed -i "s|base_color #f9f9f9;|base_color "${BASE_COLOR}";|g" $GTK3RC
+sed -i "s|text_color #333333;|text_color "${FG_COLOR}";|g" $GTK3RC
+sed -i "s|selected_bg_color #d64937;|selected_bg_color "${SELECTED_BG_COLOR}";|g" $GTK3RC
+sed -i "s|selected_fg_color #f9f9f9;|selected_fg_color "${SELECTED_FG_COLOR}";|g" $GTK3RC
+sed -i "s|tooltip_bg_color #2d2d2d;|tooltip_bg_color "${BASE_COLOR}";|g" $GTK3RC
+sed -i "s|tooltip_fg_color #dcdcdc;|tooltip_fg_color "${FG_COLOR}";|g" $GTK3RC
+sed -i "s|link_color #fc6f5d;|link_color "${SELECTED_BG_COLOR}";|g" $GTK3RC
+
+sed -i "s|titlebar_bg_color @dark_bg_color;|titlebar_bg_color @bg_color;|g" $GTK3RC
+sed -i "s|titlebar_fg_color @dark_fg_color;|titlebar_fg_color @fg_color;|g" $GTK3RC
+sed -i "s|menubar_bg_color @dark_bg_color;|menubar_bg_color @bg_color;|g" $GTK3RC
+sed -i "s|menubar_fg_color @dark_fg_color;|menubar_fg_color @fg_color;|g" $GTK3RC
+sed -i "s|menu_bg_color @dark_bg_color;|menu_bg_color "${BASE_COLOR}";|g" $GTK3RC
+sed -i "s|menu_fg_color @dark_fg_color;|menu_fg_color @fg_color;|g" $GTK3RC
+sed -i "s|panel_bg_color @dark_bg_color;|panel_bg_color @bg_color;|g" $GTK3RC
+sed -i "s|panel_fg_color @dark_fg_color;|panel_fg_color @fg_color;|g" $GTK3RC
+
+# Openbox
+sed -i "s|menu.title.text.color: #dcdcdc|menu.title.text.color: "${FG_COLOR}"|g" $BOX3RC
+sed -i "s|menu.items.text.color: #dcdcdc|menu.items.text.color: "${FG_COLOR}"|g" $BOX3RC
+sed -i "s|menu.items.active.text.color: #f9f9f9|menu.items.active.text.color:  "${SELECTED_FG_COLOR}"|g" $BOX3RC
+sed -i "s|menu.separator.color: #262626|menu.separator.color: "${BG_COLOR}"|g" $BOX3RC
+sed -i "s|window.active.label.text.color: #dcdcdc|window.active.label.text.color: "${FG_COLOR}"|g" $BOX3RC
+sed -i "s|window.inactive.label.text.color: #888888|window.inactive.label.text.color: "${FG_COLOR}"|g" $BOX3RC
+sed -i "s|window.active.button.unpressed.image.color: #dcdcdc|window.active.button.unpressed.image.color: "${FG_COLOR}"|g" $BOX3RC
+sed -i "s|window.inactive.button.unpressed.image.color: #888888|window.inactive.button.unpressed.image.color: "${FG_COLOR}"|g" $BOX3RC
+sed -i "s|window.active.border.color: #484848|window.active.border.color: "${BORDER_COLOR}"|g" $BOX3RC
+sed -i "s|window.inactive.border.color: #393939|window.inactive.border.color: "${BORDER_COLOR}"|g" $BOX3RC
+
+sed -i "s|#2d2d2d|"${BG_COLOR}"|g" $BOX3RC
+sed -i "s|#dcdcdc|"${FG_COLOR}"|g" $BOX3RC
+sed -i "s|#d64937|"${SELECTED_BG_COLOR}"|g" $BOX3RC
+sed -i "s|#f9f9f9|"${BASE_COLOR}"|g" $BOX3RC
+
+mkdir $HOME/.themes 2>/dev/null
+rm -r $HOME/.themes/$NAME 2>/dev/null
+mv Numix $HOME/.themes/$NAME
