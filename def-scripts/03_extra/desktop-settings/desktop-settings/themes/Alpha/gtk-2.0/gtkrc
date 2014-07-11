@@ -1,6 +1,6 @@
 # Numix GTK Theme
 
-gtk-color-scheme = "bg_color:#cecece\nfg_color:#3c3c3c\nbase_color:#F7F7F7\ntext_color:#212121\nselected_bg_color:#398ee7\nselected_fg_color:#fff\ntooltip_bg_color:#000\ntooltip_fg_color:#e1e1e1\ntitlebar_bg_color:#2d2d2d\ntitlebar_fg_color:#dcdcdc\nmenubar_bg_color:#CCCCCC\nmenubar_fg_color:#2D2D2D\ntoolbar_bg_color:#dedede\ntoolbar_fg_color:#555555\nmenu_bg_color:#ffffff\nmenu_fg_color:#2D2D2D\npanel_bg_color:#2d2d2d\npanel_fg_color:#dcdcdc\nlink_color:#fc6f5d"
+gtk-color-scheme = "bg_color:#CECECE\nfg_color:#363636\nbase_color:#F7F7F7\ntext_color:#363636\nselected_bg_color:#7496C8\nselected_fg_color:#FFFFFF\ntooltip_bg_color:#F7F7F7\ntooltip_fg_color:#363636\ntitlebar_bg_color:#2d2d2d\ntitlebar_fg_color:#dcdcdc\nmenubar_bg_color:#CECECE\nmenubar_fg_color:#363636\ntoolbar_bg_color:#CECECE\ntoolbar_fg_color:#363636\nmenu_bg_color:#F7F7F7\nmenu_fg_color:#363636\npanel_bg_color:#2d2d2d\npanel_fg_color:#dcdcdc\nlink_color:#7496C8"
 
 # Default Style
 
@@ -77,8 +77,8 @@ style "murrine-default" {
 	GtkWidget::separator-width = 1
 	GtkWidget::separator-height = 1
 
-	GtkWindow::resize-grip-height = 20
-	GtkWindow::resize-grip-width = 20
+	GtkWindow::resize-grip-height = 12
+	GtkWindow::resize-grip-width = 12
 
 	WnckTasklist::fade-overlay-rect = 0
 

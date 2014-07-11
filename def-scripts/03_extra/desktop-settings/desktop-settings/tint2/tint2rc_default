@@ -52,7 +52,7 @@ task_iconified_background_id = 0
 task_icon_asb = 100 0 0
 task_active_icon_asb = 100 0 0
 task_urgent_icon_asb = 100 0 0
-task_iconified_icon_asb = 90 0 0
+task_iconified_icon_asb = 80 0 -20
 
 # Fonts
 task_font = Sans 12
@@ -103,7 +103,7 @@ mouse_middle = none
 mouse_right = close
 mouse_scroll_up = toggle
 mouse_scroll_down = iconify
-task_normalhovered_background_id = 1
+task_normalhovered_background_id = 2
 task_activehovered_background_id = 1
 task_urgenthovered_background_id = 1
 
