@@ -18,7 +18,7 @@
 private class Program : Gtk.Application
 {
   const string NAME        = "Voyager";
-  const string VERSION     = "1.2.5";
+  const string VERSION     = "1.2.8";
   const string DESCRIPTION = _("Image browser in Vala and Gtk+3");
   const string ICON        = "voyager";
   const string[] AUTHORS   = { "Simargl <archpup-at-gmail-dot-com>", null };
@@ -37,6 +37,8 @@ private class Program : Gtk.Application
   Gtk.Scale scale;
   Gtk.ToggleButton button_list;
   GLib.Settings settings;
+  Gdk.RGBA white;
+  Gdk.RGBA black;
   int width;
   int height;
   int screen_width;
@@ -49,6 +51,7 @@ private class Program : Gtk.Application
   bool slideshow_active;
   string[] images;
   string file;
+  string basename;
   double scale_current_value;
   private uint timeout_id;
   private const Gtk.TargetEntry[] targets = { {"text/uri-list", 0, 0} };
@@ -63,6 +66,7 @@ private class Program : Gtk.Application
   
   double hadj_value;
   double vadj_value;
+  double zoom = 1.00;
   
   Gtk.Adjustment hadj;
   Gtk.Adjustment vadj;
@@ -75,6 +79,8 @@ private class Program : Gtk.Application
     { "previous-image",     action_previous_image     },
     { "zoom-in",            action_zoom_in            },
     { "zoom-out",           action_zoom_out           },
+    { "zoom-to-fit",        action_zoom_to_fit        },
+    { "zoom-actual",        action_zoom_actual        },
     { "slideshow",          action_slideshow          },
     { "edit-with-gimp",     action_edit_with_gimp     },
     { "full-screen-toggle", action_full_screen_toggle },
@@ -159,6 +165,8 @@ private class Program : Gtk.Application
     
     section_three.append(_("Zoom In"), "app.zoom-in");
     section_three.append(_("Zoom Out"), "app.zoom-out");
+    section_three.append(_("Zoom to Fit"), "app.zoom-to-fit");
+    section_three.append(_("Actual Size"), "app.zoom-actual");
     gear_menu.append_section(null, section_three);
     
     section_four.append(_("Slideshow"), "app.slideshow");
@@ -169,7 +177,7 @@ private class Program : Gtk.Application
     menubutton.valign = Gtk.Align.CENTER;
     menubutton.set_use_popover(true);
     menubutton.set_menu_model(gear_menu);
-    menubutton.set_image(new Gtk.Image.from_icon_name("emblem-system-symbolic", Gtk.IconSize.MENU));    
+    menubutton.set_image(new Gtk.Image.from_icon_name("system-run-symbolic", Gtk.IconSize.MENU));    
 
     headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);
@@ -191,11 +199,18 @@ private class Program : Gtk.Application
     treeview.row_activated.connect(show_selected_image);
     treeview.insert_column_with_attributes (-1, _("Name"), cell, "text", 0);
 
+    white = Gdk.RGBA();
+    black = Gdk.RGBA();
+    
+    white.parse("#FFFFFF");
+    black.parse("#000000"); 
+
     // ScrolledWindow
     scrolled_window_image = new Gtk.ScrolledWindow(null, null);
     scrolled_window_image.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
     scrolled_window_image.expand = true;
-    scrolled_window_image.set_size_request(250, 0);
+    scrolled_window_image.set_size_request(200, 0);
+    scrolled_window_image.override_background_color(Gtk.StateFlags.NORMAL, white);
     scrolled_window_image.add(image);
     
     scrolled_window_treeview = new Gtk.ScrolledWindow(null, null);
@@ -222,15 +237,18 @@ private class Program : Gtk.Application
     window.set_default_size(width, height);
     window.set_icon_name(ICON);
     window.show_all();
-    window.scroll_event.connect(scrolled);
     window.delete_event.connect(() => { save_settings(); quit(); return true; });
     add_window(window);
 
-    scrolled_window_image.add_events(Gdk.EventMask.ALL_EVENTS_MASK);
-    scrolled_window_image.button_press_event.connect(mouse_button_press_events);
-    scrolled_window_image.motion_notify_event.connect(mouse_motion_events);
-    scrolled_window_image.button_release_event.connect(mouse_button_release_events);
-
+    scrolled_window_image.add_events(Gdk.EventMask.SCROLL_MASK
+                                   | Gdk.EventMask.POINTER_MOTION_MASK
+                                   | Gdk.EventMask.BUTTON_PRESS_MASK
+                                   | Gdk.EventMask.BUTTON_RELEASE_MASK);
+    scrolled_window_image.button_press_event.connect(button_press_event);
+    scrolled_window_image.motion_notify_event.connect(button_motion_event);
+    scrolled_window_image.button_release_event.connect(button_release_event);
+    scrolled_window_image.scroll_event.connect(button_scroll_event);
+    
     hadj = scrolled_window_image.get_hadjustment();
     vadj = scrolled_window_image.get_vadjustment();
   }
@@ -247,7 +265,7 @@ private class Program : Gtk.Application
     {
       file = f.get_path();
     }
-    load_pixbuf_on_start(file);
+    load_pixbuf_on_start();
     list_images(Path.get_dirname(file));
   }
 
@@ -299,26 +317,51 @@ private class Program : Gtk.Application
     var selection = treeview.get_selection();
     selection.get_selected(out model, out iter);
     model.get(iter, 1, out file);
-    load_pixbuf_on_start(file);
+    load_pixbuf_on_start();
+  }
+
+  private void update_title()
+  {
+    basename = Path.get_basename(file);
+    double izoom = zoom * 100;
+    headerbar.set_title("%s (%sx%s) %s%s".printf(basename, pixbuf.get_width().to_string(), pixbuf.get_height().to_string(), Math.round(izoom).to_string(), "%"));
+  }
+  
+  // load pixbuf with full size
+  private void load_pixbuf_full()
+  {
+    try
+    {    
+      pixbuf = new Gdk.Pixbuf.from_file(file);
+      pixbuf_scaled = pixbuf;
+      zoom = 1.00;
+      image.set_from_pixbuf(pixbuf);
+      update_title();
+    }
+    catch(Error error)
+    {
+      stderr.printf("error: %s\n", error.message);
+    }
   }
 
   // load pixbuf with specified size, if width is smaller than 400px - then load at full size
-  private void load_pixbuf(string pixbuf_name, int pixbuf_width, int pixbuf_height)
+  private void load_pixbuf_with_size(int pixbuf_width, int pixbuf_height)
   {
-    var basename = Path.get_basename(pixbuf_name);
     try
     {
-      pixbuf = new Gdk.Pixbuf.from_file(pixbuf_name);
+      pixbuf = new Gdk.Pixbuf.from_file(file);
       if (pixbuf.get_width() <= 400)
       {
-        image.set_from_pixbuf(pixbuf);
         pixbuf_scaled = pixbuf;
+        zoom = 1.00;
+        image.set_from_pixbuf(pixbuf);
       }
       else
       { 
         try
         {
-          pixbuf_scaled = new Gdk.Pixbuf.from_file_at_size(pixbuf_name, pixbuf_width, pixbuf_width);
+          pixbuf_scaled = new Gdk.Pixbuf.from_file_at_size(file, pixbuf_width, pixbuf_width);
+          zoom = (double)pixbuf_scaled.get_width() / pixbuf.get_width();
           image.set_from_pixbuf(pixbuf_scaled);
         }
         catch(Error error)
@@ -326,7 +369,7 @@ private class Program : Gtk.Application
           stderr.printf("error: %s\n", error.message);
         }
       } 
-      headerbar.set_title("%s - %s (%sx%s)".printf(NAME, basename, pixbuf.get_width().to_string(), pixbuf.get_height().to_string()));
+      update_title();
     }
     catch(Error error)
     {
@@ -335,7 +378,7 @@ private class Program : Gtk.Application
   }
 
   // load pixbuf on start
-  private void load_pixbuf_on_start(string pixbuf_name)
+  private void load_pixbuf_on_start()
   {
     int width, height;
     window.get_size(out width, out height);
@@ -349,72 +392,40 @@ private class Program : Gtk.Application
       pixbuf_width = scrolled_window_image.get_allocated_width();
       pixbuf_height = scrolled_window_image.get_allocated_height();
     }
-    load_pixbuf(pixbuf_name, pixbuf_width, pixbuf_height);
+    load_pixbuf_with_size(pixbuf_width, pixbuf_height);
+    scale.set_value(50);
   }
 
-  // Mouse EventButton Scroll
-  private bool scrolled(Gdk.EventScroll event)
+  private void zoom_image(bool plus, double large, double small)
   {
-    if (file != null)
+    double curr_width = pixbuf_scaled.get_width();
+    double curr_height = pixbuf_scaled.get_height();
+    double real_width = pixbuf.get_width();
+    double real_height = pixbuf.get_height();
+    double zoom_factor;
+    if (real_width < 100)
     {
-      if ((event.state & Gdk.ModifierType.CONTROL_MASK) > 0)
-      {
-        if (event.direction == Gdk.ScrollDirection.UP)
-        { 
-          action_zoom_in();
-        }
-        if (event.direction == Gdk.ScrollDirection.DOWN)
-        {
-          action_zoom_out();
-        }
-      }
-    }
-    return false;
-  }
-
-  private void zoom_image(bool plus, double zoom_larger, double zoom_smaller)
-  {
-    double change_width;
-    double change_height;
-    double current_pixbuf_width = pixbuf_scaled.get_width();
-    double current_pixbuf_height = pixbuf_scaled.get_height();
-    change_width = current_pixbuf_width * zoom_larger;
-    change_height = current_pixbuf_height * zoom_larger;
-    if (current_pixbuf_width > 400)
-    {
-      change_width = current_pixbuf_width * zoom_smaller;
-    }
-    if (current_pixbuf_height > 300)
-    {
-      change_height = current_pixbuf_width * zoom_smaller;
-    }
-    if (plus == true)
-    {
-      try
-      {
-        pixbuf_scaled = new Gdk.Pixbuf.from_file_at_size(file, (int)current_pixbuf_width + (int)change_width, (int)current_pixbuf_height + (int)change_height);
-        image.set_from_pixbuf(pixbuf_scaled);
-      }
-      catch(Error error)
-      {
-        stderr.printf("error: %s\n", error.message);
-      }
+      zoom_factor = large;
     }
     else
     {
-      if (current_pixbuf_width > 15)
+      zoom_factor = small;
+    }
+    if (plus == true)
+    {
+      zoom = zoom + zoom_factor;
+      pixbuf_scaled = pixbuf.scale_simple((int)(real_width * zoom), (int)(real_height * zoom), Gdk.InterpType.BILINEAR);
+    }
+    else
+    {
+      if (curr_height > real_height * 0.02 && curr_width > real_width * 0.02)
       {
-        try
-        {
-          pixbuf_scaled = new Gdk.Pixbuf.from_file_at_size(file, (int)current_pixbuf_width - (int)change_width, (int)current_pixbuf_height - (int)change_height);
-          image.set_from_pixbuf(pixbuf_scaled);
-        }
-        catch(Error error)
-        {
-          stderr.printf("error: %s\n", error.message);
-        }
+        zoom = zoom - zoom_factor;
+        pixbuf_scaled = pixbuf.scale_simple((int)(real_width * zoom), (int)(real_height * zoom), Gdk.InterpType.BILINEAR);
       }
     }
+    image.set_from_pixbuf(pixbuf_scaled);
+    update_title();
   }
 
   private void scale_zoom_level()
@@ -423,22 +434,22 @@ private class Program : Gtk.Application
     {
       if (scale.get_value() > scale_current_value)
       {
-        action_zoom_in();
+        zoom_image(true, 0.20, 0.03);
       }
       else
       {
-        action_zoom_out();
+        zoom_image(false, 0.20, 0.03);
       }
       scale_current_value = scale.get_value();
     }
   }
 
   // Mouse EventButton Press
-  private bool mouse_button_press_events(Gdk.EventButton event)
+  private bool button_press_event(Gdk.EventButton event)
   {
     if (file != null)
     {
-      if (event.type == Gdk.EventType.2BUTTON_PRESS)
+      if (event.type == Gdk.EventType.2BUTTON_PRESS && event.button == 1)
       {
         if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
         {
@@ -462,11 +473,40 @@ private class Program : Gtk.Application
       hadj_value = hadj.get_value();
       vadj_value = vadj.get_value();
     }
+    if (event.button == 2)
+    {
+      action_previous_image();
+    }
+    if (event.button == 3)
+    {
+      action_next_image();
+    }
+    return false;
+  }
+
+  // motion
+  private bool button_motion_event(Gdk.EventMotion event)
+  {
+    if (dragging == true)
+    {
+      var device = Gtk.get_current_event_device();
+      if (device != null)
+      {
+        event.window.get_device_position(device, out x_current, out y_current, null);
+        event.window.set_cursor(null);
+      } 
+      
+      int x_diff = x_start - x_current;
+      int y_diff = y_start - y_current;
+      
+      hadj.set_value(hadj_value + x_diff);
+      vadj.set_value(vadj_value + y_diff);   
+    }
     return false;
   }
 
   // release
-  public bool mouse_button_release_events(Gdk.EventButton event)
+  private bool button_release_event(Gdk.EventButton event)
   {
     if (event.type == Gdk.EventType.BUTTON_RELEASE)
     {
@@ -479,31 +519,27 @@ private class Program : Gtk.Application
           event.window.set_cursor(null);
         }  
         dragging = false;
-        return false;
       }
     }
     return false;
   }
 
-  // motion
-  public bool mouse_motion_events(Gdk.EventMotion event)
+  // Mouse EventButton Scroll
+  private bool button_scroll_event(Gdk.EventScroll event)
   {
-    if (dragging == true)
-    {  
-      var device = Gtk.get_current_event_device();
-      if(device != null)
+    if (file != null)
+    {
+      double dir = event.delta_y;
+      if (dir < 0)
       {
-        event.window.get_device_position(device, out x_current, out y_current, null);
-        event.window.set_cursor(null);
-      } 
-      
-      int x_diff = x_start - x_current;
-      int y_diff = y_start - y_current;
-      
-      hadj.set_value(hadj_value + x_diff);
-      vadj.set_value(vadj_value + y_diff);
+        zoom_image(true, 0.20, 0.03);
+      }
+      else
+      {
+        zoom_image(false, 0.20, 0.03);
+      }
     }
-    return false;
+    return true;
   }
 
   // Drag Data
@@ -513,7 +549,7 @@ private class Program : Gtk.Application
     {
       file = uri.replace("file://", "");
       file = Uri.unescape_string(file);
-      load_pixbuf_on_start(file);
+      load_pixbuf_on_start();
       list_images(Path.get_dirname(file));
     }
     Gtk.drag_finish(drag_context, true, false, time);
@@ -553,7 +589,7 @@ private class Program : Gtk.Application
     if (dialog.run() == Gtk.ResponseType.ACCEPT)
     {
       file = dialog.get_filename();
-      load_pixbuf_on_start(file);
+      load_pixbuf_on_start();
       list_images(Path.get_dirname(file));
     }
     dialog.destroy();
@@ -627,7 +663,7 @@ private class Program : Gtk.Application
   {
     if (file != null)
     {
-      zoom_image(true, 0.20, 0.05);
+      zoom_image(true, 0.50, 0.20);
     }
   }
 
@@ -635,7 +671,23 @@ private class Program : Gtk.Application
   {
     if (file != null)
     {
-      zoom_image(false, 0.20, 0.05);
+      zoom_image(false, 0.50, 0.20);
+    }
+  }
+
+  private void action_zoom_to_fit()
+  {
+    if (file != null)
+    {
+      load_pixbuf_on_start();
+    }
+  }
+
+  private void action_zoom_actual()
+  {
+    if (file != null)
+    {
+      load_pixbuf_full();
     }
   }
 
@@ -686,15 +738,20 @@ private class Program : Gtk.Application
       window.fullscreen();
       saved_pixbuf_width = (int)pixbuf_scaled.get_width();
       saved_pixbuf_height = (int)pixbuf_scaled.get_height();
-      load_pixbuf(file, screen_width, screen_height);
+      load_pixbuf_with_size(screen_width, screen_height);
+      scrolled_window_image.override_background_color(Gtk.StateFlags.NORMAL, black);    
     }
   }
 
   private void action_full_screen_exit()
   {
-    scrolled_window_treeview.show();
-    window.unfullscreen();
-    load_pixbuf(file, saved_pixbuf_width, saved_pixbuf_height);
+    if ((window.get_window().get_state() & Gdk.WindowState.FULLSCREEN) != 0)
+    {    
+      scrolled_window_treeview.show();
+      window.unfullscreen();
+      load_pixbuf_with_size(saved_pixbuf_width, saved_pixbuf_height);
+      scrolled_window_image.override_background_color(Gtk.StateFlags.NORMAL, white);
+    }
   }
 
   private void action_show_menu()

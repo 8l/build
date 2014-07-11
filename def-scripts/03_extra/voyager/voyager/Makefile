@@ -1,7 +1,7 @@
 DESTDIR?=
 
 CFLAGS=--target-glib=2.38 --pkg gtk+-3.0
-LDFLAGS=-X -DGETTEXT_PACKAGE=\"$(BINARY)\"
+LDFLAGS=-X -lm -X -DGETTEXT_PACKAGE=\"$(BINARY)\"
 SOURCE=voyager.vala
 BINARY=voyager
 
