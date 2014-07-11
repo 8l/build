@@ -65,18 +65,18 @@ private class Program : Gtk.Application
     create_group(_("<b>Personal</b>"));
     create_entry(_("Wallpaper"),       "wpset",               "preferences-desktop-wallpaper", _("Change your desktop wallpaper"));
     create_entry(_("Appearance"),      "lxappearance",        "preferences-desktop-theme",     _("Customize Look and Feel"));
-    create_entry(_("Openbox"),         "obconf",              "obconf",                        _("Tweak settings for Openbox"));
+    create_entry(_("Openbox"),         "obconf",              "preferences-system-windows",    _("Tweak settings for Openbox"));
     create_entry(_("Menu Editor"),     "kickshaw",            "menu-editor",                   _("Kickshaw is a menu editor for Openbox"));
 
     create_group(_("<b>Hardware</b>"));
-    create_entry(_("Display"),         "lxrandr",             "lxrandr",                       _("Change screen resolution and configure external monitors"));
-    create_entry(_("Input Devices"),   "lxinput",             "lxinput",                       _("Configure keyboard, mouse, and other input devices"));
-    create_entry(_("Network"),         "connman-ui-gtk",      "gnome-nettool",                 _("A full-featured GTK based trayicon UI for ConnMan"));
+    create_entry(_("Display"),         "lxrandr",             "preferences-desktop-display",   _("Change screen resolution and configure external monitors"));
+    create_entry(_("Input Devices"),   "lxinput",             "preferences-desktop-keyboard",  _("Configure keyboard, mouse, and other input devices"));
+    create_entry(_("Network"),         "connman-ui-gtk",      "preferences-system-network",   _("A full-featured GTK based trayicon UI for ConnMan"));
 
     create_group(_("<b>System</b>"));
     create_entry(_("Task Manager"),    "lxtask",              "utilities-system-monitor",      _("Manage running processes"));
     create_entry(_("Setup Savefile"),  "makepfile.sh",        "application-x-fs4",             _("Savefile creator for alphaOS"));
-    create_entry(_("Installer"),       "alphainst.sh",        "drive-harddisk-system",         _("Install the system and/or configure Grub2 boot loader"));
+    create_entry(_("Installer"),       "alphainst.sh",        "drive-harddisk",                _("Install the system and/or configure Grub2 boot loader"));
 
     var headerbar = new Gtk.HeaderBar();
     headerbar.set_show_close_button(true);

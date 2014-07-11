@@ -17,7 +17,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      GtkWidget *system_info_box;
 -
 +#if GTK_CHECK_VERSION(3,10,0)
-+    menubutton_image = gtk_image_new_from_icon_name("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
++    menubutton_image = gtk_image_new_from_icon_name("system-run-symbolic", GTK_ICON_SIZE_MENU);
 +    
 +    menubutton = gtk_menu_button_new ();
 +    gtk_button_set_image (GTK_BUTTON (menubutton), menubutton_image);

@@ -17,17 +17,17 @@ diff -urN openbox-menu-86e1c4b/menu.c openbox-menu-86e1c4b.new/menu.c
  		tmp_name = strndup (name, strrchr (name, '.') - name);
  	#ifdef WITH_SVG
 -		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 16, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-+		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 32, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
++		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 96, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
  	#else
 -		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 16, GTK_ICON_LOOKUP_NO_SVG | GTK_ICON_LOOKUP_GENERIC_FALLBACK);
-+		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 32, GTK_ICON_LOOKUP_NO_SVG | GTK_ICON_LOOKUP_GENERIC_FALLBACK);
++		icon_info = gtk_icon_theme_lookup_icon (icon_theme, tmp_name, 96, GTK_ICON_LOOKUP_NO_SVG | GTK_ICON_LOOKUP_GENERIC_FALLBACK);
  	#endif
  		g_free (tmp_name);
  	}
  
  	if (!icon_info) /* 2nd fallback */
 -		icon_info = gtk_icon_theme_lookup_icon (icon_theme, "empty", 16, GTK_ICON_LOOKUP_NO_SVG);
-+		icon_info = gtk_icon_theme_lookup_icon (icon_theme, "empty", 32, GTK_ICON_LOOKUP_NO_SVG);
++		icon_info = gtk_icon_theme_lookup_icon (icon_theme, "empty", 96, GTK_ICON_LOOKUP_NO_SVG);
  
  	icon = g_strdup (gtk_icon_info_get_filename (icon_info));
 -	gtk_icon_info_free (icon_info);

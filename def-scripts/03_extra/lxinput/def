@@ -11,7 +11,7 @@ makedepends="pkgconfig intltool"
 
 compile() {
   cd $name-$version
-  sed -i 's|input-mouse|lxinput|g' data/lxinput.ui
+  sed -i 's|input-mouse|preferences-desktop-keyboard|g' data/lxinput.ui
   sed -i 's|<property name="update_policy">discontinuous</property>||g' data/lxinput.ui
   ./configure \
     --prefix=/usr \
@@ -22,4 +22,5 @@ compile() {
 package() {
   make DESTDIR=$destdir install
   rm -r $destdir/usr/share/applications/lxinput.desktop
+  
 }

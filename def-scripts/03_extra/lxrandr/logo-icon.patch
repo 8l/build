@@ -14,7 +14,7 @@ diff -urN lxrandr-0.1.2/src/lxrandr.c lxrandr-0.1.2.new/src/lxrandr.c
  
      gtk_container_set_border_width ( ( GtkContainer*)about_dlg , 2 );
      gtk_about_dialog_set_version ( (GtkAboutDialog*)about_dlg, VERSION );
-+    gtk_about_dialog_set_logo_icon_name ( (GtkAboutDialog*)about_dlg, "lxrandr" );
++    gtk_about_dialog_set_logo_icon_name ( (GtkAboutDialog*)about_dlg, "preferences-desktop-display" );
      gtk_about_dialog_set_program_name ( (GtkAboutDialog*)about_dlg, _( "LXRandR" ) );
      //gtk_about_dialog_set_logo( (GtkAboutDialog*)about_dlg, gdk_pixbuf_new_from_file(  PACKAGE_DATA_DIR"/pixmaps/lxrandr.png", NULL ) );
 -    gtk_about_dialog_set_copyright ( (GtkAboutDialog*)about_dlg, _( "Copyright (C) 2008-2011" ) );
@@ -31,7 +31,7 @@ diff -urN lxrandr-0.1.2/src/lxrandr.c lxrandr-0.1.2.new/src/lxrandr.c
      gtk_about_dialog_set_website ( (GtkAboutDialog*)about_dlg, "http://lxde.org/" );
      gtk_about_dialog_set_authors ( (GtkAboutDialog*)about_dlg, authors );
      gtk_about_dialog_set_translator_credits ( (GtkAboutDialog*)about_dlg, translators );
-@@ -469,9 +475,9 @@
+@@ -469,17 +475,22 @@
  
      dlg = gtk_dialog_new_with_buttons( _("Display Settings"), NULL,
                                         GTK_DIALOG_MODAL,
@@ -44,9 +44,10 @@ diff -urN lxrandr-0.1.2/src/lxrandr.c lxrandr-0.1.2.new/src/lxrandr.c
      g_signal_connect( dlg, "response", G_CALLBACK(on_response), NULL );
      gtk_container_set_border_width( GTK_CONTAINER(dlg), 8 );
      gtk_dialog_set_alternative_button_order( GTK_DIALOG(dlg), GTK_RESPONSE_OK, GTK_RESPONSE_CANCEL, -1 );
-@@ -479,7 +485,12 @@
+ 
      /* Set icon name for main (dlg) window so it displays in the panel. */
-     gtk_window_set_icon_name(GTK_WINDOW(dlg), "display");
+-    gtk_window_set_icon_name(GTK_WINDOW(dlg), "display");
++    gtk_window_set_icon_name(GTK_WINDOW(dlg), "preferences-desktop-display");
  
 +#if GTK_CHECK_VERSION(3,10,0)
 +    btn = gtk_button_new_with_label("About");
