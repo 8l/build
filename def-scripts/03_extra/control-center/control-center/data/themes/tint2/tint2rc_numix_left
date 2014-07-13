@@ -68,7 +68,7 @@ font_shadow = 0
 # System Tray
 systray = 1
 systray_padding = 0 6 15
-systray_sort = left2right
+systray_sort = right2left
 systray_background_id = 0
 systray_icon_size = 22
 systray_icon_asb = 100 0 0
@@ -91,6 +91,7 @@ clock_tooltip =
 clock_padding = 10 6
 clock_background_id = 2
 clock_lclick_command = gsimplecal
+clock_rclick_command = gsimplecal
 time1_timezone = 
 time2_timezone = 
 clock_tooltip_timezone = 

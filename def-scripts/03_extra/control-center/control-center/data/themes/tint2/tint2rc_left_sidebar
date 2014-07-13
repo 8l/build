@@ -88,7 +88,7 @@ launcher_item_app = /usr/share/applications/web-browser.desktop
 # System Tray
 systray = 1
 systray_padding = 4 3 4
-systray_sort = left2right
+systray_sort = right2left
 systray_background_id = 0
 systray_icon_size = 40
 systray_icon_asb = 90 0 0
