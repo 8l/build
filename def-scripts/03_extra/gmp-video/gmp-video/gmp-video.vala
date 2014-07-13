@@ -351,7 +351,7 @@ private class Program : Gtk.Application
   // Mouse EventButton Press
   private bool mouse_button_press_events(Gdk.EventButton event)
   {
-    if (event.type == Gdk.EventType.2BUTTON_PRESS)
+    if (event.type == Gdk.EventType.2BUTTON_PRESS && event.button == 1)
     {
       action_full_screen_toggle();
     }
