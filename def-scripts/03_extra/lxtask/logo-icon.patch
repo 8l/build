@@ -1,6 +1,6 @@
 diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
 --- lxtask-0.1.4/src/interface.c	2011-06-21 23:50:00.000000000 +0200
-+++ lxtask-0.1.4.new/src/interface.c   2014-05-15 18:10:33.000000000 +0200
++++ lxtask-0.1.4.new/src/interface.c	2014-07-13 10:52:44.281897475 +0200
 @@ -41,6 +41,9 @@
  GtkWidget* create_main_window (void)
  {
@@ -11,7 +11,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      GtkWidget *menubar, *menu, *item;// *sub;
      GtkWidget *vbox1;
      GtkWidget *bbox1;
-@@ -50,13 +53,33 @@
+@@ -50,13 +53,34 @@
      GtkWidget *button3;
  
      GtkWidget *system_info_box;
@@ -21,6 +21,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
 +    
 +    menubutton = gtk_menu_button_new ();
 +    gtk_button_set_image (GTK_BUTTON (menubutton), menubutton_image);
++    gtk_widget_set_valign(GTK_BUTTON (menubutton), GTK_ALIGN_CENTER);
 +    
 +    header_bar = gtk_header_bar_new ();
 +    gtk_header_bar_set_title (GTK_HEADER_BAR (header_bar), _("Task Manager"));
@@ -46,7 +47,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      gtk_widget_show (bbox1);
      gtk_container_add (GTK_CONTAINER (window), bbox1);
  
-@@ -64,6 +87,11 @@
+@@ -64,6 +88,11 @@
  	gtk_widget_show( menubar );
  	gtk_box_pack_start(GTK_BOX (bbox1), menubar, FALSE, TRUE, 0 );
  
@@ -58,7 +59,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
  	/* build menu */
  	menu = gtk_menu_new();
  	item = gtk_menu_item_new_with_mnemonic( _("_File") );
-@@ -91,14 +119,22 @@
+@@ -91,14 +120,22 @@
      g_signal_connect ((gpointer) item, "activate", G_CALLBACK (show_about_dialog), NULL);
  
  	gtk_widget_show_all( menubar );
@@ -82,7 +83,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      gtk_widget_show (system_info_box);
      gtk_box_pack_start (GTK_BOX (vbox1), system_info_box, FALSE, TRUE, 0);
  
-@@ -141,8 +177,11 @@
+@@ -141,8 +178,11 @@
      gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(list_store));
  
      gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(list_store), COLUMN_TIME, GTK_SORT_ASCENDING);
@@ -95,19 +96,19 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      gtk_box_pack_start(GTK_BOX(vbox1), bbox1, FALSE, TRUE, 0);
      gtk_widget_show (bbox1);
  
-@@ -151,7 +190,11 @@
+@@ -151,7 +191,11 @@
      gtk_widget_show (button3);
      gtk_box_pack_start (GTK_BOX (bbox1), button3, FALSE, FALSE, 0);
  
 +#if GTK_CHECK_VERSION(3,0,0)
-+    button1 = gtk_button_new_with_label (_("Quit"));
++    button1 = gtk_button_new_with_label (_("Close"));
 +#else
      button1 = gtk_button_new_from_stock ("gtk-quit");
 +#endif     
      gtk_widget_show (button1);
      gtk_box_pack_start (GTK_BOX (bbox1), button1, FALSE, FALSE, 0);
  
-@@ -311,6 +354,9 @@
+@@ -311,6 +355,9 @@
      GtkWidget *show_other_tasks1;
      GtkWidget *show_cached_as_free1;
      GtkWidget *separator1;
@@ -117,7 +118,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      GtkAccelGroup *accel_group;
  
      accel_group = gtk_accel_group_new ();
-@@ -331,8 +377,12 @@
+@@ -331,8 +378,12 @@
      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(show_other_tasks1), show_other_tasks);
      gtk_widget_show (show_other_tasks1);
      gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), show_other_tasks1);
@@ -131,7 +132,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(show_cached_as_free1), show_cached_as_free);
      gtk_widget_show (show_cached_as_free1);
      gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), show_cached_as_free1);
-@@ -341,7 +391,11 @@
+@@ -341,7 +392,11 @@
      gtk_widget_show(separator1);
      gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), separator1);
  
@@ -143,7 +144,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      g_signal_connect(G_OBJECT (preferences1), "activate", G_CALLBACK (show_preferences), NULL);
      gtk_widget_show(preferences1);
      gtk_menu_shell_append(GTK_MENU_SHELL(mainmenu), preferences1);
-@@ -353,6 +407,13 @@
+@@ -353,6 +408,13 @@
  
      gtk_menu_set_accel_group (GTK_MENU (mainmenu), accel_group);
  
@@ -157,7 +158,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      return mainmenu;
  }
  
-@@ -376,15 +437,21 @@
+@@ -376,15 +438,21 @@
  
      gtk_container_set_border_width ( ( GtkContainer*)about_dlg , 2 );
      gtk_about_dialog_set_version ( (GtkAboutDialog*)about_dlg, VERSION );
@@ -181,7 +182,7 @@ diff -urN lxtask-0.1.4/src/interface.c lxtask-0.1.4.new/src/interface.c
      gtk_about_dialog_set_website ( (GtkAboutDialog*)about_dlg, "http://lxde.org/" );
      gtk_about_dialog_set_authors ( (GtkAboutDialog*)about_dlg, authors );
      gtk_about_dialog_set_translator_credits ( (GtkAboutDialog*)about_dlg, translators );
-@@ -587,12 +654,25 @@
+@@ -587,12 +655,25 @@
      GtkWidget *dlg;
      GtkWidget *c_area;
      GtkWidget *notebook = gtk_notebook_new();

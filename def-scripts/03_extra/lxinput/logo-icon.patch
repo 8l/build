@@ -1,0 +1,70 @@
+diff -urN lxinput-0.3.2/data/lxinput.ui lxinput-0.3.2.new/data/lxinput.ui
+--- lxinput-0.3.2/data/lxinput.ui	2012-05-20 00:08:04.000000000 +0200
++++ lxinput-0.3.2.new/data/lxinput.ui	2014-07-12 19:57:02.000000000 +0200
+@@ -8,7 +8,7 @@
+     <property name="title" translatable="yes">Input Device Preferences</property>
+     <property name="resizable">False</property>
+     <property name="window_position">center</property>
+-    <property name="icon_name">input-mouse</property>
++    <property name="icon_name">preferences-desktop-keyboard</property>
+     <property name="type_hint">dialog</property>
+     <child internal-child="vbox">
+       <object class="GtkVBox" id="vbox">
+@@ -21,8 +21,8 @@
+             <property name="can_focus">False</property>
+             <property name="layout_style">end</property>
+             <child>
+-              <object class="GtkButton" id="cancel">
+-                <property name="label">gtk-cancel</property>
++              <object class="GtkButton" id="ok">
++                <property name="label">gtk-ok</property>
+                 <property name="visible">True</property>
+                 <property name="can_focus">True</property>
+                 <property name="receives_default">True</property>
+@@ -36,8 +36,8 @@
+               </packing>
+             </child>
+             <child>
+-              <object class="GtkButton" id="ok">
+-                <property name="label">gtk-ok</property>
++              <object class="GtkButton" id="cancel">
++                <property name="label">gtk-cancel</property>
+                 <property name="visible">True</property>
+                 <property name="can_focus">True</property>
+                 <property name="receives_default">True</property>
+@@ -107,7 +107,7 @@
+                                 <property name="width_request">100</property>
+                                 <property name="visible">True</property>
+                                 <property name="can_focus">True</property>
+-                                <property name="update_policy">discontinuous</property>
++                                
+                                 <property name="adjustment">mouse_accel_adj</property>
+                                 <property name="digits">0</property>
+                                 <property name="value_pos">right</property>
+@@ -123,7 +123,7 @@
+                                 <property name="width_request">100</property>
+                                 <property name="visible">True</property>
+                                 <property name="can_focus">True</property>
+-                                <property name="update_policy">discontinuous</property>
++                                
+                                 <property name="adjustment">mouse_threshold_adj</property>
+                                 <property name="digits">0</property>
+                                 <property name="value_pos">right</property>
+@@ -311,7 +311,7 @@
+                                     <property name="width_request">100</property>
+                                     <property name="visible">True</property>
+                                     <property name="can_focus">True</property>
+-                                    <property name="update_policy">discontinuous</property>
++                                    
+                                     <property name="adjustment">kb_daley_adj</property>
+                                     <property name="digits">0</property>
+                                     <property name="value_pos">right</property>
+@@ -328,7 +328,7 @@
+                                     <property name="visible">True</property>
+                                     <property name="can_focus">True</property>
+                                     <property name="tooltip_text" translatable="yes">Interval between each key repeat</property>
+-                                    <property name="update_policy">discontinuous</property>
++                                    
+                                     <property name="adjustment">kb_interval_adj</property>
+                                     <property name="digits">0</property>
+                                     <property name="value_pos">right</property>

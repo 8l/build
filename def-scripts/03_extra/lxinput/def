@@ -11,8 +11,7 @@ makedepends="pkgconfig intltool"
 
 compile() {
   cd $name-$version
-  sed -i 's|input-mouse|preferences-desktop-keyboard|g' data/lxinput.ui
-  sed -i 's|<property name="update_policy">discontinuous</property>||g' data/lxinput.ui
+  patch -Np1 -i $startdir/logo-icon.patch
   ./configure \
     --prefix=/usr \
     --enable-gtk3
