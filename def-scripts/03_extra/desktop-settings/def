@@ -28,15 +28,13 @@ copy_desktop_settings() {
 }
 
 copy_themes_and_background() {
-  install -d $destdir/usr/share/{applications,audio,backgrounds,conky,icons,mime,themes,tint2}
+  install -d $destdir/usr/share/{applications,audio,backgrounds,icons,mime,themes}
   cp -af $build/$name/applications/* $destdir/usr/share/applications
   cp -af $build/$name/audio/* $destdir/usr/share/audio
   cp -af $build/$name/backgrounds/* $destdir/usr/share/backgrounds
-  cp -af $build/$name/conky/* $destdir/usr/share/conky
   cp -af $build/$name/icons/* $destdir/usr/share/icons
   cp -af $build/$name/mime/* $destdir/usr/share/mime
   cp -af $build/$name/themes/* $destdir/usr/share/themes
-  cp -af $build/$name/tint2/* $destdir/usr/share/tint2
 }
 
 compile() {
