@@ -1,0 +1,14 @@
+<schemalist>
+  <schema id="org.alphaos.control-center.preferences" path="/org/alphaos/control-center/preferences/">
+    <key name="conky-theme" type="s">
+      <default>'simplyx'</default>
+      <summary>Current conky theme</summary>
+      <description>Current conky theme</description>
+    </key>
+    <key name="tint2-theme" type="s">
+      <default>'default'</default>
+      <summary>Current tint2 theme</summary>
+      <description>Current tint2 theme</description>
+    </key>        
+  </schema>
+</schemalist>

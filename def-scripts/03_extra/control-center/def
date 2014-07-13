@@ -1,5 +1,5 @@
 name="control-center"
-version="1.4.0"
+version="1.5.0"
 revision="1"
 category="system"
 description="Central place for accessing system configuration tools"

@@ -21,12 +21,20 @@ gen_po:
 
 install: all gen_mo
 	install -Dm755 $(BINARY) $(DESTDIR)/usr/bin/$(BINARY)
+	install -Dm755 data/desktop-ctrl $(DESTDIR)/usr/bin/desktop-ctrl
 	install -Dm644 data/$(BINARY).desktop $(DESTDIR)/usr/share/applications/$(BINARY).desktop
 	install -Dm644 data/$(BINARY).png $(DESTDIR)/usr/share/icons/hicolor/96x96/apps/$(BINARY).png
+	install -Dm644 data/org.alphaos.$(BINARY).gschema.xml $(DESTDIR)/usr/share/glib-2.0/schemas/org.alphaos.$(BINARY).gschema.xml
 	install -Dm644 po/sr/$(BINARY).mo $(DESTDIR)/usr/share/locale/sr/LC_MESSAGES/$(BINARY).mo
+	cp -a data/themes/conky $(DESTDIR)/usr/share/conky
+	cp -a data/themes/tint2 $(DESTDIR)/usr/share/tint2
 
 uninstall:
 	rm $(DESTDIR)/usr/bin/$(BINARY)
+	rm $(DESTDIR)/usr/bin/desktop-ctrl
 	rm $(DESTDIR)/usr/share/applications/$(BINARY).desktop
 	rm $(DESTDIR)/usr/share/icons/hicolor/96x96/apps/$(BINARY).png
+	rm $(DESTDIR)/usr/share/glib-2.0/schemas/org.alphaos.$(BINARY).gschema.xml
 	rm $(DESTDIR)/usr/share/locale/sr/LC_MESSAGES/$(BINARY).mo
+	rm -r $(DESTDIR)/usr/share/conky
+	rm -r $(DESTDIR)/usr/share/tint2

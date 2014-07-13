@@ -16,79 +16,119 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-private class Program : Gtk.Application
+private class Program: Gtk.Application
 {
-  const string NAME         = "Control Center";
-  const string VERSION      = "1.4.0";
-  const string DESCRIPTION  = _("Central place for accessing system configuration tools");
-  const string ICON         = "control-center";
-  const string[] AUTHORS = { "Simargl <archpup-at-gmail-dot-com>", "Efgee <efgee2003-at-yahoo-dot-com>", null };
-  const int    MAX_ROW_APPS = 4; // max apps per row can be changed
- 
-  Gtk.Grid grid;
+  const string NAME        = _("Control Center");
+  const string VERSION     =   "1.5.0";
+  const string DESCRIPTION = _("Central place for accessing system configuration tools");
+  const string ICON        =   "control-center";
+  const string[] AUTHORS   = { "Simargl <archpup-at-gmail-dot-com>", "Efgee <efgee2003-at-yahoo-dot-com>", null };
+
+  GLib.Settings settings;
   Gtk.ApplicationWindow window;
-  static int app_number;
-  static int row_number;
+  Gtk.Grid grid;
+  Gtk.IconView view;
+  Gtk.ListStore model;
+  Gtk.Revealer revealer_one;
+  Gtk.Revealer revealer_two;
+  Gtk.ScrolledWindow scrolled;
+  Gtk.ToggleButton button_next;
+  Gtk.TreeIter iter;
 
   private const GLib.ActionEntry[] action_entries =
-  {
+  {   
     { "about", action_about },
     { "quit",  action_quit  }
   };
 
-  private Program()
+  public Program()
   {
     Object(application_id: "org.alphaos.control-center", flags: ApplicationFlags.FLAGS_NONE);
     add_action_entries(action_entries, this);
   }
 
-  protected override void startup()
+  public override void startup()
   {
     base.startup();
 
     var menu = new Menu();
-    menu.append(_("About"),     "app.about");
-    menu.append(_("Quit"),      "app.quit");
+    menu.append(_("About"), "app.about");
+    menu.append(_("Quit"),  "app.quit");
 
     set_app_menu(menu);
     
     add_accelerator("<Control>Q", "app.quit", null);
 
-    // Grid
+    settings = new GLib.Settings("org.alphaos.control-center.preferences");
+
+    button_next = new Gtk.ToggleButton.with_label(_("Next"));
+    button_next.valign = Gtk.Align.CENTER;
+    button_next.set_active(false);
+    button_next.toggled.connect(action_reveal_list);
+
+    model = new Gtk.ListStore(4, typeof (Gdk.Pixbuf), typeof (string), typeof (string), typeof (string));
+
+    view = new Gtk.IconView.with_model(model);
+    view.set_pixbuf_column(0);
+    view.set_text_column(1);
+    view.set_tooltip_column(3);
+    view.set_column_spacing(3);
+    view.set_item_width(82);
+    view.set_activate_on_single_click(true);
+    view.item_activated.connect(icon_clicked);
+
+    scrolled = new Gtk.ScrolledWindow(null, null);
+    scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+    scrolled.add(view);
+
+    add_iconview_item(_("Wallpaper"),      "wpset",          "preferences-desktop-wallpaper", _("Change your desktop wallpaper"));
+    add_iconview_item(_("Appearance"),     "lxappearance",   "preferences-desktop-theme",     _("Customize Look and Feel"));
+    add_iconview_item(_("Openbox"),        "obconf",         "preferences-system-windows",    _("Tweak settings for Openbox"));
+    add_iconview_item(_("Menu Editor"),    "kickshaw",       "menu-editor",                   _("Kickshaw is a menu editor for Openbox"));
+
+    add_iconview_item(_("Display"),        "lxrandr",        "preferences-desktop-display",   _("Change screen resolution and configure external monitors"));
+    add_iconview_item(_("Input Devices"),  "lxinput",        "preferences-desktop-keyboard",  _("Configure keyboard, mouse, and other input devices"));
+    add_iconview_item(_("Network"),        "connman-ui-gtk", "preferences-system-network",    _("A full-featured GTK based trayicon UI for ConnMan"));
+    add_iconview_item(_("Task Manager"),   "lxtask",         "utilities-system-monitor",      _("Manage running processes"));
+
+    add_iconview_item(_("Setup Savefile"), "makepfile.sh",   "application-x-fs4",             _("Savefile creator for alphaOS"));
+    add_iconview_item(_("Installer"),      "alphainst.sh",   "drive-harddisk",                _("Install the system and/or configure Grub2 boot loader"));
+
     grid = new Gtk.Grid();
-    grid.set_column_spacing(25);
+    grid.get_style_context().add_class(Gtk.STYLE_CLASS_VIEW);
     grid.set_column_homogeneous(true);
+    grid.set_column_spacing(10);
+    grid.set_row_spacing(10);
 
-    app_number = 0;
-    row_number = 0;
-   
-    create_group(_("<b>Personal</b>"));
-    create_entry(_("Wallpaper"),       "wpset",               "preferences-desktop-wallpaper", _("Change your desktop wallpaper"));
-    create_entry(_("Appearance"),      "lxappearance",        "preferences-desktop-theme",     _("Customize Look and Feel"));
-    create_entry(_("Openbox"),         "obconf",              "preferences-system-windows",    _("Tweak settings for Openbox"));
-    create_entry(_("Menu Editor"),     "kickshaw",            "menu-editor",                   _("Kickshaw is a menu editor for Openbox"));
+    add_combo_boxes();
 
-    create_group(_("<b>Hardware</b>"));
-    create_entry(_("Display"),         "lxrandr",             "preferences-desktop-display",   _("Change screen resolution and configure external monitors"));
-    create_entry(_("Input Devices"),   "lxinput",             "preferences-desktop-keyboard",  _("Configure keyboard, mouse, and other input devices"));
-    create_entry(_("Network"),         "connman-ui-gtk",      "preferences-system-network",   _("A full-featured GTK based trayicon UI for ConnMan"));
+    revealer_one = new Gtk.Revealer();
+    revealer_one.add(scrolled);
+    revealer_one.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT);
+    revealer_one.set_reveal_child(true);
+    revealer_one.expand = true;
 
-    create_group(_("<b>System</b>"));
-    create_entry(_("Task Manager"),    "lxtask",              "utilities-system-monitor",      _("Manage running processes"));
-    create_entry(_("Setup Savefile"),  "makepfile.sh",        "application-x-fs4",             _("Savefile creator for alphaOS"));
-    create_entry(_("Installer"),       "alphainst.sh",        "drive-harddisk",                _("Install the system and/or configure Grub2 boot loader"));
+    revealer_two = new Gtk.Revealer();
+    revealer_two.add(grid);
+    revealer_two.set_transition_type(Gtk.RevealerTransitionType.SLIDE_RIGHT);
+    revealer_two.set_reveal_child(false);
+    revealer_two.expand = false;
+
+    var main_grid = new Gtk.Grid();
+    main_grid.attach(revealer_one, 0, 0, 1, 1);
+    main_grid.attach(revealer_two, 1, 0, 1, 1);
 
     var headerbar = new Gtk.HeaderBar();
+    headerbar.pack_start(button_next);
     headerbar.set_show_close_button(true);
     headerbar.set_title(NAME);
 
     window = new Gtk.ApplicationWindow(this);
     window.window_position = Gtk.WindowPosition.CENTER;
-    window.set_titlebar(headerbar);
-    window.add(grid);
-    window.set_resizable(false);
-    window.set_border_width(10);
+    window.add(main_grid);
     window.set_icon_name(ICON);
+    window.set_titlebar(headerbar);
+    window.set_default_size(550, 420);
     window.show_all();
   }
 
@@ -96,52 +136,35 @@ private class Program : Gtk.Application
   {
     window.present();
   }
- 
-  // Creates new group - argument: label
-  private void create_group(string label)
+
+  private void add_iconview_item(string name, string command, string icon, string tooltip)
   {
-    var group_name = new Gtk.Label(label);
-    group_name.set_use_markup(true);
-    group_name.set_alignment(0, 1);
-   
-    if (row_number != 0)
+    var icon_theme = Gtk.IconTheme.get_default();
+    try
     {
-      group_name.height_request = 50;
+      model.append(out iter);
+      Gdk.Pixbuf pixbuf = icon_theme.load_icon(icon, 70, 0);
+      model.set(iter, 0, pixbuf, 1, name, 2, command, 3, tooltip);
     }
-   
-    app_number = 0;
-    row_number = row_number + 2;
-    grid.attach(group_name, app_number, row_number, 1, 1);
-   
-    row_number = row_number + 1;
+    catch (GLib.Error e)
+    {
+      stderr.printf ("%s\n", e.message);
+    }
   }
 
-  // Creates new entry - arguments: label, appname, icon, tooltip
-  private void create_entry(string label, string appname, string icon, string tooltip)
+  private void icon_clicked()
   {
-    if (app_number == MAX_ROW_APPS)
+    List<Gtk.TreePath> paths = view.get_selected_items();
+    GLib.Value exec;
+    foreach (Gtk.TreePath path in paths)
     {
-      app_number = 0;
-      row_number = row_number + 2;
+      model.get_iter(out iter, path);
+      model.get_value(iter, 2, out exec);
+      execute_command((string)exec);
     }
-   
-    var entry_image = new Gtk.Image.from_icon_name(icon, Gtk.IconSize.DND);
-    entry_image.set_pixel_size(73);
-   
-    var entry_button = new Gtk.Button();
-    entry_button.set_image(entry_image);
-    entry_button.set_tooltip_text(tooltip);
-    entry_button.clicked.connect(() => { button_item_clicked(appname); });
-    set_button_size_relief_focus(entry_button);
-    grid.attach(entry_button, app_number, row_number, 1, 1);
-   
-    var entry_label = new Gtk.Label(label);
-    grid.attach(entry_label, app_number, (row_number + 1), 1, 1);
-   
-    app_number++;
   }
-
-  private void button_item_clicked(string item_name)
+  
+  private void execute_command(string item_name)
   {
     try
     {
@@ -152,16 +175,73 @@ private class Program : Gtk.Application
       stderr.printf ("%s\n", e.message);
     }
   }
- 
-  private void set_button_size_relief_focus(Gtk.Button button_name)
+
+  private void add_combo_boxes()
   {
-    button_name.set_relief(Gtk.ReliefStyle.NONE);
-    button_name.height_request = 86;
-    button_name.set_always_show_image(true);
-    button_name.set_image_position(Gtk.PositionType.TOP);
-    button_name.set_can_focus(false);
+    // conky
+    var clabel = new Gtk.Label(_("Conky theme"));
+    var cbox = new Gtk.ComboBoxText();
+    cbox.append("simplyx", "SimplyX");
+    cbox.append("classic", "Classic");
+    cbox.append("cubes",   "Cubes");
+    cbox.append("gotham",  "Gotham");
+    cbox.set_active_id(settings.get_string("conky-theme"));
+
+    // tint2
+    var tlabel = new Gtk.Label(_("Tint2 theme"));
+    var tbox = new Gtk.ComboBoxText();
+    tbox.append("crunchbang",   "Crunchbang");
+    tbox.append("default",      "Default");
+    tbox.append("gaia",         "Gaia");
+    tbox.append("left_sidebar", "Left Sidebar");
+    tbox.append("numix",        "Numix");
+    tbox.append("numix_left",   "Numix Left");
+    tbox.append("numix_text",     "Numix Text");
+    tbox.set_active_id(settings.get_string("tint2-theme"));
+
+    // notify-osd
+    var notify_settings = new GLib.Settings("com.canonical.notify-osd");
+    var nlabel = new Gtk.Label(_("Notifications"));
+    var nbox = new Gtk.ComboBoxText();
+    nbox.append("1", "Top right corner");
+    nbox.append("2", "Middle right");
+    nbox.append("3", "Bottom right corner");
+    nbox.set_active_id(notify_settings.get_int("gravity").to_string());
+
+    // attach
+    grid.attach(clabel, 0, 0, 1, 1);
+    grid.attach(cbox,   1, 0, 1, 1);
+    grid.attach(tlabel, 0, 1, 1, 1);
+    grid.attach(tbox,   1, 1, 1, 1);
+    grid.attach(nlabel, 0, 2, 1, 1);
+    grid.attach(nbox,   1, 2, 1, 1);
+
+    // signal changed connect
+    cbox.changed.connect(() => { execute_command("desktop-ctrl conky theme %s\n".printf(cbox.get_active_id())); settings.set_string("conky-theme", cbox.get_active_id());});
+    tbox.changed.connect(() => { execute_command("desktop-ctrl tint2 theme %s\n".printf(tbox.get_active_id())); settings.set_string("tint2-theme", tbox.get_active_id());});
+    nbox.changed.connect(() => { notify_settings.set_int("gravity", int.parse(nbox.get_active_id())); GLib.Settings.sync(); execute_command("notify-send -t 1500 -i dialog-information-symbolic 'Test' 'This is a test notification'"); });
   }
-  
+
+  private void action_reveal_list()
+  {
+    if (button_next.get_active() == true)
+    {
+      revealer_two.set_reveal_child(true);
+      revealer_one.set_reveal_child(false);
+      revealer_one.expand = false;
+      revealer_two.expand = true;
+      button_next.set_label(_("Back"));
+    }
+    else
+    {
+      revealer_one.set_reveal_child(true);
+      revealer_two.set_reveal_child(false);
+      revealer_one.expand = true;
+      revealer_two.expand = false;
+      button_next.set_label(_("Next"));
+    }
+  }
+
   private void action_about()
   {
     var about = new Gtk.AboutDialog();
