@@ -190,13 +190,13 @@ private class Program: Gtk.Application
     // tint2
     var tlabel = new Gtk.Label(_("Tint2 theme"));
     var tbox = new Gtk.ComboBoxText();
-    tbox.append("crunchbang",   "Crunchbang");
-    tbox.append("default",      "Default");
-    tbox.append("gaia",         "Gaia");
-    tbox.append("left_sidebar", "Left Sidebar");
-    tbox.append("numix",        "Numix");
-    tbox.append("numix_left",   "Numix Left");
-    tbox.append("numix_text",     "Numix Text");
+    tbox.append("crunchbang",    "Crunchbang");
+    tbox.append("gaia",          "Gaia");
+    tbox.append("light",         "Light");
+    tbox.append("light_sidebar", "Light Sidebar");
+    tbox.append("numix",         "Numix");
+    tbox.append("numix_sidebar", "Numix Sidebar");
+    tbox.append("numix_text",    "Numix Text");
     tbox.set_active_id(settings.get_string("tint2-theme"));
 
     // notify-osd

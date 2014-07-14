@@ -16,39 +16,39 @@
       <description>TV 02 name and address</description>
     </key>
     <key name="tv03" type="as">
-      <default>[ 'Deluxe', 'Music', 'Germany', 'rtmp://flash.cdn.deluxemusic.tv/deluxemusic.tv-live/web_850.stream' ]</default>
+      <default>[ 'Capital TV', 'Music', 'G.Britain', 'rtmp://cdn-sov-2.musicradio.com:80/LiveVideo/Capital' ]</default>
       <summary>TV 03</summary>
       <description>TV 03 name and address</description>
     </key>
     <key name="tv04" type="as">
+      <default>[ 'Deluxe', 'Music', 'Germany', 'rtmp://flash.cdn.deluxemusic.tv/deluxemusic.tv-live/web_850.stream' ]</default>
+      <summary>TV 03</summary>
+      <description>TV 03 name and address</description>
+    </key>
+    <key name="tv05" type="as">
       <default>[ 'Music Baltic', 'Music', 'Latvia', 'rtmp://80.232.172.37/rtplive/vlc.sdp' ]</default>
       <summary>TV 07</summary>
       <description>TV 07 name and address</description>
     </key>
-    <key name="tv05" type="as">
+    <key name="tv06" type="as">
       <default>[ 'Greek Hits', 'Music', 'Greece', 'mmsh://wpso.com:200/music' ]</default>
       <summary>TV 08</summary>
       <description>TV 08 name and address</description>
     </key>
-    <key name="tv06" type="as">
+    <key name="tv07" type="as">
       <default>[ 'Sky News', 'News', 'G.Britain', 'mms://live1.wm.skynews.servecast.net/skynews_wmlz_live300k']</default>
       <summary>TV 04</summary>
       <description>TV 04 name and address</description>
     </key>
-    <key name="tv07" type="as">
+    <key name="tv08" type="as">
       <default>[ 'BBC', 'News', 'G.Britain', 'mms://rmv8.bbc.net.uk/news/olmedia/n5ctrl/tvseq/od/bbc2/bb/wm/video/daily_pol_bb.wmv' ]</default>
       <summary>TV 06</summary>
       <description>TV 06 name and address</description>
     </key>
-    <key name="tv08" type="as">
+    <key name="tv09" type="as">
       <default>[ '24Vesti', 'News', 'Macedonia', 'mmsh://62.162.58.55/24vesti']</default>
       <summary>TV 05</summary>
       <description>TV 05 name and address</description>
-    </key>
-    <key name="tv09" type="as">
-      <default>[ '', '', '', '' ]</default>
-      <summary>TV 09</summary>
-      <description>TV 09 name and address</description>
     </key>
     <key name="tv10" type="as">
       <default>[ '', '', '', '' ]</default>

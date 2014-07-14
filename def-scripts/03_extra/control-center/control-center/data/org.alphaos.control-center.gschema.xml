@@ -6,7 +6,7 @@
       <description>Current conky theme</description>
     </key>
     <key name="tint2-theme" type="s">
-      <default>'default'</default>
+      <default>'light'</default>
       <summary>Current tint2 theme</summary>
       <description>Current tint2 theme</description>
     </key>        
