@@ -2,7 +2,7 @@
 Type=Application
 Name=Voyager
 Comment=Image Viewer in Vala and Gtk+3
-Exec=voyager
+Exec=voyager %F
 Icon=voyager
 Terminal=false
 Categories=Application;Graphics;
