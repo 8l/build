@@ -28,7 +28,7 @@ else
     echo "error: wrong file name specified"
     exit 1
   fi
-  if [ ! -f "$BUNDLE" ]; then
+  if [ ! -f "$1" ]; then
     echo "error: file does not exist"
     exit 1
   fi

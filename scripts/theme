@@ -12,6 +12,7 @@ BG_COLOR="#CECECE"
 FG_COLOR="#363636"
 BASE_COLOR="#F7F7F7"
 SELECTED_BG_COLOR="#7496C8"
+MENU_BG_COLOR="#DEDEDE"
 SELECTED_FG_COLOR="#FFFFFF"
 BORDER_COLOR="#828282"
 
@@ -43,7 +44,7 @@ sed -i "s|tooltip_bg_color:#2d2d2d|tooltip_bg_color:"${BASE_COLOR}"|g" $GTK2RC
 sed -i "s|tooltip_fg_color:#dedede|tooltip_fg_color:"${FG_COLOR}"|g" $GTK2RC
 sed -i "s|menubar_bg_color:#2d2d2d|menubar_bg_color:"${BG_COLOR}"|g" $GTK2RC
 sed -i "s|menubar_fg_color:#dcdcdc|menubar_fg_color:"${FG_COLOR}"|g" $GTK2RC
-sed -i "s|menu_bg_color:#2d2d2d|menu_bg_color:"${BASE_COLOR}"|g" $GTK2RC
+sed -i "s|menu_bg_color:#2d2d2d|menu_bg_color:"${MENU_BG_COLOR}"|g" $GTK2RC
 sed -i "s|menu_fg_color:#dcdcdc|menu_fg_color:"${FG_COLOR}"|g" $GTK2RC
 sed -i "s|link_color:#fc6f5d|link_color:"${SELECTED_BG_COLOR}"|g" $GTK2RC
 
@@ -73,7 +74,7 @@ sed -i "s|titlebar_bg_color @dark_bg_color;|titlebar_bg_color @bg_color;|g" $GTK
 sed -i "s|titlebar_fg_color @dark_fg_color;|titlebar_fg_color @fg_color;|g" $GTK3RC
 sed -i "s|menubar_bg_color @dark_bg_color;|menubar_bg_color @bg_color;|g" $GTK3RC
 sed -i "s|menubar_fg_color @dark_fg_color;|menubar_fg_color @fg_color;|g" $GTK3RC
-sed -i "s|menu_bg_color @dark_bg_color;|menu_bg_color "${BASE_COLOR}";|g" $GTK3RC
+sed -i "s|menu_bg_color @dark_bg_color;|menu_bg_color "${MENU_BG_COLOR}";|g" $GTK3RC
 sed -i "s|menu_fg_color @dark_fg_color;|menu_fg_color @fg_color;|g" $GTK3RC
 sed -i "s|panel_bg_color @dark_bg_color;|panel_bg_color @bg_color;|g" $GTK3RC
 sed -i "s|panel_fg_color @dark_fg_color;|panel_fg_color @fg_color;|g" $GTK3RC
