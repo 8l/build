@@ -27,7 +27,7 @@ Main system files in alphaOS are two system bundles/modules - alpha.sb and extra
 1.1.)
 First clone alphaos repository, you need to have git installed:
 CODE: SELECT ALL
-git clone https://github.com/alphaos/build
+git clone https://github.com/8l/build
 
 In alphaos/spkg/data/main.config you would change variables arm_date and CARCH (these variables define names of spkg packages, used CFLAGS when compiling and date for rollback mirror for Arch packages used by script paka), or you can just proceed with default values, and then install spkg package manager with:
 CODE: SELECT ALL
